@@ -27,7 +27,7 @@
         //and set its inner HTML using map() and join()
         let ul = `<ul>${data.map(data =>
             `<li>
-                <form action = "/score" method = "GET">
+                <form action = "/${parameter}" method = "GET">
                     <input type = "button" onclick="alert('Call BE')" value=${data}>
                 </form>
             </li>
@@ -39,7 +39,7 @@
     </script>
 </table>
 
-<form action="/" method="GET">
+<form action="/home" method="GET">
     <input type="submit" value="Go Back">
 </form>
 {% endblock %}
