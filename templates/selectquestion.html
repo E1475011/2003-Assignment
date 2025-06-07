@@ -1,0 +1,49 @@
+{% extends "wrapper.html" %}
+
+{% block head %}
+<title>Select Question</title>
+<style>
+  table, th, td {
+    border: 1px solid;
+    border-collapse: collapse;
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+<h2>Select question</h2>
+<table>
+    <ul id="questions"></ul>
+    <script>
+        // JavaScript array
+        let data = ["Question1", "Question2",
+            "Question3", "Question4"];
+
+        // Get the list container element
+        let list =
+            document.getElementById('questions');
+
+        // Create the unordered list element 
+        //and set its inner HTML using map() and join()
+        let ul = `<ul>${data.map(data =>
+            `<li>
+                <form action = "/score" method = "GET">
+                    <input type = "button" onclick="alert('Call BE')" value=${data}>
+                </form>
+            </li>
+            `).join('')}
+                  </ul>`;
+
+        // Set the inner HTML of the list container
+        list.innerHTML = ul;
+    </script>
+</table>
+
+<form action="/" method="GET">
+    <input type="submit" value="Go Back">
+</form>
+{% endblock %}
+
+
+
+
