@@ -61,4 +61,9 @@ Criteria: Student should be able to view his/her marks for all submissions. -->
   tableVar.innerHTML += tableScores; // insert the generated table into the table
 </script>
 
+<form method="GET">
+    <input type="submit" formaction="/home" value="Go back to homepage">
+    <input type="submit" formaction="/score" value="Check another question's scores">
+</form>
+
 {% endblock %}
