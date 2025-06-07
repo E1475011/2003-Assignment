@@ -37,9 +37,19 @@
     color: white; 
     cursor: pointer; 
     font-size: 16px; 
-  }
+
   .btn:hover {
     background-color: #0056b3; 
+  }
+  .forgot-password {
+    display: block; 
+    margin-top: 5px; 
+    font-size: 14px; 
+    color: #007bff; 
+    text-decoration: none; 
+  }
+  .forgot-password:hover {
+    text-decoration: underline; 
   }
 </style>
 {% endblock %}
@@ -55,6 +65,7 @@
     <div class="form-group">
       <label for="password">Password:</label>
       <input type="password" id="password" name="password" required>
+      <a href="/reset-password" class="forgot-password">Forgot Password?</a>
     </div>
     <div class="form-group">
       <button type="submit" class="btn">Submit</button>
