@@ -17,8 +17,8 @@
     <div id="questions"></div>
     <script>
         // JavaScript array
-        let data = ["Question1", "Question2",
-            "Question3", "Question4"];
+        let data = ["Question 1", "Question 2",
+            "Question 3", "Question 4"];
 
         // Get the list container element
         let list =
@@ -27,12 +27,9 @@
         // Create the unordered list element 
         //and set its inner HTML using map() and join()
         let parameter = document.getElementById('parameter').innerHTML
-        let ul = `<ul>${data.map(data =>
+        let ul = `<ul>${data.map(question =>
             `<li>
-                <form action = "/${parameter}question" method = "GET">
-                    <input type = "hidden" name="question_no" value="${data}">
-                    <input type = "submit" value=${data}>
-                </form>
+                <a href="${parameter}question?question_no=${question}" id="link">${question}</a>
             </li>
             `).join('')}
                   </ul>`;

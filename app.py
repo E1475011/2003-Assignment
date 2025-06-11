@@ -56,7 +56,13 @@ def score():
 # Leaderboard
 @app.route('/leaderboard', methods = ['GET'])
 def leaderboard():
-    return render_template("leaderboard.html")
+    return render_template("selectquestion.html", parameter = 'leaderboard')
+
+# Leaderboard - Select Question
+@app.route('/leaderboardquestion', methods = ['GET'])
+def leaderboard_select_question():
+    question_no = request.args.get('question_no')
+    return render_template("leaderboard.html", question_no = question_no)
 
 # Change Password
 @app.route('/changepassword', methods = ['GET'])

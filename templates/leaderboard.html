@@ -5,13 +5,13 @@
 {% endblock %}
 
 {% block body %}
-<h2>Select question</h2>
+<h2 id="question_no">Leaderboard for {{question_no}}</h2>
 <table>
     <ul id="questions"></ul>
     <script>
         // JavaScript array
-        let data = ["Question1", "Question2",
-            "Question3", "Question4"];
+        let data = ["Submission 1", "Submission 2",
+            "Submission 3", "Submission 4"];
 
         // Get the list container element
         let list =
@@ -19,9 +19,9 @@
 
         // Create the unordered list element 
         //and set its inner HTML using map() and join()
-        let ul = `<ul>${data.map(data =>
+        let ul = `<ul>${data.map(submission =>
             `<li>
-                <a>${parameter}</a>
+                <a>${submission}</a>
             </li>
             `).join('')}
                   </ul>`;
@@ -31,7 +31,8 @@
     </script>
 </table>
 
-<form action="/home" method="GET">
-    <input type="submit" value="Go Back">
+<form method="GET">
+    <input type="submit" formaction="/home" value="Back to homepage">
+    <input type="submit" formaction="/leaderboard" value="Check another question's leaderboard">
 </form>
 {% endblock %}
