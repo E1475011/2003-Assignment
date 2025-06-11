@@ -2,32 +2,11 @@
 
 {% block head %}
 <title>Submit</title>
-<style>
-table, th, td {
-  border: 1px solid;
-  border-collapse: collapse;
-}
-</style>
 {% endblock %}
 
 {% block body %}
-<h2>Column vector showing characters of submitted text</h2>
-<table>
-    <thead>
-        <tr>
-            <th>{{ shown_text }}</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for character in shown_text %}
-        <tr>
-            <td>{{ character }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
-<form action="/" method="GET">
-    <input type="submit" value="Click to restart the process!">
+<form method="GET">
+    <input type="submit" formaction="/home" value="Go back to homepage">
+    <input type="submit" formaction="/submit" value="Select another question">
 </form>
 {% endblock %}

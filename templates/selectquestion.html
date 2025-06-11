@@ -11,9 +11,10 @@
 {% endblock %}
 
 {% block body %}
-<h2>Select question</h2>
+<h2>Select question </h2>
+<h2 id="parameter" hidden>{{parameter}}</h2>
 <table>
-    <ul id="questions"></ul>
+    <div id="questions"></div>
     <script>
         // JavaScript array
         let data = ["Question1", "Question2",
@@ -25,10 +26,12 @@
 
         // Create the unordered list element 
         //and set its inner HTML using map() and join()
+        let parameter = document.getElementById('parameter').innerHTML
         let ul = `<ul>${data.map(data =>
             `<li>
-                <form action = "/${parameter}" method = "GET">
-                    <input type = "button" onclick="alert('Call BE')" value=${data}>
+                <form action = "/${parameter}question" method = "GET">
+                    <input type = "hidden" name="question_no" value="${data}">
+                    <input type = "submit" value=${data}>
                 </form>
             </li>
             `).join('')}

@@ -1,29 +1,15 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Homepage</title>
-    </head>
-    <body>
-        <form method="POST">
-            <button type="submit" name="submit_button">Submit</button>
-            <button type="submit" name="score_button">Score</button>
-            <button type="submit" name="leadership_button">Leadership</button>
-        </form>
-    </body>
-    
-</html>
-
-
-<!--{% extends "wrapper.html" %}
+{% extends "wrapper.html" %}
 
 {% block head %}
-<title>Home Page</title>
+<title>Homepage</title>
 {% endblock %}
 
 {% block body %}
 <h2>Sample HTML Form</h2>
-<form action = "/submit" method = "POST">
-    <input type = "text" name = "text"><br>
-    <input type = "submit">
+<form method="GET">
+    <button type="submit" formaction="/submit">Submit</button>
+    <button type="submit" formaction="/score">Score</button>
+    <button type="submit" formaction="/leaderboard">Leaderboard</button>
+    <button type="submit" formaction="/changepassword">Change Password</button>
 </form>
-{% endblock %}-->
+{% endblock %}
