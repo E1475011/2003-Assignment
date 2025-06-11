@@ -21,9 +21,7 @@
         //and set its inner HTML using map() and join()
         let ul = `<ul>${data.map(data =>
             `<li>
-                <form action = "/${parameter}" method = "GET">
-                    <input type = "button" onclick="alert('Call BE')" value=${data}>
-                </form>
+                <a>${parameter}</a>
             </li>
             `).join('')}
                   </ul>`;
