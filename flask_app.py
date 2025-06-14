@@ -62,6 +62,7 @@ def leaderboard():
 # Leaderboard - Select Question
 @app.route('/leaderboardquestion', methods = ['GET'])
 def leaderboard_select_question():
+    print("Test db connection")
     try:
         cnx = mysql.connector.connect(
             host="BenOng.mysql.pythonanywhere-services.com",
