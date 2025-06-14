@@ -16,7 +16,6 @@ login_dict = {
 @app.route('/', methods = ['GET'])
 @app.route('/login', methods = ['GET'])
 def home_page():
-    print("Test db connection - login")
     # check token
     # if token, forward to home page
     # if no token:
@@ -25,7 +24,6 @@ def home_page():
 # Home
 @app.route('/home', methods = ['POST', 'GET'])
 def login():
-    print("Test db connection - home")
     if request.method == 'POST':
         login_details = (request.form.get("loginId"), request.form.get("password"))
         if login_details in list(login_dict.items()):
@@ -64,7 +62,6 @@ def leaderboard():
 # Leaderboard - Select Question
 @app.route('/leaderboardquestion', methods = ['GET'])
 def leaderboard_select_question():
-    print("Test db connection")
     try:
         cnx = mysql.connector.connect(
             host="BenOng.mysql.pythonanywhere-services.com",
@@ -73,8 +70,6 @@ def leaderboard_select_question():
         cursor = cnx.cursor()
         cursor.execute("SELECT * FROM student")
         result_rows = cursor.fetchall()
-        for row in result_rows:
-            print(row)
         cnx.commit()
         cursor.close()
         cnx.close()
