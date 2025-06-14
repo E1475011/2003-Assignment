@@ -6,6 +6,8 @@ import hashlib
 app = Flask(__name__)
 app.debug = True
 
+app.secret_key = 'pythonanywhere'
+
 # Login
 @app.route('/', methods = ['GET'])
 @app.route('/login', methods = ['GET'])
@@ -13,7 +15,7 @@ app.debug = True
 def home_page():
     error = None
     if request.method == 'POST':
-        username = request.form['username']
+        username = request.form['loginId']
         password = request.form['password']
         m = hashlib.md5()
         m.update(request.form['password'].encode('UTF-8'))
@@ -26,7 +28,7 @@ def home_page():
             database="benntay$default"
         )
         cursor = cnx.cursor()
-        cursor.execute("SELECT username FROM students WHERE username=%s AND password=%s",(username, password))
+        cursor.execute("SELECT username FROM students WHERE username=%s AND password_hash=%s",(username, password))
         result_rows = cursor.fetchall()
 
         if len(result_rows) != 1 or result_rows[0][0] != username:
@@ -35,13 +37,11 @@ def home_page():
             cnx.close()
         else:
             session['number'] = str(uuid4())
-            cursor.execute("INSERT INTO sessions (session_id, username, started_at) VALUES (%s, %s, now())", (session['number'], username))
+            cursor.execute("INSERT INTO session (session_id, username, started_at) VALUES (%s, %s, now())", (session['number'], username))
             cnx.commit()
             cursor.close()
             cnx.close()
-            return redirect(url_for('home'))
-    if session['number']:
-        return redirect(url_for('home'))
+            return redirect('/home')
     return render_template('login.html', error=error)
 
 # Home
