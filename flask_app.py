@@ -62,18 +62,22 @@ def leaderboard():
 # Leaderboard - Select Question
 @app.route('/leaderboardquestion', methods = ['GET'])
 def leaderboard_select_question():
-    cnx = mysql.connector.connect(
-        host="BenOng.mysql.pythonanywhere-services.com",
-        user="BenOng", password="2003Assignment",
-        database="BenOng$First" )
-    cursor = cnx.cursor()
-    cursor.execute("SELECT * FROM students")
-    result_rows = cursor.fetchall()
-    for row in result_rows:
-        print(row)
-    cnx.commit()
-    cursor.close()
-    cnx.close()
+    try {
+        cnx = mysql.connector.connect(
+            host="BenOng.mysql.pythonanywhere-services.com",
+            user="BenOng", password="2003Assignment",
+            database="BenOng$First" )
+        cursor = cnx.cursor()
+        cursor.execute("SELECT * FROM students")
+        result_rows = cursor.fetchall()
+        for row in result_rows:
+            print(row)
+        cnx.commit()
+        cursor.close()
+        cnx.close()
+    } catch (e) {
+        print(e)
+    }
     question_no = request.args.get('question_no')
     return render_template("leaderboard.html", question_no = result_rows)
 
