@@ -5,8 +5,9 @@ CREATE TABLE students (
 
 CREATE TABLE session (
     session_id VARCHAR(100) PRIMARY KEY,
-    username VARCHAR(100) FOREIGN KEY,
-    started_at DATETIME
+    username VARCHAR(100),
+    started_at DATETIME,
+    FOREIGN KEY (username) REFERENCES students(username)
 );
 
 CREATE TABLE assessment (
