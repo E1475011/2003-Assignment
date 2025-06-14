@@ -71,7 +71,7 @@ def leaderboard_select_question():
             user="BenOng", password="2003Assignment",
             database="BenOng$First" )
         cursor = cnx.cursor()
-        cursor.execute("SELECT * FROM students")
+        cursor.execute("SELECT * FROM student")
         result_rows = cursor.fetchall()
         for row in result_rows:
             print(row)
