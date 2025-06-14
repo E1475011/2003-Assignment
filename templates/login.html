@@ -65,11 +65,14 @@
     <div class="form-group">
       <label for="password">Password:</label>
       <input type="password" id="password" name="password" required>
-      
     </div>
     <div class="form-group">
       <button type="submit" class="btn">Submit</button>
     </div>
   </form>
 </div>
+
+{% if error %}
+<p1>{{error}}</p1>
+{% endif %}
 {% endblock %}
