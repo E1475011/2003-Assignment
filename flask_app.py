@@ -62,7 +62,7 @@ def leaderboard():
 # Leaderboard - Select Question
 @app.route('/leaderboardquestion', methods = ['GET'])
 def leaderboard_select_question():
-    try {
+    try:
         cnx = mysql.connector.connect(
             host="BenOng.mysql.pythonanywhere-services.com",
             user="BenOng", password="2003Assignment",
@@ -75,9 +75,8 @@ def leaderboard_select_question():
         cnx.commit()
         cursor.close()
         cnx.close()
-    } catch (e) {
-        print(e)
-    }
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
     question_no = request.args.get('question_no')
     return render_template("leaderboard.html", question_no = result_rows)
 
