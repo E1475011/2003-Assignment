@@ -1,36 +1,53 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session, redirect, url_for
 import mysql.connector
+from uuid import uuid4
+import hashlib
 
 app = Flask(__name__)
 app.debug = True
 
-login_dict = {
-    'benn': 'benn1',
-    'zongyu': 'zongyu',
-    'tricia': 'tricia1',
-    'sasi': 'sasi',
-    'ben': 'ben'
-}
-
 # Login
 @app.route('/', methods = ['GET'])
 @app.route('/login', methods = ['GET'])
+@app.route('/home', methods = ['POST'])
 def home_page():
-    # check token
-    # if token, forward to home page
-    # if no token:
-    return render_template("login.html")
+    error = None
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        m = hashlib.md5()
+        m.update(request.form['password'].encode('UTF-8'))
+        password = m.hexdigest()
+
+        cnx = mysql.connector.connect(
+            host="benntay.mysql.pythonanywhere-services.com",
+            user="benntay",
+            password="pythonanywhere",
+            database="benntay$default"
+        )
+        cursor = cnx.cursor()
+        cursor.execute("SELECT username FROM students WHERE username=%s AND password=%s",(username, password))
+        result_rows = cursor.fetchall()
+
+        if len(result_rows) != 1 or result_rows[0][0] != username:
+            error = 'Invalid Credentials. Please try again.'
+            cursor.close()
+            cnx.close()
+        else:
+            session['number'] = str(uuid4())
+            cursor.execute("INSERT INTO sessions (session_id, username, started_at) VALUES (%s, %s, now())", (session['number'], username))
+            cnx.commit()
+            cursor.close()
+            cnx.close()
+            return redirect(url_for('home'))
+    if session['number']:
+        return redirect(url_for('home'))
+    return render_template('login.html', error=error)
 
 # Home
-@app.route('/home', methods = ['POST', 'GET'])
+@app.route('/home', methods = ['GET'])
 def login():
-    if request.method == 'POST':
-        login_details = (request.form.get("loginId"), request.form.get("password"))
-        if login_details in list(login_dict.items()):
-            return render_template("home.html")
-        return render_template("login.html")
-    if request.method == 'GET':
-        return render_template('home.html')
+    return render_template('home.html')
 
 # Submit - Select Question
 @app.route('/submit', methods = ['GET'])
