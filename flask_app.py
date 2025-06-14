@@ -16,6 +16,7 @@ login_dict = {
 @app.route('/', methods = ['GET'])
 @app.route('/login', methods = ['GET'])
 def home_page():
+    print("Test db connection - login")
     # check token
     # if token, forward to home page
     # if no token:
@@ -24,6 +25,7 @@ def home_page():
 # Home
 @app.route('/home', methods = ['POST', 'GET'])
 def login():
+    print("Test db connection - home")
     if request.method == 'POST':
         login_details = (request.form.get("loginId"), request.form.get("password"))
         if login_details in list(login_dict.items()):
