@@ -41,4 +41,4 @@ INSERT INTO students (username, password_hash)
     ('benn', 'ea2b11c7e6bc373c628be113847b039d'),
     ('sasi', 'aa6bfe8bcf6eb51f7e158d8e5101fb71'),
     ('tricia', '0b4d4ee0c8e3cda51616f1f6cc64a655'),
-    ('zongyu', '6e4a828704323be31656ec168be89920')s;
+    ('zongyu', '6e4a828704323be31656ec168be89920');
