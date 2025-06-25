@@ -1,0 +1,38 @@
+{% extends "wrapper.html" %}
+
+{% block head %}
+<title>Leaderboard</title>
+{% endblock %}
+
+{% block body %}
+<h2 id="question_no">Leaderboard for {{question_no}}</h2>
+<table>
+    <ul id="questions"></ul>
+    <script>
+        // JavaScript array
+        let data = ["Submission 1", "Submission 2",
+            "Submission 3", "Submission 4"];
+
+        // Get the list container element
+        let list =
+            document.getElementById('questions');
+
+        // Create the unordered list element 
+        //and set its inner HTML using map() and join()
+        let ul = `<ul>${data.map(submission =>
+            `<li>
+                <a>${submission}</a>
+            </li>
+            `).join('')}
+                  </ul>`;
+
+        // Set the inner HTML of the list container
+        list.innerHTML = ul;
+    </script>
+</table>
+
+<form method="GET">
+    <input type="submit" formaction="/home" value="Back to homepage">
+    <input type="submit" formaction="/leaderboard" value="Check another question's leaderboard">
+</form>
+{% endblock %}

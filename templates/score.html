@@ -1,13 +1,69 @@
+<!-- By Zong Yu 
+To show the scores 
+Criteria: Student should be able to view his/her marks for all submissions. -->
+
 {% extends "wrapper.html" %}
 
 {% block head %}
-<title>Score</title>
+<style>
+    table, th, td {
+    
+      border: 1px solid;
+      border-collapse: collapse;
+      padding: 17px;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+</style>
 {% endblock %}
 
 {% block body %}
-<h2>Sample HTML Form</h2>
-<form action = "/submit" method = "POST">
-    <input type = "text" name = "text"><br>
-    <input type = "submit">
+<h1>
+    <strong>
+        <u>
+            Score
+        </u>
+    </strong>
+</h1>
+
+
+<p style="text-align: center;"> Scores for <strong><u>Assignment 1:</u></strong></p>
+
+
+<table id='assgScoreTable'></table> <!--  create table skeleton -->
+
+
+<!-- Javascript code to create score table -->
+<script> 
+  let tableVar = document.getElementById('assgScoreTable'); //gets the table 
+
+  var tableScores = ''; // new table to be generated
+  var assgScore = [
+    {
+      subquestion: 's1',
+      subscore: 1
+    },
+    {
+      subquestion: 's2',
+      subscore: 2
+    }
+  ];
+  
+  // table headers
+  tableScores += '<tr><th>subquestion</th>' + '<th>Scores</th></tr>' 
+  
+  // for loop to generate table data 
+  for (let i = 0; i < assgScore.length; i++) {
+    tableScores += '<tr><th>' + assgScore[i].subquestion + '</th>'
+      + '<td>' + assgScore[i].subscore + '</td></tr>';
+  }
+  tableVar.innerHTML += tableScores; // insert the generated table into the table
+</script>
+
+<form method="GET">
+    <input type="submit" formaction="/home" value="Go back to homepage">
+    <input type="submit" formaction="/score" value="Check another question's scores">
 </form>
+
 {% endblock %}

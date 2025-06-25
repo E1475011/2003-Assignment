@@ -4,11 +4,41 @@ import select_question_sql
 app = Flask(__name__)
 app.debug = True
 
-@app.route('/', methods = ['GET'])
-def home_page():
-    return render_template("home.html")
+login_dict = {
+    'benn': 'benn1',
+    'zongyu': 'zongyu',
+    'tricia': 'tricia1',
+    'sasi': 'sasi',
+    'ben': 'ben'
+}
 
-@app.route('/submit', methods = ['POST'])
+# Login
+@app.route('/', methods = ['GET'])
+@app.route('/login', methods = ['GET'])
+def home_page():
+    # check token
+    # if token, forward to home page
+    # if no token:
+    return render_template("login.html")
+
+# Home
+@app.route('/home', methods = ['POST', 'GET'])
+def login():
+    if request.method == 'POST':
+        login_details = (request.form.get("loginId"), request.form.get("password"))
+        if login_details in list(login_dict.items()):
+            return render_template("home.html")
+        return render_template("login.html")
+    if request.method == 'GET':
+        return render_template('home.html')
+
+# Submit - Select Question
+@app.route('/submit', methods = ['GET'])
+def submit_select_question():
+    return render_template("selectquestion.html", parameter = 'submit')
+
+# Submit - After Select Question
+@app.route('/submitquestion', methods = ['GET'])
 def submit():
     question_no = request.args.get('question_no')
     return render_template("submit.html", question_no = question_no)
@@ -43,5 +73,3 @@ def change_password():
 
 if __name__ == '__main__':
     app.run()
-
-# something random to create conflict
