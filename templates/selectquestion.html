@@ -11,33 +11,17 @@
 {% endblock %}
 
 {% block body %}
-<h2>Select question</h2>
-<table>
-    <ul id="questions"></ul>
-    <script>
-        // JavaScript array
-        let data = ["Question1", "Question2",
-            "Question3", "Question4"];
-
-        // Get the list container element
-        let list =
-            document.getElementById('questions');
-
-        // Create the unordered list element 
-        //and set its inner HTML using map() and join()
-        let ul = `<ul>${data.map(data =>
-            `<li>
-                <form action = "/${parameter}" method = "GET">
-                    <input type = "button" onclick="alert('Call BE')" value=${data}>
-                </form>
-            </li>
-            `).join('')}
-                  </ul>`;
-
-        // Set the inner HTML of the list container
-        list.innerHTML = ul;
-    </script>
-</table>
+<h2>Select question ({{parameter}}) </h2>
+<h2 id="parameter" hidden>{{parameter}}</h2>
+<h2 id="questions" hidden>{{questions}}</h2>
+<ul>
+    <div id="body"></div>
+    {% for question in questions %}
+        <li>
+            <a href="{{parameter}}question?question_no={{question}}" id="link">{{question}}</a>
+        </li>
+    {% endfor %}
+/<ul>
 
 <form action="/home" method="GET">
     <input type="submit" value="Go Back">
