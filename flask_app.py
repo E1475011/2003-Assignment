@@ -96,7 +96,8 @@ def leaderboard():
 @app.route('/leaderboardquestion', methods = ['GET'])
 def leaderboard_select_question():
     question_no = request.args.get('question_no')
-    return render_template("leaderboard.html", question_no = question_no)
+    names = ['bob','charlie','adam','eve','ben']
+    return render_template("leaderboard.html", question_no = question_no, topscorers = names)
 
 # Change Password
 @app.route('/changepassword', methods = ['GET', 'POST'])
