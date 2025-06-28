@@ -139,7 +139,7 @@ def change_password():
 @app.route('/export')
 def export():
     scores = select_question_sql.get_all_scores()
-    return send_file(scores, as_attachment=True)
+    return send_file("score.csv", as_attachment=True)
 
 
 if __name__ == '__main__':
