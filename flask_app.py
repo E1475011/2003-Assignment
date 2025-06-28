@@ -64,7 +64,7 @@ def submit_select_question():
 @app.route('/submitquestion', methods = ['GET', 'POST'])
 def submit():
     if request.method == 'POST':
-        counter = 0
+        counter = 1
         tid = []
         code = []
         while request.form.get(f"tid {counter}"):
