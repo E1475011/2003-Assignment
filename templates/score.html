@@ -27,21 +27,20 @@ Criteria: Student should be able to view his/her marks for all submissions. -->
     </strong>
 </h1>
 
-<h2 id="question_no" hidden>{{question_no}}</h2>
-<p style="text-align: center;"> Scores for <strong><u>Assignment 1:</u></strong></p>
+
+<h2 id="get_subAID" hidden>{{get_subAID}}</h2>
+<h2 id="get_subscore" hidden>{{get_subscore}}</h2>
+
 <!--  i want a var to show on top -->
-
-
-
+<p style="text-align: center;"> Scores for <strong><u>{{get_subAID]}}</u></strong></p>
 
 
 <div id="body">
-  {% for qnx in question_no%}
-  <table id='assgScoreTable'> <!--  create table skeleton -->
-    <tr><th>subquestion</th><th>Scores</th></tr>
-    <tr><td> {{qnx[0]}} </td><td> {{qnx[1]}} </td></tr>
-  </table>
-  {% endfor %}
+<table id='assgScoreTable'> <!--  create table skeleton -->
+<tr><th>subquestion</th><th>Scores</th></tr>
+<tr><td> {{get_subAID]}} </td><td> {{get_subscore}} </td></tr>
+
+</table>
 </div>
 
 
