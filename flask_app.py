@@ -67,7 +67,7 @@ def submit():
         counter = 0
         tid = []
         code = []
-        while request.form[f"tid {counter}"]:
+        while request.form.get(f"tid {counter}"):
             tid.append(request.form[f"tid {counter}"])
             code.append(request.form[f"code {counter}"])
             counter += 1
