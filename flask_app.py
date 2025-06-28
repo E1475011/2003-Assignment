@@ -63,7 +63,7 @@ def submit():
     question_parts = question_no.split("'")
     
     date_str = question_parts[2][2:-1]
-    date_time = datetime.datetime(date_str)
+    date_time = eval(date_str)
 
     assessment = {
         "aid":question_parts[0][:-2],
