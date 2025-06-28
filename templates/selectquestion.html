@@ -14,14 +14,16 @@
 <h2>Select question ({{parameter}}) </h2>
 <h2 id="parameter" hidden>{{parameter}}</h2>
 <h2 id="questions" hidden>{{questions}}</h2>
+<h2 id="titles" hidden>{{titles}}</h2>
 <ul>
     <div id="body"></div>
+    
     {% for question in questions %}
         <li>
-            <a href="{{parameter}}question?question_no={{question}}" id="link">{{question}}</a>
+            <a href="{{parameter}}question?question_no={{question}}" id="link">{{titles[loop.index0]}}</a>
         </li>
     {% endfor %}
-/<ul>
+<ul>
 
 <form action="/home" method="GET">
     <input type="submit" value="Go Back">

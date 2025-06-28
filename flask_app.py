@@ -58,7 +58,7 @@ def login():
 @app.route('/submit', methods = ['GET'])
 def submit_select_question():
     questions = select_question_sql.get_all_questions()
-    return render_template("selectquestion.html", parameter = 'submit', questions = questions)
+    return render_template("selectquestion.html", parameter = 'submit', questions = questions[0], titles = questions[1])
 
 # Submit - After Select Question
 @app.route('/submitquestion', methods = ['GET', 'POST'])
@@ -100,13 +100,15 @@ def submit():
     cursor = cnx.cursor()
     cursor.execute("SELECT t.tid, t.title from assessment a, task t where a.aid = t.aid and a.aid = %s",(assessment['aid'], ))
     tasks = cursor.fetchall()
+    cursor.close()
+    cnx.close()
     return render_template("submit.html", assessment = assessment, tasks = tasks) # grade = grade
 
 # Score - Select Question
 @app.route('/score', methods = ['GET'])
 def score_select_question():
     questions = select_question_sql.get_all_questions()
-    return render_template("selectquestion.html", parameter = 'score', questions = questions)
+    return render_template("selectquestion.html", parameter = 'score', questions = questions[0], titles = questions[1])
 
 # Score - After Select Question
 @app.route('/scorequestion', methods = ['GET'])
@@ -118,7 +120,7 @@ def score():
 @app.route('/leaderboard', methods = ['GET'])
 def leaderboard():
     questions = select_question_sql.get_all_questions()
-    return render_template("selectquestion.html", parameter = 'leaderboard', questions = questions)
+    return render_template("selectquestion.html", parameter = 'leaderboard', questions = questions[0], titles = questions[1])
 
 # Leaderboard - Select Question
 @app.route('/leaderboardquestion', methods = ['GET'])
