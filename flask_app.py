@@ -71,16 +71,24 @@ def submit():
             tid.append(request.form[f"tid {counter}"])
             code.append(request.form[f"code {counter}"])
             counter += 1
-        return f"<p>{tid}, {code}</p>"
-        # cnx = mysql.connector.connect(
-        #     host="benntay.mysql.pythonanywhere-services.com",
-        #     user="benntay",
-        #     password="pythonanywhere",
-        #     database="benntay$default"
-        # )
-        # cursor = cnx.cursor()
-        # cursor.execute("SELECT username FROM students WHERE username=%s AND password_hash=%s",(username, password))
-        # result_rows = cursor.fetchall()
+        cnx = mysql.connector.connect(
+            host="benntay.mysql.pythonanywhere-services.com",
+            user="benntay",
+            password="pythonanywhere",
+            database="benntay$default"
+        )
+        cursor = cnx.cursor()
+        cursor.execute("SELECT aid from task t where t.tid = %s",(tid[0], ))
+        aid = cursor.fetchall()[0][0]
+        cursor.execute("SELECT s.username FROM students s, login_session l WHERE s.username = l.username AND l.session_id = %s",(session['number'],))
+        username = cursor.fetchall()[0][0]
+        cursor.execute("SELECT attempt_no from submission s where s.aid =%s and s.username = %s",(aid, username))
+        results = cursor.fetchall()
+        if len(results) == 0:
+            attempt_no = 1
+        else:
+            attempt_no = results[0][0] + 1
+        return f"<p>{tid}, {code}. {aid}, {username}, {attempt_no}</p>"
         # grade = submission_grading.rs_similarity(
         # ('jennybeckham1992@gmail.com', 'datetime.date(2023, 7, 27)'),
         # ('jennybeckham1992@gmail.com', 'datetime.date(2023, 7, 27)')
