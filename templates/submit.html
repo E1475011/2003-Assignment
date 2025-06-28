@@ -5,7 +5,7 @@
 <style>
     textarea {
         width: 800px;
-        height: 500px;
+        height: 600px;
         font-size: 16px;
         padding: 8px;
         box-sizing: border-box;
@@ -22,7 +22,7 @@
     <form method="POST" action="/submitquestion">
         {% for task in tasks %}
             <label for="userinput_{{ loop.index }}">Task {{ loop.index }}: {{ task[1] }}</label><br>
-            <input type="text" id="userinput_{{ loop.index }}" name="userinput_{{ loop.index }}" required><br><br>
+            <textarea id="userinput_{{ loop.index }}" name="userinput_{{ loop.index }}" required></textarea><br><br>
         {% endfor %}  
         <input type="submit" value="Submit">
     </form>
