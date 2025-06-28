@@ -50,7 +50,7 @@ INSERT INTO students (username, password_hash)
     ('sasi', 'aa6bfe8bcf6eb51f7e158d8e5101fb71'),
     ('tricia', '0b4d4ee0c8e3cda51616f1f6cc64a655'),
     ('zongyu', '6e4a828704323be31656ec168be89920'),
-    ('jiang', 'aa6bfe8bcf6eb51f7e158d8e5101fb71');
+    ('jiang', '7ab645365238e9d6691ba55947269b20');
 
 INSERT INTO assessment (title, due_date) VALUES
 ('Math Quiz 1', '2025-07-01 09:00:00'),
