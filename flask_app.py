@@ -64,6 +64,7 @@ def submit_select_question():
 @app.route('/submitquestion', methods = ['GET', 'POST'])
 def submit():
     if request.method == 'POST':
+        submitted_at = datetime.now()
         counter = 1
         tid = []
         code = []
@@ -71,6 +72,7 @@ def submit():
             tid.append(request.form[f"tid {counter}"])
             code.append(request.form[f"code {counter}"])
             counter += 1
+
         cnx = mysql.connector.connect(
             host="benntay.mysql.pythonanywhere-services.com",
             user="benntay",
@@ -88,11 +90,20 @@ def submit():
             attempt_no = 1
         else:
             attempt_no = results[0][0] + 1
-        return f"<p>{tid}, {code}. {aid}, {username}, {attempt_no}</p>"
-        # grade = submission_grading.rs_similarity(
-        # ('jennybeckham1992@gmail.com', 'datetime.date(2023, 7, 27)'),
-        # ('jennybeckham1992@gmail.com', 'datetime.date(2023, 7, 27)')
-        # )
+        code_results = []
+        for answer in code:
+            cursor.execute(answer)
+            code_execute = cursor.fetchall()
+            code_results.append(code_execute)
+        cursor.close()
+        cnx.close()
+
+        grade = submission_grading.rs_similarity(
+        ('jennybeckham1992@gmail.com', 'datetime.date(2023, 7, 27)'),
+        ('jennybeckham1992@gmail.com', 'datetime.date(2023, 7, 27)')
+        )
+
+        return f"<p>{tid}, {code_results}, {aid}, {username}, {attempt_no}, {grade}, {submitted_at}</p>"
     # request.args.get('question_no') = '(1, 'Math Quiz 1', datetime.datetime(2025, 7, 1, 9, 0))'
     question_no = request.args.get('question_no')[1:]
     # question_no = '1, 'Math Quiz 1', datetime.datetime(2025, 7, 1, 9, 0))'
@@ -118,7 +129,7 @@ def submit():
     tasks = cursor.fetchall()
     cursor.close()
     cnx.close()
-    return render_template("submit.html", assessment = assessment, tasks = tasks) # grade = grade
+    return render_template("submit.html", assessment = assessment, tasks = tasks)
 
 # Score - Select Question
 @app.route('/score', methods = ['GET'])
