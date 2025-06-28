@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, session, redirect, url_for
 import mysql.connector
 from uuid import uuid4
 import hashlib
+import select_question_sql
 
 app = Flask(__name__)
 app.debug = True
@@ -74,7 +75,8 @@ def score():
 # Leaderboard
 @app.route('/leaderboard', methods = ['GET'])
 def leaderboard():
-    return render_template("selectquestion.html", parameter = 'leaderboard')
+    questions = select_question_sql.get_all_questions()
+    return render_template("selectquestion.html", parameter = 'leaderboard' questions = questions)
 
 # Leaderboard - Select Question
 @app.route('/leaderboardquestion', methods = ['GET'])
@@ -93,7 +95,7 @@ def leaderboard_select_question():
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
     question_no = request.args.get('question_no')
-    return render_template("leaderboard.html", question_no = result_rows)
+    return render_template("leaderboard.html", question_no = question_no)
 
 # Change Password
 @app.route('/changepassword', methods = ['GET'])
