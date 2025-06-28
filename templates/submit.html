@@ -14,11 +14,11 @@
 {% endblock %}
 
 {% block body %}
-    <h2>Submit Your Answer</h2>
+    <!--<h2>Submit Your Answer</h2>
     <h3>Assessment Id: {{assessment["aid"]}}</h3>
     <h3>Title: {{assessment["title"]}}</h3>
     <h3>Due Date: {{assessment["due_date"]}}</h3>
-    <h3>Test grade: {{grade}}</h3>
+    <h3>Test grade: {{grade}}</h3>-->
 
     <form method="POST" formaction="/submit"></form>
         {% for task in tasks % }
