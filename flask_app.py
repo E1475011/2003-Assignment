@@ -104,14 +104,14 @@ def change_password():
             database="benntay$default"
         )
         cursor = cnx.cursor()
-        cursor.execute("SELECT s.username FROM students s, login_session l WHERE s.username = l.username AND l.session_id = %s",(session['number'],))
-        result_rows = cursor.fetchall()
-        if not result_rows:
+        cursor.execute("SELECT s.username, s.password_hash FROM students s, login_session l WHERE s.username = l.username AND l.session_id = %s",(session['number'],))
+        username = cursor.fetchall()[0][0]
+        password_hash = cursor.fetchall()[0][1]
+        if password_hash != oldpassword:
             error = 'Password change was unsuccessful. Please try again.'
             cursor.close()
             cnx.close()
         else:
-            username = result_rows[0][0]
             cursor.execute("UPDATE students SET password_hash=%s WHERE password_hash=%s AND username=%s",(newpassword, oldpassword, username))
             cnx.commit()
             cursor.close()
