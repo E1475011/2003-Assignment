@@ -3,6 +3,7 @@ import mysql.connector
 from uuid import uuid4
 import hashlib
 import select_question_sql
+from datetime import datetime
 
 app = Flask(__name__)
 app.debug = True
@@ -61,8 +62,8 @@ def submit():
     question_no = request.args.get('question_no')[1:]
     question_parts = question_no.split("'")
     
-    date_str = question_parts[2][2:][:-1]
-    due_date = f"{date_str:%A, %d %B %Y at %I:%M %p}"
+    date_str = question_parts[2]
+    due_date = date_str.strftime("%A, %B %d, %Y %H:%M:%S")
 
     assessment = {
         "aid":question_parts[0][:-1],
