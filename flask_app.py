@@ -74,11 +74,12 @@ def submit():
         "title":question_parts[1],
         "due_date":date_time,
     }
+    tasks = ['T1', 'T2']
     grade = submission_grading.rs_similarity(
         ('jennybeckham1992@gmail.com', "datetime.date(2023, 7, 27)"),
         ('jennybeckham1992@gmail.com', "datetime.date(2023, 7, 27)")
     )
-    return render_template("submit.html", assessment = assessment, grade = grade)
+    return render_template("submit.html", assessment = assessment, grade = grade, tasks = tasks)
 
 # Score - Select Question
 @app.route('/score', methods = ['GET'])
@@ -102,7 +103,8 @@ def leaderboard():
 @app.route('/leaderboardquestion', methods = ['GET'])
 def leaderboard_select_question():
     question_no = request.args.get('question_no')
-    return render_template("leaderboard.html", question_no = question_no)
+    names = ['bob','charlie','adam','eve','ben']
+    return render_template("leaderboard.html", question_no = question_no, topscorers = names)
 
 # Change Password
 @app.route('/changepassword', methods = ['GET', 'POST'])

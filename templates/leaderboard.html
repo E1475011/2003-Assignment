@@ -2,33 +2,41 @@
 
 {% block head %}
 <title>Leaderboard</title>
+<style>
+    table {
+        width: 60%;
+        margin: 20px auto;
+        border-collapse: collapse;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    th, td{
+        padding: 12px;
+        border: 1px solid #ccc;
+        text-align: center;
+    }
+
+</style>
 {% endblock %}
 
 {% block body %}
 <h2 id="question_no">Leaderboard for {{question_no}}</h2>
-<table>
-    <ul id="questions"></ul>
-    <script>
-        // JavaScript array
-        let data = ["Submission 1", "Submission 2",
-            "Submission 3", "Submission 4"];
-
-        // Get the list container element
-        let list =
-            document.getElementById('questions');
-
-        // Create the unordered list element 
-        //and set its inner HTML using map() and join()
-        let ul = `<ul>${data.map(submission =>
-            `<li>
-                <a>${submission}</a>
-            </li>
-            `).join('')}
-                  </ul>`;
-
-        // Set the inner HTML of the list container
-        list.innerHTML = ul;
-    </script>
+<table border="1">
+    <thead>
+        <tr>
+            <th>Top 5 Scorers</th>
+            <th>scores</th>
+        </tr>
+    </thead>
+    <tbody>
+         {% for topfive in topscorers %}
+    
+        <tr>
+            <td>{{ topfive.name }}</td>
+            <td>{{ topfive.score }} </td>
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
 
 <form method="GET">
