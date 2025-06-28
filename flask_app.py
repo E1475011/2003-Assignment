@@ -75,24 +75,11 @@ def score():
 @app.route('/leaderboard', methods = ['GET'])
 def leaderboard():
     questions = select_question_sql.get_all_questions()
-    return render_template("selectquestion.html", parameter = 'leaderboard' questions = questions)
+    return render_template("selectquestion.html", parameter = 'leaderboard', questions = questions)
 
 # Leaderboard - Select Question
 @app.route('/leaderboardquestion', methods = ['GET'])
 def leaderboard_select_question():
-    try:
-        cnx = mysql.connector.connect(
-            host="BenOng.mysql.pythonanywhere-services.com",
-            user="BenOng", password="2003Assignment",
-            database="BenOng$First" )
-        cursor = cnx.cursor()
-        cursor.execute("SELECT * FROM student")
-        result_rows = cursor.fetchall()
-        cnx.commit()
-        cursor.close()
-        cnx.close()
-    except Exception as e:
-        print(f"An unexpected error occurred: {e}")
     question_no = request.args.get('question_no')
     return render_template("leaderboard.html", question_no = question_no)
 
