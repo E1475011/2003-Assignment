@@ -40,7 +40,7 @@ CREATE TABLE submission (
     score FLOAT(3),
     submitted_at DATETIME,
     FOREIGN KEY (tid) REFERENCES task(tid),
-    FOREIGN KEY (username) REFERENCES login_session(username)
+    FOREIGN KEY (username) REFERENCES students(username)
 );
 
 INSERT INTO students (username, password_hash)
