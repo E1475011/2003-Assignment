@@ -18,7 +18,7 @@
     <div id="body"></div>
     {% for question in questions %}
         <li>
-            <a href="{{parameter}}question?question_no={{question}}" id="link">{{question}}</a>
+            <a href="{{parameter}}question?question_no={{question}}" id="link">{{question.split("'")[1]}}</a>
         </li>
     {% endfor %}
 /<ul>
