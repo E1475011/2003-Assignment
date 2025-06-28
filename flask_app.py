@@ -72,8 +72,8 @@ def submit():
         "due_date":date_time,
     }
     grade = submission_grading.rs_similarity(
-        ('jennybeckham1992@gmail.com', datetime.date(2023, 7, 27)),
-        ('jennybeckham1992@gmail.com', datetime.date(2023, 7, 27))
+        ('jennybeckham1992@gmail.com', "datetime.date(2023, 7, 27)"),
+        ('jennybeckham1992@gmail.com', "datetime.date(2023, 7, 27)")
     )
     return render_template("submit.html", assessment = assessment, grade = grade)
 
