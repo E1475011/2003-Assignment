@@ -17,7 +17,6 @@ def home_page():
     error = None
     if request.method == 'POST':
         username = request.form['loginId']
-        password = request.form['password']
         m = hashlib.md5()
         m.update(request.form['password'].encode('UTF-8'))
         password = m.hexdigest()
@@ -98,8 +97,28 @@ def leaderboard_select_question():
     return render_template("leaderboard.html", question_no = question_no)
 
 # Change Password
-@app.route('/changepassword', methods = ['GET'])
+@app.route('/changepassword', methods = ['GET', 'POST'])
 def change_password():
+    if request.method == 'POST':
+        m = hashlib.md5()
+        m.update(request.form['oldpassword'].encode('UTF-8'))
+        oldpassword = m.hexdigest()
+        n = hashlib.md5()
+        n.update(request.form['newpassword'].encode('UTF-8'))
+        newpassword = n.hexdigest()
+
+        cnx = mysql.connector.connect(
+            host="benntay.mysql.pythonanywhere-services.com",
+            user="benntay",
+            password="pythonanywhere",
+            database="benntay$default"
+        )
+        cursor = cnx.cursor()
+        cursor.execute("UPDATE students SET password_hash=%s WHERE password_hash=%s",(newpassword, oldpassword))
+        cnx.commit()
+        cursor.close()
+        cnx.close()
+        return redirect('/login')
     return render_template("changepassword.html")
 
 if __name__ == '__main__':
