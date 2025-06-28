@@ -3,7 +3,6 @@ import mysql.connector
 from uuid import uuid4
 import hashlib
 import select_question_sql
-from datetime import datetime
 import ast
 
 app = Flask(__name__)
