@@ -3,9 +3,11 @@ import mysql.connector
 def get_all_questions():
     try:
         cnx = mysql.connector.connect(
-            host="BenOng.mysql.pythonanywhere-services.com",
-            user="BenOng", password="2003Assignment",
-            database="BenOng$First" )
+            host="benntay.mysql.pythonanywhere-services.com",
+            user="benntay",
+            password="pythonanywhere",
+            database="benntay$default"
+        )
         cursor = cnx.cursor()
         cursor.execute("SELECT * FROM student")
         result_rows = cursor.fetchall()

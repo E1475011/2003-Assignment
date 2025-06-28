@@ -52,7 +52,8 @@ def login():
 # Submit - Select Question
 @app.route('/submit', methods = ['GET'])
 def submit_select_question():
-    return render_template("selectquestion.html", parameter = 'submit')
+    questions = select_question_sql.get_all_questions()
+    return render_template("selectquestion.html", parameter = 'submit', questions = questions)
 
 # Submit - After Select Question
 @app.route('/submitquestion', methods = ['GET'])
@@ -63,7 +64,8 @@ def submit():
 # Score - Select Question
 @app.route('/score', methods = ['GET'])
 def score_select_question():
-    return render_template("selectquestion.html", parameter = 'score')
+    questions = select_question_sql.get_all_questions()
+    return render_template("selectquestion.html", parameter = 'score', questions = questions)
 
 # Score - After Select Question
 @app.route('/scorequestion', methods = ['GET'])
