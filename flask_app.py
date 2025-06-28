@@ -64,8 +64,13 @@ def submit_select_question():
 @app.route('/submitquestion', methods = ['GET', 'POST'])
 def submit():
     if request.method == 'POST':
-        tid = request.form['tid']
-        code = request.form['code']
+        counter = 0
+        tid = []
+        code = []
+        while request.form[f"tid {counter}"]:
+            tid.append(request.form[f"tid {counter}"])
+            code.append(request.form[f"code {counter}"])
+            counter += 1
         return f"<p>{tid}, {code}</p>"
         # cnx = mysql.connector.connect(
         #     host="benntay.mysql.pythonanywhere-services.com",
