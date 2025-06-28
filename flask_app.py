@@ -37,7 +37,7 @@ def home_page():
             cnx.close()
         else:
             session['number'] = str(uuid4())
-            cursor.execute("INSERT INTO session (session_id, username, started_at) VALUES (%s, %s, now())", (session['number'], username))
+            cursor.execute("INSERT INTO login_session (session_id, username, started_at) VALUES (%s, %s, now())", (session['number'], username))
             cnx.commit()
             cursor.close()
             cnx.close()
@@ -103,7 +103,7 @@ def change_password():
             database="benntay$default"
         )
         cursor = cnx.cursor()
-        cursor.execute("SELECT st.username FROM students st, session s WHERE st.username = s.username AND session_id = %s",(session['number'],))
+        cursor.execute("SELECT s.username FROM students s, login_session l WHERE s.username = l.username AND l.session_id = %s",(session['number'],))
         username = cursor.fetchall()[0][0]
         cursor.execute("UPDATE students SET password_hash=%s WHERE password_hash=%s AND username=%s",(newpassword, oldpassword, username))
         cnx.commit()
