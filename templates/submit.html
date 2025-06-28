@@ -3,8 +3,8 @@
 {% block head %}
 <title>Submit</title>
 <style>
-    #userinput {
-        width: 1000px;
+    textarea {
+        width: 800px;
         height: 500px;
         font-size: 16px;
         padding: 8px;
@@ -19,11 +19,16 @@
     <h3>Title: {{assessment["title"]}}</h3>
     <h3>Due Date: {{assessment["due_date"]}}</h3>
 
-    <form method="POST" action="/submit">
+    <form method="POST" action="/submitquestion">
         {% for task in tasks %}
             <label for="userinput_{{ loop.index }}">Task {{ loop.index }}: {{ task[1] }}</label><br>
             <input type="text" id="userinput_{{ loop.index }}" name="userinput_{{ loop.index }}" required><br><br>
         {% endfor %}  
         <input type="submit" value="Submit">
     </form>
+
+    <form action="/submit" method="GET">
+        <input type="submit" value="Go Back">
+    </form>
+
 {% endblock %}
