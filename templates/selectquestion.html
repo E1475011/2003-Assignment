@@ -1,13 +1,70 @@
 {% extends "wrapper.html" %}
 
 {% block head %}
-<title>Select Question</title>
-<style>
-  table, th, td {
-    border: 1px solid;
-    border-collapse: collapse;
-  }
-</style>
+   <title>Select Question</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 40px;
+       }
+
+      .container {
+        max-width: 600px;
+        margin: auto;
+        background-color: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+          text-align: center;
+          color: #333;
+      }
+     ul {
+          list-style-type: none;
+          padding: 0;
+      }
+     li {
+          margin: 12px 0;
+      }
+     a {
+        text-decoration: none;
+        background-color: #4285f4;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-size: 16px;
+        display: inline-block;
+        transition: background-color 0.3s ease;
+      }
+    
+    a:hover {
+       background-color: #3367d6;
+    }
+    
+    .back-button {
+        margin-top: 30px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .back-button input {
+        background-color: #aaa;
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .back-button input:hover {
+        background-color: #888;
+    }
+  </style>
 {% endblock %}
 
 {% block body %}
