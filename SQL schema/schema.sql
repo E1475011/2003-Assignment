@@ -44,12 +44,13 @@ CREATE TABLE submission (
 );
 
 INSERT INTO students (username, password_hash)
-    VALUES
+    VALUES -- default password is username + 1, example: username 'ben', password 'ben1'
     ('ben', '6edfe0531855295c5541d2666d604463'),
     ('benn', 'ea2b11c7e6bc373c628be113847b039d'),
     ('sasi', 'aa6bfe8bcf6eb51f7e158d8e5101fb71'),
     ('tricia', '0b4d4ee0c8e3cda51616f1f6cc64a655'),
-    ('zongyu', '6e4a828704323be31656ec168be89920');
+    ('zongyu', '6e4a828704323be31656ec168be89920'),
+    ('jiang', 'aa6bfe8bcf6eb51f7e158d8e5101fb71');
 
 INSERT INTO assessment (title, due_date) VALUES
 ('Math Quiz 1', '2025-07-01 09:00:00'),
