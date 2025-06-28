@@ -1,36 +1,43 @@
+SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS assessment;
+DROP TABLE IF EXISTS session;
+DROP TABLE IF EXISTS students;
+DROP TABLE IF EXISTS task;
+SET FOREIGN_KEY_CHECKS = 1;
+
 CREATE TABLE students (
     username VARCHAR(100) PRIMARY KEY,
     password_hash VARCHAR(32)
 );
 
 CREATE TABLE session (
-    session_id VARCHAR(100) PRIMARY KEY,
+    session_id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(100),
     started_at DATETIME,
     FOREIGN KEY (username) REFERENCES students(username)
 );
 
 CREATE TABLE assessment (
-    aid VARCHAR(100) PRIMARY KEY,
+    aid INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(200),
     due_date DATETIME
 );
 
 CREATE TABLE task (
-    tid VARCHAR(100) PRIMARY KEY,
-    aid VARCHAR(100),
+    tid INT PRIMARY KEY AUTO_INCREMENT,
+    aid INT,
     title VARCHAR(200),
     FOREIGN KEY (aid) REFERENCES assessment(aid)
 );
 
 CREATE TABLE submission (
-    sid VARCHAR(100) PRIMARY KEY AUTO_INCREMENT,
-    tid VARCHAR(100),
+    submission_id INT PRIMARY KEY AUTO_INCREMENT,
+    tid INT,
     username VARCHAR(100),
     code VARCHAR(1000),
     attempt_no INT,
     score FLOAT(3),
-    submitted_at DATETIME(200),
+    submitted_at DATETIME,
     FOREIGN KEY (tid) REFERENCES task(tid),
     FOREIGN KEY (username) REFERENCES session(username)
 );
