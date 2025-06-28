@@ -16,11 +16,23 @@
 <h2 id="questions" hidden>{{questions}}</h2>
 <ul>
     <div id="body"></div>
-    {% for question in questions %}
+    
+    {% set parts = question.split("'") %}
+    {% if parts | length > 1 %}
+    <li>
+      <a href="{{parameter}}question?question_no={{ parts[1] }}" id="link">{{ parts[1] }}</a>
+    </li>
+    {% else %}
+    <li>
+      <a href="{{parameter}}question?question_no={{ question }}" id="link">{{ question }}</a>
+    </li>
+    {% endif %}
+
+    <!-- {% for question in questions %}
         <li>
             <a href="{{parameter}}question?question_no={{question}}" id="link">{{question.split("'")[1]}}</a>
         </li>
-    {% endfor %}
+    {% endfor %} -->
 /<ul>
 
 <form action="/home" method="GET">
