@@ -61,16 +61,14 @@ def submit_select_question():
 def submit():
     question_no = request.args.get('question_no')[1:]
     question_parts = question_no.split("'")
-    question_tuple = tuple(question_parts)
-    #question_parts = question_no.split("'")
     
-    #date_str = question_parts[2][2:-1]
+    date_str = question_parts[2][2:-1]
     #due_date = date_str.strftime("%A, %B %d, %Y %H:%M:%S")
 
     assessment = {
-        "aid":question_tuple[0],
-        "title":question_tuple[1],
-        "due_date":question_tuple[2],
+        "aid":question_parts[0][:-1],
+        "title":question_parts[1],
+        "due_date":date_str,
     }
     return render_template("submit.html", assessment = assessment)
 
