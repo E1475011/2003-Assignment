@@ -29,9 +29,10 @@ def get_all_scores():
         )
         cursor = cnx.cursor()
         df = pandas.read_sql("SELECT submission_id, tid, username, code, attempt_no, score, submitted_at FROM submission", cnx)
+        df.to_csv("score.csv", index=False)
         cnx.commit()
         cursor.close()
         cnx.close()
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-    return df.to_csv("score.csv", index=False)
+    return 

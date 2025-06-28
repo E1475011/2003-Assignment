@@ -138,8 +138,8 @@ def change_password():
 
 @app.route('/export')
 def export():
-    scores = select_question_sql.get_all_scores()
-    return send_file("./exports/score.csv", as_attachment=True)
+    select_question_sql.get_all_scores()
+    return send_file("score.csv", as_attachment=True)
 
 
 if __name__ == '__main__':
