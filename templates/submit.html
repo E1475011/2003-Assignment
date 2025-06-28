@@ -4,8 +4,8 @@
 <title>Submit</title>
 <style>
     #userinput {
-        width: 400px;
-        height: 40px;
+        width: 1000px;
+        height: 1000px;
         font-size: 16px;
         padding: 8px;
         box-sizing: border-box;
@@ -15,6 +15,9 @@
 
 {% block body %}
     <h2>Submit Your Answer</h2>
+    <h3>Assessment Id: 1</h3>
+    <h3>Title: Math Quiz</h3>
+    <h3>Due Date: 2025-07-19</h3>
     <form method="POST" formaction="/submit">
         <label for="userinput">Your Answer:</label>
         <input type="text" id="userinput" name="userinput" required><br><br>
