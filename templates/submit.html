@@ -22,9 +22,10 @@
 
     <form method="POST" formaction="/submit"></form>
         {% for task in tasks % }
-            <label for="userinput_{{loop.index}}">Task{{loop.index}}:</label><br>
+            <a> task </a>
+            <!--<label for="userinput_{{loop.index}}">Task{{loop.index}}:</label><br>
             <textarea id="userinput_{{loop.index}}" name ="userinput_{{loop.index}}" rows="10" cols="100" required></textarea><br><br>
-            <!--<input type="text" id="userinput" name="userinput" required><br><br>-->
+            <input type="text" id="userinput" name="userinput" required><br><br>-->
         {% endfor %}
             <input type="submit" value="Submit">
     </form>
