@@ -90,20 +90,48 @@ def submit():
             attempt_no = 1
         else:
             attempt_no = results[0][0] + 1
-        code_results = []
-        for answer in code:
-            cursor.execute(answer)
-            code_execute = cursor.fetchall()
-            code_results.append(code_execute)
+        # new connection needed for test database
+        cnx1 = mysql.connector.connect(
+            host="benntay.mysql.pythonanywhere-services.com",
+            user="benntay",
+            password="pythonanywhere",
+            database="benntay$test"
+        )
+        cursor1 = cnx1.cursor()
+        assessment_grade = []
+        # submission / model results
+        for task_idx in range(len(code)):
+            task_grade = []
+            task_answer = code[task_idx].split(";")
+            for part_idx in range(len(task_answer)):
+                if task_answer[part_idx].lower().strip().startswith("select"):
+                    # submission
+                    cursor1.execute(task_answer[part_idx])
+                    code_execute = cursor1.fetchall()
+                    # model
+                    cursor.execute("SELECT model_ans FROM parts where tid = %s and part = %s", (tid[task_idx], part_idx))
+                    model_execute = cursor.fetchall()
+                    grade = submission_grading.rs_similarity(code_execute, model_execute)
+                    task_grade.append(grade)
+                else:
+                    # submission
+                    cursor1.execute(task_answer[part_idx])
+                    cnx1.commit()
+                    cursor.execute("SELECT query FROM parts where tid = %s and part = %s", (tid[task_idx], part_idx))
+                    query = cursor.fetchall()
+                    cursor1.execute(query)
+                    code_execute = cursor1.fetchall()
+                    # model
+                    cursor.execute("SELECT model_ans FROM parts where tid = %s and part = %s", (tid[task_idx], part_idx))
+                    model_execute = cursor.fetchall()
+                    grade = submission_grading.rs_similarity(code_execute, model_execute)
+                    task_grade.append(grade)
+            assessment_grade.append(average(task_grade))
+        overall_grade = average(assessment_grade)
+
         cursor.close()
         cnx.close()
-
-        grade = submission_grading.rs_similarity(
-        ('jennybeckham1992@gmail.com', 'datetime.date(2023, 7, 27)'),
-        ('jennybeckham1992@gmail.com', 'datetime.date(2023, 7, 27)')
-        )
-
-        return f"<p>{tid}, {code_results}, {aid}, {username}, {attempt_no}, {grade}, {submitted_at}</p>"
+        return f"<p>{tid}, {code_results}, {aid}, {username}, {attempt_no}, {overall_grade}, {submitted_at}</p>"
     # request.args.get('question_no') = '(1, 'Math Quiz 1', datetime.datetime(2025, 7, 1, 9, 0))'
     question_no = request.args.get('question_no')[1:]
     # question_no = '1, 'Math Quiz 1', datetime.datetime(2025, 7, 1, 9, 0))'
