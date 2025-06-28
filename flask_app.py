@@ -60,7 +60,7 @@ def submit_select_question():
 @app.route('/submitquestion', methods = ['GET'])
 def submit():
     question_no = request.args.get('question_no')[1:]
-    question_parts = tuple(question_no)
+    question_parts = ast.literal_eval(question_no)
     #question_parts = question_no.split("'")
     
     #date_str = question_parts[2][2:-1]
