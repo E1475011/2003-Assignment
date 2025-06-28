@@ -9,12 +9,11 @@ def get_all_questions():
             database="benntay$default"
         )
         cursor = cnx.cursor()
-        cursor.execute("SELECT * FROM student")
+        cursor.execute("SELECT aid, title, due_date FROM assessment")
         result_rows = cursor.fetchall()
         cnx.commit()
         cursor.close()
         cnx.close()
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-    return ["Question 1", "Question 2",
-            "Question 3", "Question 4"]
+    return result_rows

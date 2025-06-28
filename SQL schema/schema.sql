@@ -50,3 +50,13 @@ INSERT INTO students (username, password_hash)
     ('sasi', 'aa6bfe8bcf6eb51f7e158d8e5101fb71'),
     ('tricia', '0b4d4ee0c8e3cda51616f1f6cc64a655'),
     ('zongyu', '6e4a828704323be31656ec168be89920');
+
+INSERT INTO assessment (title, due_date) VALUES
+('Math Quiz 1', '2025-07-01 09:00:00'),
+('Science Project Submission', '2025-07-05 23:59:00'),
+('History Essay', '2025-07-10 17:00:00'),
+('Computer Science Midterm', '2025-07-15 10:30:00'),
+('English Literature Presentation', '2025-07-20 14:00:00'),
+('Biology Lab Report', '2025-07-25 12:00:00'),
+('Geography Fieldwork', '2025-07-30 08:00:00'),
+('Economics Assignment', '2025-08-01 16:00:00');
