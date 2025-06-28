@@ -59,7 +59,12 @@ def submit_select_question():
 @app.route('/submitquestion', methods = ['GET'])
 def submit():
     question_no = request.args.get('question_no')
-    return render_template("submit.html", assessment = question_no)
+    assessment = {
+        "aid":question_no[0],
+        "title":question_no[1],
+        "due_date":question_no[2],
+    }
+    return render_template("submit.html", assessment = assessment)
 
 # Score - Select Question
 @app.route('/score', methods = ['GET'])
