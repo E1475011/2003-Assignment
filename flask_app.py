@@ -82,7 +82,7 @@ def submit():
         aid = cursor.fetchall()[0][0]
         cursor.execute("SELECT s.username FROM students s, login_session l WHERE s.username = l.username AND l.session_id = %s",(session['number'],))
         username = cursor.fetchall()[0][0]
-        cursor.execute("SELECT attempt_no from submission s where s.aid =%s and s.username = %s",(aid, username))
+        cursor.execute("SELECT attempt_no from submission s where s.aid =%s and s.username = %s ORDER BY attempt_no DESC LIMIT 1",(aid, username))
         results = cursor.fetchall()
         if len(results) == 0:
             attempt_no = 1
