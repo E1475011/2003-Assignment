@@ -14,18 +14,17 @@
 {% endblock %}
 
 {% block body %}
-    <!--<h2>Submit Your Answer</h2>
+    <h2>Submit Your Answer</h2>
     <h3>Assessment Id: {{assessment["aid"]}}</h3>
     <h3>Title: {{assessment["title"]}}</h3>
     <h3>Due Date: {{assessment["due_date"]}}</h3>
-    <h3>Test grade: {{grade}}</h3>-->
+    <h3>Test grade: {{grade}}</h3>
 
-    <form method="POST" formaction="/submit"></form>
+    <form method="POST" formaction="/submit">
         {% for task in tasks % }
-            <a> task </a>
-            <!--<label for="userinput_{{loop.index}}">Task{{loop.index}}:</label><br>
+            <label for="userinput_{{loop.index}}">Task{{loop.index}}:</label><br>
             <textarea id="userinput_{{loop.index}}" name ="userinput_{{loop.index}}" rows="10" cols="100" required></textarea><br><br>
-            <input type="text" id="userinput" name="userinput" required><br><br>-->
+            <input type="text" id="userinput" name="userinput" required><br><br>
         {% endfor %}
             <input type="submit" value="Submit">
     </form>
