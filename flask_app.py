@@ -137,7 +137,7 @@ def change_password():
     return render_template("changepassword.html", error = error)
 
 
-@app.route('/export')
+@app.route('/export', methods = ['GET'])
 def export():
     try:
         cnx = mysql.connector.connect(
