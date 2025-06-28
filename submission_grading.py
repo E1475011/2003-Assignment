@@ -1,0 +1,36 @@
+def value_count(t):
+    res = {}
+    for x in t:
+        res[x] = res.get(x, 0) + 1
+    return res
+
+def tuple_similarity(t1, t2):
+    d1 = value_count(t1)
+    d2 = value_count(t2)
+    intersection = {}
+    union = {}
+    all_keys = set(d1.keys()).union(d2.keys())
+    for k in all_keys:
+        intersection[k] = min(d1.get(k, 0), d2.get(k, 0))
+        union[k] = max(d1.get(k, 0), d2.get(k, 0))
+    intersection_sum = sum(intersection.values())
+    union_sum = sum(union.values())
+    return 0.0 if union_sum == 0 else intersection_sum / union_sum
+
+def rs_similarity(set1, set2):
+    s1, s2 = [], []
+    for t1 in set1:
+        temp = []
+        for t2 in set2:
+            score = tuple_similarity(t1, t2)
+            temp.append(score)
+        s1.append(0.0 if len(temp) == 0 else max(temp))
+    for t2 in set2:
+        temp = []
+        for t1 in set1:
+            score = tuple_similarity(t2, t1)
+            temp.append(score)
+        s2.append(0.0 if len(temp) == 0 else max(temp))
+    s1.extend(s2)
+    score = 0.0 if len(s1) == 0 else sum(s1) / len(s1)
+    return score
