@@ -66,7 +66,7 @@ def submit():
     if request.method == 'POST':
         tid = request.form['tid']
         code = request.form['code']
-        return f"{tid},{code}"
+        return f"<p>{tid}, {code}</p>"
         # cnx = mysql.connector.connect(
         #     host="benntay.mysql.pythonanywhere-services.com",
         #     user="benntay",

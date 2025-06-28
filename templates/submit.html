@@ -22,7 +22,8 @@
     <form method="POST" action="/submitquestion">
         {% for task in tasks %}
             <label for="userinput_{{ loop.index }}">Task {{ loop.index }}: {{ task[1] }}</label><br>
-            <input type="text" id="userinput_{{ loop.index }}" name="userinput_{{ loop.index }}" required><br><br>
+            <input type="text" id="userinput_{{ loop.index }}" name="code" required><br><br>
+            <input type="hidden" name="tid" value="{{task[0]}}">
         {% endfor %}  
         <input type="submit" value="Submit">
     </form>
