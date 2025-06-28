@@ -22,7 +22,7 @@
     <form method="POST" action="/submitquestion">
         {% for task in tasks %}
             <label for="userinput_{{ loop.index }}">Task {{ loop.index }}: {{ task[1] }}</label><br>
-            <textarea id="userinput_{{ loop.index }}" name="userinput_{{ loop.index }}" required></textarea><br><br>
+            <textarea id="userinput_{{ loop.index }}" name="code" required></textarea><br><br>
         {% endfor %}  
         <input type="submit" value="Submit">
     </form>
