@@ -5,6 +5,7 @@ import hashlib
 import select_question_sql
 import submission_grading
 import datetime
+import pandas
 
 app = Flask(__name__)
 app.debug = True
@@ -138,7 +139,20 @@ def change_password():
 
 @app.route('/export')
 def export():
-    select_question_sql.get_all_scores()
+    try:
+        cnx = mysql.connector.connect(
+            host="benntay.mysql.pythonanywhere-services.com",
+            user="benntay",
+            password="pythonanywhere",
+            database="benntay$default"
+        )
+        cursor = cnx.cursor()
+        df = pandas.read_sql("SELECT submission_id, tid, username, code, attempt_no, score, submitted_at FROM submission", cnx)
+        df.to_csv("score.csv", index=False)
+        cursor.close()
+        cnx.close()
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
     return send_file("score.csv", as_attachment=True)
 
 
