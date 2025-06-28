@@ -5,15 +5,16 @@ import mysql.connector
 # submission_id
 # tid
 # username
+# attempt_no
 # score
 # submitted_at
 
 # ignoring 
 # code
-# attempt_no
 
 
-def get_data_submission():
+
+def get_data_submission(sessionnumber):
     try:
         cnx = mysql.connector.connect(
             host="benntay.mysql.pythonanywhere-services.com",
@@ -22,7 +23,7 @@ def get_data_submission():
             database="benntay$default"
         )
         cursor = cnx.cursor()
-        cursor.execute("SELECT submission_id, aid, username, score, submitted_at FROM submission")
+        cursor.execute(f"SELECT sub.submission_id, sub.aid, sub.username, sub.attempt_no, sub.score, sub.submitted_at FROM submission sub, login_session lgs WHERE sub.username = lgs.username AND lgs.session_id = {sessionnumber}")
         result_rows = cursor.fetchall()
         cnx.commit()
         cursor.close()

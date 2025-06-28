@@ -43,6 +43,7 @@ def home_page():
             cnx.close()
         else:
             session['number'] = str(uuid4())
+            #session['curr_user'] = username
             cursor.execute("INSERT INTO login_session (session_id, username, started_at) VALUES (%s, %s, now())", (session['number'], username))
             cnx.commit()
             cursor.close()
@@ -146,13 +147,13 @@ def score():
     assessment_id = question_details[0]
     task_id = question_details[1]
 
-
-    submission_details = get_all_scores.get_data_submission()
-    #   submission_id, aid, username, score, submitted_at
-    #output: (1,        1,   'ben',    0.85,   submit_time)
+    
+    submission_details = get_all_scores.get_data_submission(session['number'])
+    #   submission_id, aid, username, attempt, score, submitted_at
+    #output: (1,        1,   'ben',     1,     0.85,   submit_time)
 
     get_subAID = submission_details[1]
-    get_subscore = submission_details[3]
+    get_subscore = submission_details[4]
 
     #final - pass a var to score page, with the data from get scores
     return render_template("score.html", get_subAID = get_subAID, get_subscore = get_subscore)
