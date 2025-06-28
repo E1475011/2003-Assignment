@@ -50,5 +50,3 @@ INSERT INTO students (username, password_hash)
     ('sasi', 'aa6bfe8bcf6eb51f7e158d8e5101fb71'),
     ('tricia', '0b4d4ee0c8e3cda51616f1f6cc64a655'),
     ('zongyu', '6e4a828704323be31656ec168be89920');
-
-INSERT INTO 
