@@ -1,10 +1,13 @@
-from flask import Flask, render_template, request, session, redirect, url_for
+from flask import Flask, render_template, request, session, redirect, url_for, send_file, abort
 import mysql.connector
 from uuid import uuid4
 import hashlib
 import select_question_sql
 import submission_grading
 import datetime
+import pandas
+import os
+
 
 app = Flask(__name__)
 app.debug = True
@@ -157,6 +160,32 @@ def change_password():
             cnx.close()
             return redirect('/login')
     return render_template("changepassword.html", error = error)
+
+
+@app.route('/export', methods = ['GET'])
+def export():
+    try:
+        cnx = mysql.connector.connect(
+            host="benntay.mysql.pythonanywhere-services.com",
+            user="benntay",
+            password="pythonanywhere",
+            database="benntay$default"
+        )
+        cursor = cnx.cursor()
+        df = pandas.read_sql("SELECT submission_id, tid, username, code, attempt_no, score, submitted_at FROM submission", cnx)
+        file_path = "/home/BenOng/mysite/score.csv"
+        df.to_csv(file_path, index=False)
+        cursor.close()
+        cnx.close()
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+        
+    if os.path.exists(file_path):
+        return send_file(file_path, as_attachment=True)
+    else:
+        return abort(404, description="CSV file not found.")
+
+
 
 if __name__ == '__main__':
     app.run()
