@@ -64,6 +64,9 @@ def submit_select_question():
 @app.route('/submitquestion', methods = ['GET', 'POST'])
 def submit():
     if request.method == 'POST':
+        tid = request.form['tid']
+        code = request.form['code']
+        return f"{tid},{code}"
         # cnx = mysql.connector.connect(
         #     host="benntay.mysql.pythonanywhere-services.com",
         #     user="benntay",
@@ -73,10 +76,10 @@ def submit():
         # cursor = cnx.cursor()
         # cursor.execute("SELECT username FROM students WHERE username=%s AND password_hash=%s",(username, password))
         # result_rows = cursor.fetchall()
-        grade = submission_grading.rs_similarity(
-        ('jennybeckham1992@gmail.com', 'datetime.date(2023, 7, 27)'),
-        ('jennybeckham1992@gmail.com', 'datetime.date(2023, 7, 27)')
-        )
+        # grade = submission_grading.rs_similarity(
+        # ('jennybeckham1992@gmail.com', 'datetime.date(2023, 7, 27)'),
+        # ('jennybeckham1992@gmail.com', 'datetime.date(2023, 7, 27)')
+        # )
     # request.args.get('question_no') = '(1, 'Math Quiz 1', datetime.datetime(2025, 7, 1, 9, 0))'
     question_no = request.args.get('question_no')[1:]
     # question_no = '1, 'Math Quiz 1', datetime.datetime(2025, 7, 1, 9, 0))'
