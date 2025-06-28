@@ -27,38 +27,58 @@ Criteria: Student should be able to view his/her marks for all submissions. -->
     </strong>
 </h1>
 
-
+<h2 id="question_no" hidden>{{question_no}}</h2>
 <p style="text-align: center;"> Scores for <strong><u>Assignment 1:</u></strong></p>
+<!--  i want a var to show on top -->
 
 
-<table id='assgScoreTable'></table> <!--  create table skeleton -->
 
 
-<!-- Javascript code to create score table -->
+
+<div id="body">
+  {% for qnx in question_no%}
+  <table id='assgScoreTable'></table> <!--  create table skeleton -->
+    <tr><th>subquestion</th><th>Scores</th></tr>
+    <tr><td> {{qnx[0]}} </td><td> {{qnx[1]}} </td></tr>
+  {% endfor %}
+</div>
+
+
+
+<!-- old - Javascript code to create score table -->
 <script> 
-  let tableVar = document.getElementById('assgScoreTable'); //gets the table 
+  // var tableVar = document.getElementById('assgScoreTable'); //gets the table 
 
-  var tableScores = ''; // new table to be generated
-  var assgScore = [
-    {
-      subquestion: 's1',
-      subscore: 1
-    },
-    {
-      subquestion: 's2',
-      subscore: 2
-    }
-  ];
+  // var tableScores = ''; // new table to be generated
   
-  // table headers
-  tableScores += '<tr><th>subquestion</th>' + '<th>Scores</th></tr>' 
+  // var assgScore = document.getElementById('question_no')
+
+  // // var assgScore = [
+  // //   {
+  // //     Task: 's1',
+  // //     score: 0.1
+  // //   },
+  // //   {
+  // //     Task: 's2',
+  // //     score: 0.3
+  // //   }
+  // // ];
   
-  // for loop to generate table data 
-  for (let i = 0; i < assgScore.length; i++) {
-    tableScores += '<tr><th>' + assgScore[i].subquestion + '</th>'
-      + '<td>' + assgScore[i].subscore + '</td></tr>';
-  }
-  tableVar.innerHTML += tableScores; // insert the generated table into the table
+  // // table headers
+  // tableScores += '<tr><th>subquestion</th>' + '<th>Scores</th></tr>' 
+  
+  // // for loop to generate table data 
+  // for (let i = 0; i < assgScore.length; i++) {
+  //   tableScores += '<tr><th>' + assgScore[i][0] + '</th>'
+  //     + '<td>' + assgScore[i][1] + '</td></tr>';
+  // }
+
+  // // for (let i = 0; i < assgScore.length; i++) {
+  // //   tableScores += '<tr><th>' + assgScore[i].subquestion + '</th>'
+  // //     + '<td>' + assgScore[i].subscore + '</td></tr>';
+  // // }
+  
+  // tableVar.innerHTML += tableScores; // insert the generated table into the table
 </script>
 
 <form method="GET">
