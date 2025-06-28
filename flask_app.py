@@ -71,7 +71,7 @@ def submit():
         "title":question_parts[1],
         "due_date":date_time,
     }
-    tasks = [T1, T2]
+    tasks = ['T1', 'T2']
     grade = submission_grading.rs_similarity(
         ('jennybeckham1992@gmail.com', "datetime.date(2023, 7, 27)"),
         ('jennybeckham1992@gmail.com', "datetime.date(2023, 7, 27)")
