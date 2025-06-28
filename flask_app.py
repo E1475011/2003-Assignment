@@ -70,6 +70,8 @@ def submit():
         "title":question_parts[1],
         "due_date":date_time,
     }
+
+    task = [T1, T2]
     return render_template("submit.html", assessment = assessment)
 
 # Score - Select Question

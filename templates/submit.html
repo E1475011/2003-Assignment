@@ -14,17 +14,16 @@
 {% endblock %}
 
 {% block body %}
-    <h2>Submit Your Answer</h2>
-    <h3>Assessment Id: {{assessment["aid"]}}</h3>
-    <h3>Title: {{assessment["title"]}}</h3>
-    <h3>Due Date: {{assessment["due_date"]}}</h3>
-    <form method="POST" formaction="/submit">
-        <label for="userinput">Your Answer:</label>
-        <input type="text" id="userinput" name="userinput" required><br><br>
-        <input type="submit" value="Submit">
+    <h2>Submission Page</h2>
 
-        <!--<input type="submit" formaction="/home" value="Go back to homepage">
-        <input type="submit" formaction="/submit" value="Select another question"> -->
-
-    </form>
+    {% for assessment in task % }
+        <h3>Assessment Id: {{assessment["aid"]}}</h3>
+        <h3>Title: {{assessment["title"]}}</h3>
+        <h3>Due Date: {{assessment["due_date"]}}</h3>
+        <form method="POST" formaction="/submit">
+            <label for="userinput">Your Answer:</label>
+            <input type="text" id="userinput" name="userinput" required><br><br>
+            <input type="submit" value="Submit">
+        </form>
+    {%endfor%}
 {% endblock %}
