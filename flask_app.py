@@ -3,6 +3,8 @@ import mysql.connector
 from uuid import uuid4
 import hashlib
 import select_question_sql
+import submission_grading
+import datetime
 
 app = Flask(__name__)
 app.debug = True
@@ -58,8 +60,22 @@ def submit_select_question():
 # Submit - After Select Question
 @app.route('/submitquestion', methods = ['GET'])
 def submit():
-    question_no = request.args.get('question_no')
-    return render_template("submit.html", question_no = question_no)
+    question_no = request.args.get('question_no')[1:]
+    question_parts = question_no.split("'")
+    
+    date_str = question_parts[2][2:-1]
+    date_time = eval(date_str)
+
+    assessment = {
+        "aid":question_parts[0][:-2],
+        "title":question_parts[1],
+        "due_date":date_time,
+    }
+    grade = submission_grading.rs_similarity(
+        ('jennybeckham1992@gmail.com', datetime.date(2023, 7, 27)),
+        ('jennybeckham1992@gmail.com', datetime.date(2023, 7, 27))
+    )
+    return render_template("submit.html", assessment = assessment, grade = grade)
 
 # Score - Select Question
 @app.route('/score', methods = ['GET'])
@@ -104,10 +120,10 @@ def change_password():
             database="benntay$default"
         )
         cursor = cnx.cursor()
-        cursor.execute("SELECT s.username FROM students s, login_session l WHERE s.username = l.username AND l.session_id = %s",(session['number'],))
-        username = cursor.fetchall()[0][0]
-
-        if not username:
+        cursor.execute("SELECT s.username, s.password_hash FROM students s, login_session l WHERE s.username = l.username AND l.session_id = %s",(session['number'],))
+        result_rows = cursor.fetchall()
+        username, password_hash = result_rows[0][0], result_rows[0][1]
+        if password_hash != oldpassword:
             error = 'Password change was unsuccessful. Please try again.'
             cursor.close()
             cnx.close()
