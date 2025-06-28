@@ -18,9 +18,9 @@
 <ul>
     <div id="body"></div>
     
-    {% for title in titles %}
+    {% for question in questions %}
         <li>
-            <a href="{{parameter}}question?question_no={{questions[loop.counter]}}" id="link">{{title}}</a>
+            <a href="{{parameter}}question?question_no={{question}}" id="link">{{titles[{{loop.counter}}]}}</a>
         </li>
     {% endfor %}
 <ul>
