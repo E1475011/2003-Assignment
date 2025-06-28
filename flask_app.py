@@ -64,7 +64,7 @@ def submit_select_question():
 @app.route('/submitquestion', methods = ['GET', 'POST'])
 def submit():
     if request.method == 'POST':
-        submitted_at = datetime.now()
+        submitted_at = datetime.datetime.now()
         counter = 1
         tid = []
         code = []
