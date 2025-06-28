@@ -11,7 +11,7 @@ CREATE TABLE students (
 );
 
 CREATE TABLE session (
-    session_id INT PRIMARY KEY AUTO_INCREMENT,
+    session_id VARCHAR(100) PRIMARY KEY,
     username VARCHAR(100),
     started_at DATETIME,
     FOREIGN KEY (username) REFERENCES students(username)
