@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session, redirect, url_for
+from flask import Flask, render_template, request, session, redirect, url_for, send_file
 import mysql.connector
 from uuid import uuid4
 import hashlib
@@ -134,6 +134,13 @@ def change_password():
             cnx.close()
             return redirect('/login')
     return render_template("changepassword.html", error = error)
+
+
+@app.route('/export')
+def export():
+    scores = select_question_sql.get_all_scores()
+    return send_file(scores, as_attachment=True)
+
 
 if __name__ == '__main__':
     app.run()

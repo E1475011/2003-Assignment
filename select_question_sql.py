@@ -1,4 +1,5 @@
 import mysql.connector
+import pandas
 
 def get_all_questions():
     try:
@@ -17,3 +18,20 @@ def get_all_questions():
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
     return result_rows
+
+def get_all_scores():
+    try:
+        cnx = mysql.connector.connect(
+            host="benntay.mysql.pythonanywhere-services.com",
+            user="benntay",
+            password="pythonanywhere",
+            database="benntay$default"
+        )
+        cursor = cnx.cursor()
+        df = pandas.read_sql("SELECT submission_id, tid, username, code, attempt_no, score, submitted_at FROM submission", cnx)
+        cnx.commit()
+        cursor.close()
+        cnx.close()
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+    return df.to_csv("score.csv", index=False)
