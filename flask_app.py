@@ -120,20 +120,6 @@ def score():
 @app.route('/leaderboard', methods = ['GET'])
 def leaderboard():
     questions = select_question_sql.get_all_questions()
-    # request.args.get('question_no') = '(1, 'Math Quiz 1', datetime.datetime(2025, 7, 1, 9, 0))'
-    question_no = request.args.get('question_no')[1:]
-    # question_no = '1, 'Math Quiz 1', datetime.datetime(2025, 7, 1, 9, 0))'
-    question_parts = question_no.split("'")
-    # question_parts = ['1, ', 'Math Quiz 1', ', datetime.datetime(2025, 7, 1, 9, 0))']
-    date_str = question_parts[2][2:-1]
-    # date_str = 'datetime.datetime(2025, 7, 1, 9, 0)'
-    date_time = eval(date_str)
-    # eval changes str to datetime
-    assessment = {
-        "aid":question_parts[0][:-2], # aid = '1'
-        "title":question_parts[1], # title = Math Quiz 1
-        "due_date":date_time,
-    }
     return render_template("selectquestion.html", parameter = 'leaderboard', questions = questions[0], titles = questions[1])
 
 # Leaderboard - Select Question
