@@ -88,6 +88,7 @@ def leaderboard_select_question():
 # Change Password
 @app.route('/changepassword', methods = ['GET', 'POST'])
 def change_password():
+    error = None
     if request.method == 'POST':
         m = hashlib.md5()
         m.update(request.form['oldpassword'].encode('UTF-8'))
