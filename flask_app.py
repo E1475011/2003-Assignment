@@ -97,7 +97,7 @@ def submit():
     cursor = cnx.cursor()
     cursor.execute("SELECT t.tid, t.title from assessment a, task t where a.aid = t.aid and a.aid = %s",(assessment['aid'], ))
     tasks = cursor.fetchall()
-    return render_template("submit.html", assessment = assessment, grade = grade, tasks = tasks)
+    return render_template("submit.html", assessment = assessment, tasks = tasks) # grade = grade
 
 # Score - Select Question
 @app.route('/score', methods = ['GET'])
