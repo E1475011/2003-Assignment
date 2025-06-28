@@ -61,25 +61,46 @@ def submit_select_question():
     return render_template("selectquestion.html", parameter = 'submit', questions = questions[0], titles = questions[1])
 
 # Submit - After Select Question
-@app.route('/submitquestion', methods = ['GET'])
+@app.route('/submitquestion', methods = ['GET', 'POST'])
 def submit():
+    if request.method == 'POST':
+        # cnx = mysql.connector.connect(
+        #     host="benntay.mysql.pythonanywhere-services.com",
+        #     user="benntay",
+        #     password="pythonanywhere",
+        #     database="benntay$default"
+        # )
+        # cursor = cnx.cursor()
+        # cursor.execute("SELECT username FROM students WHERE username=%s AND password_hash=%s",(username, password))
+        # result_rows = cursor.fetchall()
+        grade = submission_grading.rs_similarity(
+        ('jennybeckham1992@gmail.com', 'datetime.date(2023, 7, 27)'),
+        ('jennybeckham1992@gmail.com', 'datetime.date(2023, 7, 27)')
+        )
+    # request.args.get('question_no') = '(1, 'Math Quiz 1', datetime.datetime(2025, 7, 1, 9, 0))'
     question_no = request.args.get('question_no')[1:]
+    # question_no = '1, 'Math Quiz 1', datetime.datetime(2025, 7, 1, 9, 0))'
     question_parts = question_no.split("'")
-    
+    # question_parts = ['1, ', 'Math Quiz 1', ', datetime.datetime(2025, 7, 1, 9, 0))']
     date_str = question_parts[2][2:-1]
+    # date_str = 'datetime.datetime(2025, 7, 1, 9, 0)'
     date_time = eval(date_str)
-
+    # eval changes str to datetime
     assessment = {
-        "aid":question_parts[0][:-2],
-        "title":question_parts[1],
+        "aid":question_parts[0][:-2], # aid = '1'
+        "title":question_parts[1], # title = Math Quiz 1
         "due_date":date_time,
     }
-    tasks = ['T1', 'T2']
-    grade = submission_grading.rs_similarity(
-        ('jennybeckham1992@gmail.com', "datetime.date(2023, 7, 27)"),
-        ('jennybeckham1992@gmail.com', "datetime.date(2023, 7, 27)")
-    )
-    return render_template("submit.html", assessment = assessment, grade = grade, tasks = tasks)
+    cnx = mysql.connector.connect(
+            host="benntay.mysql.pythonanywhere-services.com",
+            user="benntay",
+            password="pythonanywhere",
+            database="benntay$default"
+        )
+    cursor = cnx.cursor()
+    cursor.execute("SELECT t.tid, t.title from assessment a, task t where a.aid = t.aid and a.aid = %s",(assessment['aid'], ))
+    tasks = cursor.fetchall()
+    return render_template("submit.html", assessment = assessment, tasks = tasks) # grade = grade
 
 # Score - Select Question
 @app.route('/score', methods = ['GET'])
