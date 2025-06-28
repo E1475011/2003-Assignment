@@ -72,7 +72,7 @@ def submit():
     }
 
     task = [T1, T2]
-    return render_template("submit.html", task = task)
+    return render_template("submit.html", assessment=assessment)
 
 # Score - Select Question
 @app.route('/score', methods = ['GET'])
