@@ -105,8 +105,8 @@ def change_password():
         )
         cursor = cnx.cursor()
         cursor.execute("SELECT s.username, s.password_hash FROM students s, login_session l WHERE s.username = l.username AND l.session_id = %s",(session['number'],))
-        username = cursor.fetchall()[0][0]
-        password_hash = cursor.fetchall()[0][1]
+        result_rows = cursor.fetchall()
+        username, password_hash = result_rows[0][0], result_rows[0][1]
         if password_hash != oldpassword:
             error = 'Password change was unsuccessful. Please try again.'
             cursor.close()
