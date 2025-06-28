@@ -112,7 +112,9 @@ def change_password():
             database="benntay$default"
         )
         cursor = cnx.cursor()
-        cursor.execute("UPDATE students SET password_hash=%s WHERE password_hash=%s",(newpassword, oldpassword))
+        cursor.execute("SELECT st.username FROM students st, session s WHERE st.username = s.username AND session_id = %s",(session['number'],))
+        username = cursor.fetchall()[0][0]
+        cursor.execute("UPDATE students SET password_hash=%s WHERE password_hash=%s AND username=%s",(newpassword, oldpassword, username))
         cnx.commit()
         cursor.close()
         cnx.close()
