@@ -4,6 +4,7 @@ from uuid import uuid4
 import hashlib
 import select_question_sql
 import get_scores_curruser
+import zy_export
 import submission_grading
 import datetime
 import pandas
@@ -263,18 +264,7 @@ def change_password():
 @app.route('/export', methods = ['GET'])
 def export():
     try:
-        cnx = mysql.connector.connect(
-            host="benntay.mysql.pythonanywhere-services.com",
-            user="benntay",
-            password="pythonanywhere",
-            database="benntay$default"
-        )
-        cursor = cnx.cursor()
-        df = pandas.read_sql("SELECT submission_id, tid, username, code, attempt_no, score, submitted_at FROM submission", cnx)
-        file_path = "/home/BenOng/mysite/score.csv"
-        df.to_csv(file_path, index=False)
-        cursor.close()
-        cnx.close()
+        zy_export.export()
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
         
