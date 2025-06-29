@@ -13,12 +13,16 @@ CREATE TABLE customers (
 
 CREATE TABLE orders (
     order_id INT PRIMARY KEY AUTO_INCREMENT,
+    ordered_by INT,
     table_no INT,
     ordered_at DATETIME,
     FOREIGN KEY (ordered_by) REFERENCES customers(cid)
 );
 
 CREATE TABLE order_items (
+    order_id INT,
+    inventory_id INT,
+    PRIMARY KEY (order_id, inventory_id),
     FOREIGN KEY (order_id) REFERENCES orders(order_id)
     FOREIGN KEY (inventory_id) REFERENCES inventory(inventory_id)
 );
@@ -28,3 +32,37 @@ CREATE TABLE inventory (
     title VARCHAR(200),
     amount INT
 );
+
+-- Customers
+INSERT INTO customers (first_name, last_name) VALUES
+('Alice', 'Smith'),
+('Bob', 'Johnson'),
+('Charlie', 'Lee'),
+('Diana', 'Wong'),
+('Ethan', 'Brown');
+
+-- Inventory (hardware items)
+INSERT INTO inventory (title, amount) VALUES
+('Hammer', 30),
+('Screwdriver', 50),
+('Wrench', 40),
+('Drill', 20),
+('Tape Measure', 60);
+
+-- Orders
+INSERT INTO orders (ordered_by, table_no, ordered_at) VALUES
+(1, 101, '2025-06-28 10:00:00'),
+(2, 102, '2025-06-28 11:00:00'),
+(3, 103, '2025-06-28 12:00:00'),
+(1, 101, '2025-06-28 13:00:00');
+
+-- Order Items
+INSERT INTO order_items (order_id, inventory_id) VALUES
+(1, 1),
+(1, 2),
+(2, 2),
+(2, 3),
+(3, 2),
+(3, 4),
+(4, 2),
+(4, 5);
