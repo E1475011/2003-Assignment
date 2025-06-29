@@ -264,11 +264,37 @@ def change_password():
 @app.route('/export', methods = ['GET'])
 def export():
     try:
-        zy_export.export()
+        cnx = mysql.connector.connect(
+            host="benntay.mysql.pythonanywhere-services.com",
+            user="benntay",
+            password="pythonanywhere",
+            database="benntay$default"
+        )
+        cursor = cnx.cursor()
+        
+        SQL_cmd = f"SELECT submission_id, tid, username, code, attempt_no, score, submitted_at FROM submission"
+        cursor.execute(SQL_cmd)
+        result_rows = cursor.fetchall()
+
+
+        # submission_id, aid, username, attempt, score,          submitted_at
+        #output: ( 7,       2,    'ben',   1,       0.0,  datetime.datetime(2025, 5, 31, 0, 0))
+        df_result_rows = pd.DataFrame(result_rows)
+        #df = pandas.read_sql("SELECT submission_id, tid, username, code, attempt_no, score, submitted_at FROM submission", cnx)
+        
+        
+        file_path = "~/mysite2/score.csv"
+        df_result_rows.to_csv(file_path, index=False)
+        cursor.close()
+        cnx.close()
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 
-
+                
+    if os.path.exists(file_path):
+        return send_file(file_path, as_attachment=True)
+    else:
+        return abort(404, description="CSV file not found.")
 
 
 if __name__ == '__main__':
