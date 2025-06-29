@@ -83,10 +83,8 @@ INSERT INTO task (aid, title) VALUES
 (3, 'List all orders along with the name of the customer who placed them.'), 
 (3, 'Count how many orders each customer has made.'),
 
-
 (4, 'Find the total number of items ordered per order.'),   
 (4, 'List all customers who have never placed an order.'),  
-
 
 (5, 'Show the most recent order placed and the customer who placed it.'),   
 (5, 'Find the total amount of inventory used across all orders.'),  
@@ -98,60 +96,61 @@ INSERT INTO task (aid, title) VALUES
 (7, 'Update the inventory amount after an order is placed.'),  
 
 INSERT INTO parts (pid, tid, model_ans, query) VALUES
-(0, 1, "(('Alice', 'Smith'),('Bob','Johnson'),('Charlie','Lee'),('Diana','Wong'),('Ethan','Brown'))", ''), --SELECT first_name, last_name FROM customers;    
-(1, 1, "((1, 101),(2,102),(3,103),(4,101))", ''), --SELECT order_id, table_no FROM orders;  
+(0, 1, "(('Alice', 'Smith'),('Bob','Johnson'),('Charlie','Lee'),('Diana','Wong'),('Ethan','Brown'))", ""), --SELECT first_name, last_name FROM customers;    
+(1, 1, "((1, 101),(2,102),(3,103),(4,101))", ""), --SELECT order_id, table_no FROM orders;  
 
-(0, 2, "((1,'Hammer',30),(2,'Screwdriver',50),(3,'Wrench',40),(4,'Drill',20),(5,'Tape Measure',60))"), --SELECT * FROM inventory WHERE amount > 10;  
-(1, 2, "(('Hammer'),('Screwdriver'),('Wrench'),('Drill'),('Tape Measure'))")--SELECT title FROM inventory;
+(0, 2, "((1,'Hammer',30),(2,'Screwdriver',50),(3,'Wrench',40),(4,'Drill',20),(5,'Tape Measure',60))", ""), --SELECT * FROM inventory WHERE amount > 10;  
+(1, 2, "(('Hammer'),('Screwdriver'),('Wrench'),('Drill'),('Tape Measure'))", ""),--SELECT title FROM inventory;
   
---SELECT o.order_id, c.first_name, c.last_name
---FROM orders o
---JOIN customers c ON o.ordered_by = c.cid; 
-
+(0, 3, "((1, 'Alice', 'Smith'),(2,'Bob','Johnson'),(3,'Charlie','Lee'),(4,'Alice','Smith'))", ""),
+-- SELECT o.order_id, c.first_name, c.last_name
+-- FROM orders o
+-- JOIN customers c ON o.ordered_by = c.cid; 
+(1, 3, "(('Alice','Smith',2),('Bob','Johnson',1),('Charlie','Lee',1),('Diana','Wong',0),('Ethan','Brown',0))", ""),
 -- SELECT c.first_name, c.last_name, COUNT(o.order_id) AS total_orders
 -- FROM customers c
 -- LEFT JOIN orders o ON c.cid = o.ordered_by
 -- GROUP BY c.cid;
 
-
---SELECT order_id, COUNT(*) AS total_items
+(0, 4, "((1,2)(2,8)(3,7)(4,10))", ""),
+-- SELECT order_id, SUM(amount) AS total_items
 -- FROM order_items
 -- GROUP BY order_id;
-
---SELECT c.first_name, c.last_name
+(1, 4, "(('Diana','Wong'),('Ethan','Brown'))", ""),
+-- SELECT c.first_name, c.last_name
 -- FROM customers c
 -- LEFT JOIN orders o ON c.cid = o.ordered_by
 -- WHERE o.order_id IS NULL;
 
-
---SELECT o.order_id, o.ordered_at, c.first_name, c.last_name
+(0, 5, "(4,'2025-06-28 13:00:00','Alice','Smith')", ""),
+-- SELECT o.order_id, o.ordered_at, c.first_name, c.last_name
 -- FROM orders o
 -- JOIN customers c ON o.ordered_by = c.cid
 -- ORDER BY o.ordered_at DESC
 -- LIMIT 1;
-
---SELECT COUNT(*) AS total_inventory_used
+(1, 5, "((27))", ""),
+-- SELECT SUM(amount) AS total_inventory_used
 -- FROM order_items;
 
-
---SELECT i.title, COUNT(*) AS times_ordered
+(0, 6, "(('Screwdriver',4),('Hammer',1),('Wrench',1))", ""),
+-- SELECT i.title, COUNT(*) AS times_ordered
 -- FROM order_items oi
 -- JOIN inventory i ON oi.inventory_id = i.inventory_id
 -- GROUP BY i.inventory_id
 -- ORDER BY times_ordered DESC
 -- LIMIT 3;  
-
---SELECT AVG(item_count) AS avg_items_per_order
+(1, 6, "((2.0000))", ""),
+-- SELECT AVG(item_count) AS avg_items_per_order
 -- FROM (
 --     SELECT order_id, COUNT(*) AS item_count
 --     FROM order_items
 --     GROUP BY order_id
 -- ) AS order_counts;
 
-
---DELETE FROM orders
--- WHERE ordered_at < '2025-01-01';  
- 
+(0, 7, "", ""),
+-- DELETE FROM orders
+-- WHERE ordered_at < '2025-06-28';  
+(1, 7, "", ""),
 --UPDATE inventory
 -- SET amount = amount - (
 --     SELECT COUNT(*)
