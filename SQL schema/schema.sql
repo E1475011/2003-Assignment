@@ -75,7 +75,7 @@ INSERT INTO assessment (title, due_date) VALUES
 
 INSERT INTO task (aid, title) VALUES
 (1, 'Select all customers full names.'),
-(1, 'List all orders with their order ID and table number.'),
+(1, 'List all orders by their order ID.'),
 
 (2, 'Find all items in the inventory with an amount greater than 10.'),
 (2, 'Retrieve the titles of all inventory items.'),
@@ -83,10 +83,8 @@ INSERT INTO task (aid, title) VALUES
 (3, 'List all orders along with the name of the customer who placed them.'), 
 (3, 'Count how many orders each customer has made.'),
 
-
 (4, 'Find the total number of items ordered per order.'),   
 (4, 'List all customers who have never placed an order.'),  
-
 
 (5, 'Show the most recent order placed and the customer who placed it.'),   
 (5, 'Find the total amount of inventory used across all orders.'),  
@@ -95,70 +93,75 @@ INSERT INTO task (aid, title) VALUES
 (6, 'Find the average number of items per order.'),  
 
 (7, 'Write a query to delete all orders placed before a certain date.'),  
-(7, 'Update the inventory amount after an order is placed.'),  
+(7, 'Insert and order of 3 Hammers at 2025-06-27 10:00:00 by Alice Smith, then Update the inventory amount after an order is placed.'),  
 
 INSERT INTO parts (pid, tid, model_ans, query) VALUES
-(0, 1, "(('Alice', 'Smith'),('Bob','Johnson'),('Charlie','Lee'),('Diana','Wong'),('Ethan','Brown'))", ''), --SELECT first_name, last_name FROM customers;    
-(1, 1, "((1, 101),(2,102),(3,103),(4,101))", ''), --SELECT order_id, table_no FROM orders;  
+(0, 1, "(('Alice', 'Smith'),('Bob','Johnson'),('Charlie','Lee'),('Diana','Wong'),('Ethan','Brown'))", ""), --SELECT first_name, last_name FROM customers;    
+(0, 2, "((1),(2),(3),(4))", ""), --SELECT order_id FROM orders;  
 
-(0, 2, "((1,'Hammer',30),(2,'Screwdriver',50),(3,'Wrench',40),(4,'Drill',20),(5,'Tape Measure',60))"), --SELECT * FROM inventory WHERE amount > 10;  
-(1, 2, "(('Hammer'),('Screwdriver'),('Wrench'),('Drill'),('Tape Measure'))")--SELECT title FROM inventory;
+(0, 3, "((1,'Hammer',30),(2,'Screwdriver',50),(3,'Wrench',40),(4,'Drill',20),(5,'Tape Measure',60))", ""), --SELECT * FROM inventory WHERE amount > 10;  
+(0, 4, "(('Hammer'),('Screwdriver'),('Wrench'),('Drill'),('Tape Measure'))", ""),--SELECT title FROM inventory;
   
---SELECT o.order_id, c.first_name, c.last_name
---FROM orders o
---JOIN customers c ON o.ordered_by = c.cid; 
-
+(0, 5, "((1, 'Alice', 'Smith'),(2,'Bob','Johnson'),(3,'Charlie','Lee'),(4,'Alice','Smith'))", ""),
+-- SELECT o.order_id, c.first_name, c.last_name
+-- FROM orders o
+-- JOIN customers c ON o.ordered_by = c.cid; 
+(0, 6, "(('Alice','Smith',2),('Bob','Johnson',1),('Charlie','Lee',1),('Diana','Wong',0),('Ethan','Brown',0))", ""),
 -- SELECT c.first_name, c.last_name, COUNT(o.order_id) AS total_orders
 -- FROM customers c
 -- LEFT JOIN orders o ON c.cid = o.ordered_by
 -- GROUP BY c.cid;
 
-
---SELECT order_id, COUNT(*) AS total_items
+(0, 7, "((1,2)(2,8)(3,7)(4,10))", ""),
+-- SELECT order_id, SUM(amount) AS total_items
 -- FROM order_items
 -- GROUP BY order_id;
-
---SELECT c.first_name, c.last_name
+(0, 8, "(('Diana','Wong'),('Ethan','Brown'))", ""),
+-- SELECT c.first_name, c.last_name
 -- FROM customers c
 -- LEFT JOIN orders o ON c.cid = o.ordered_by
 -- WHERE o.order_id IS NULL;
 
-
---SELECT o.order_id, o.ordered_at, c.first_name, c.last_name
+(0, 9, "(4,'2025-06-28 13:00:00','Alice','Smith')", ""),
+-- SELECT o.order_id, o.ordered_at, c.first_name, c.last_name
 -- FROM orders o
 -- JOIN customers c ON o.ordered_by = c.cid
 -- ORDER BY o.ordered_at DESC
 -- LIMIT 1;
-
---SELECT COUNT(*) AS total_inventory_used
+(0, 10, "((27))", ""),
+-- SELECT SUM(amount) AS total_inventory_used
 -- FROM order_items;
 
-
---SELECT i.title, COUNT(*) AS times_ordered
+(0, 11, "(('Screwdriver',4),('Hammer',1),('Wrench',1))", ""),
+-- SELECT i.title, COUNT(*) AS times_ordered
 -- FROM order_items oi
 -- JOIN inventory i ON oi.inventory_id = i.inventory_id
 -- GROUP BY i.inventory_id
 -- ORDER BY times_ordered DESC
 -- LIMIT 3;  
-
---SELECT AVG(item_count) AS avg_items_per_order
+(0, 12, "((2.0000))", ""),
+-- SELECT AVG(item_count) AS avg_items_per_order
 -- FROM (
 --     SELECT order_id, COUNT(*) AS item_count
 --     FROM order_items
 --     GROUP BY order_id
 -- ) AS order_counts;
 
-
---DELETE FROM orders
--- WHERE ordered_at < '2025-01-01';  
- 
+(0, 13, "((2),(3),(4))", "SELECT order_id FROM orders;"),
+-- DELETE FROM orders
+-- WHERE ordered_at < '2025-06-28';
+(0, 14, "((5))", "SELECT order_id FROM orders WHERE order_id = 5;"),
+(1, 14, "((5, 1, 3))", "SELECT order_id, inventory_id, amount FROM order_items WHERE order_id = 5, inventory_id = 1"),
+(2, 14, "((27))", "SELECT amount FROM inventory WHERE inventory_id = 1;"),
+--INSERT INTO orders (ordered_by, ordered_at) VALUES (1, '2025-06-27 10:00:00'),
+--INSERT INTO order_items (order_id, inventory_id, amount) VALUES (5, 1, 3),
 --UPDATE inventory
 -- SET amount = amount - (
---     SELECT COUNT(*)
+--     SELECT amount
 --     FROM order_items oi
---     WHERE oi.inventory_id = inventory.inventory_id
+--     WHERE oi.inventory_id = inventory.inventory_id AND order_id = 5
 -- )
--- WHERE inventory_id IN (
+-- WHERE order_id = 5 AND inventory_id IN (
 --     SELECT inventory_id FROM order_items
 -- );
 
