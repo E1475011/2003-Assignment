@@ -3,14 +3,70 @@
 {% block head %}
 <title>Submit</title>
 <style>
-    #userinput {
-        width: 1000px;
-        height: 500px;
-        font-size: 16px;
-        padding: 8px;
-        box-sizing: border-box;
-    }
-</style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 40px;
+        }
+
+        h2, h3 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        label {
+            display: block;
+            margin-top: 30px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        textarea {
+            width: 600px;
+            height:400px;
+            font-size: 16px;
+            padding: 8px;
+            box-sizing: border-box;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        input[type="submit"] {
+            background-color: #4285f4;
+            color: white;
+            padding: 12px 40px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            margin-top: 40px;
+            min-width: 220px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #3367d6;
+        }
+
+        #goback {
+            background-color: #999;
+            font-size: 14px;
+            padding: 10px 30px;
+            margin-top: 20px;
+            min-width: 180px;
+        }
+
+        #goback:hover {
+            background-color: #777;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
@@ -18,13 +74,17 @@
     <h3>Assessment Id: {{assessment["aid"]}}</h3>
     <h3>Title: {{assessment["title"]}}</h3>
     <h3>Due Date: {{assessment["due_date"]}}</h3>
-    <form method="POST" formaction="/submit">
-        <label for="userinput">Your Answer:</label>
-        <input type="text" id="userinput" name="userinput" required><br><br>
+
+    <form method="POST" action="/submitquestion">
+        {% for task in tasks %}
+            <label for="userinput_{{ loop.index }}">Task {{ loop.index }}: {{ task[1] }}</label><br>
+            <textarea id="userinput_{{ loop.index }}" name="userinput_{{ loop.index }}" required></textarea><br><br>
+        {% endfor %}  
         <input type="submit" value="Submit">
-
-        <!--<input type="submit" formaction="/home" value="Go back to homepage">
-        <input type="submit" formaction="/submit" value="Select another question"> -->
-
     </form>
+
+    <form action="/submit" method="GET">
+        <input type="submit" value="Go Back">
+    </form>
+
 {% endblock %}

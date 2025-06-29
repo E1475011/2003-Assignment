@@ -1,15 +1,50 @@
 {% extends "wrapper.html" %}
 
 {% block head %}
-<title>Home</title>
+    <title>Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 40px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        button {
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            margin: 10px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #3367d6;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
-<h2>Sample HTML Form</h2>
+<h2>HOMEPAGE</h2>
 <form method="GET">
-    <button type="submit" formaction="/submit">Submit</button>
-    <button type="submit" formaction="/score">Score</button>
+    <button type="submit" formaction="/submit">Submit Assessment</button>
+    <button type="submit" formaction="/score">Assessment Scores</button>
     <button type="submit" formaction="/leaderboard">Leaderboard</button>
     <button type="submit" formaction="/changepassword">Change Password</button>
+    <button type="submit" formaction="/export">Export Scores</button>
 </form>
 {% endblock %}

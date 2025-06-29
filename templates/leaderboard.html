@@ -2,25 +2,76 @@
 
 {% block head %}
 <title>Leaderboard</title>
-<style>
-    table {
-        width: 60%;
-        margin: 20px auto;
-        border-collapse: collapse;
-        font-family: Arial, Helvetica, sans-serif;
-    }
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 40px;
+            margin: 0;
+        }
 
-    th, td{
-        padding: 12px;
-        border: 1px solid #ccc;
-        text-align: center;
-    }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
 
-</style>
+        table {
+            margin: 30px auto;
+            border-collapse: collapse;
+            width: 60%;
+            background-color: white;
+            border: 1px solid #ccc;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 12px 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        th {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        form {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        input[type="submit"] {
+            background-color: #4285f4;
+            color: white;
+            padding: 12px 40px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            margin: 10px;
+            min-width: 220px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #3367d6;
+        }
+
+        #goback {
+            background-color: #999;
+            font-size: 14px;
+            padding: 10px 30px;
+            min-width: 180px;
+        }
+
+        #goback:hover {
+            background-color: #777;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
-<h2 id="question_no">Leaderboard for {{question_no}}</h2>
+<h2 id="question_no">Leaderboard</h2>
 <table border="1">
     <thead>
         <tr>

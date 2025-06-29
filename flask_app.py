@@ -1,9 +1,13 @@
-from flask import Flask, render_template, request, session, redirect, url_for
+from flask import Flask, render_template, request, session, redirect, url_for, send_file, abort
 import mysql.connector
 from uuid import uuid4
 import hashlib
 import select_question_sql
+import submission_grading
 import datetime
+import pandas
+import os
+
 
 app = Flask(__name__)
 app.debug = True
@@ -54,29 +58,57 @@ def login():
 @app.route('/submit', methods = ['GET'])
 def submit_select_question():
     questions = select_question_sql.get_all_questions()
-    return render_template("selectquestion.html", parameter = 'submit', questions = questions)
+    return render_template("selectquestion.html", parameter = 'submit', questions = questions[0], titles = questions[1])
 
 # Submit - After Select Question
-@app.route('/submitquestion', methods = ['GET'])
+@app.route('/submitquestion', methods = ['GET', 'POST'])
 def submit():
+    if request.method == 'POST':
+        # cnx = mysql.connector.connect(
+        #     host="benntay.mysql.pythonanywhere-services.com",
+        #     user="benntay",
+        #     password="pythonanywhere",
+        #     database="benntay$default"
+        # )
+        # cursor = cnx.cursor()
+        # cursor.execute("SELECT username FROM students WHERE username=%s AND password_hash=%s",(username, password))
+        # result_rows = cursor.fetchall()
+        grade = submission_grading.rs_similarity(
+        ('jennybeckham1992@gmail.com', 'datetime.date(2023, 7, 27)'),
+        ('jennybeckham1992@gmail.com', 'datetime.date(2023, 7, 27)')
+        )
+    # request.args.get('question_no') = '(1, 'Math Quiz 1', datetime.datetime(2025, 7, 1, 9, 0))'
     question_no = request.args.get('question_no')[1:]
+    # question_no = '1, 'Math Quiz 1', datetime.datetime(2025, 7, 1, 9, 0))'
     question_parts = question_no.split("'")
-    
+    # question_parts = ['1, ', 'Math Quiz 1', ', datetime.datetime(2025, 7, 1, 9, 0))']
     date_str = question_parts[2][2:-1]
+    # date_str = 'datetime.datetime(2025, 7, 1, 9, 0)'
     date_time = eval(date_str)
-
+    # eval changes str to datetime
     assessment = {
-        "aid":question_parts[0][:-2],
-        "title":question_parts[1],
+        "aid":question_parts[0][:-2], # aid = '1'
+        "title":question_parts[1], # title = Math Quiz 1
         "due_date":date_time,
     }
-    return render_template("submit.html", assessment = assessment)
+    cnx = mysql.connector.connect(
+            host="benntay.mysql.pythonanywhere-services.com",
+            user="benntay",
+            password="pythonanywhere",
+            database="benntay$default"
+        )
+    cursor = cnx.cursor()
+    cursor.execute("SELECT t.tid, t.title from assessment a, task t where a.aid = t.aid and a.aid = %s",(assessment['aid'], ))
+    tasks = cursor.fetchall()
+    cursor.close()
+    cnx.close()
+    return render_template("submit.html", assessment = assessment, tasks = tasks) # grade = grade
 
 # Score - Select Question
 @app.route('/score', methods = ['GET'])
 def score_select_question():
     questions = select_question_sql.get_all_questions()
-    return render_template("selectquestion.html", parameter = 'score', questions = questions)
+    return render_template("selectquestion.html", parameter = 'score', questions = questions[0], titles = questions[1])
 
 # Score - After Select Question
 @app.route('/scorequestion', methods = ['GET'])
@@ -88,7 +120,7 @@ def score():
 @app.route('/leaderboard', methods = ['GET'])
 def leaderboard():
     questions = select_question_sql.get_all_questions()
-    return render_template("selectquestion.html", parameter = 'leaderboard', questions = questions)
+    return render_template("selectquestion.html", parameter = 'leaderboard', questions = questions[0], titles = questions[1])
 
 # Leaderboard - Select Question
 @app.route('/leaderboardquestion', methods = ['GET'])
@@ -130,6 +162,32 @@ def change_password():
             cnx.close()
             return redirect('/login')
     return render_template("changepassword.html", error = error)
+
+
+@app.route('/export', methods = ['GET'])
+def export():
+    try:
+        cnx = mysql.connector.connect(
+            host="benntay.mysql.pythonanywhere-services.com",
+            user="benntay",
+            password="pythonanywhere",
+            database="benntay$default"
+        )
+        cursor = cnx.cursor()
+        df = pandas.read_sql("SELECT submission_id, tid, username, code, attempt_no, score, submitted_at FROM submission", cnx)
+        file_path = "/home/BenOng/mysite/score.csv"
+        df.to_csv(file_path, index=False)
+        cursor.close()
+        cnx.close()
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+        
+    if os.path.exists(file_path):
+        return send_file(file_path, as_attachment=True)
+    else:
+        return abort(404, description="CSV file not found.")
+
+
 
 if __name__ == '__main__':
     app.run()

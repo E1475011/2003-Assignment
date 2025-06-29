@@ -16,4 +16,10 @@ def get_all_questions():
         cnx.close()
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-    return result_rows
+    return_list = []
+    for result in result_rows:
+        return_list.append(result[1])
+    return (result_rows, return_list)
+
+def get_all_scores():
+    return 
