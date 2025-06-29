@@ -16,7 +16,8 @@ CREATE TABLE orders (
     ordered_by INT,
     table_no INT,
     ordered_at DATETIME,
-    FOREIGN KEY (ordered_by) REFERENCES customers(cid)
+    FOREIGN KEY (ordered_by) REFERENCES customers(cid),
+    ON DELETE CASCADE
 );
 
 CREATE TABLE inventory (
@@ -52,10 +53,10 @@ INSERT INTO inventory (title, amount) VALUES
 
 -- Orders
 INSERT INTO orders (ordered_by, table_no, ordered_at) VALUES
-(1, 101, '2025-06-28 10:00:00'),
+(1, 101, '2025-06-27 10:00:00'),
 (2, 102, '2025-06-28 11:00:00'),
 (3, 103, '2025-06-28 12:00:00'),
-(1, 101, '2025-06-28 13:00:00');
+(1, 101, '2025-06-29 13:00:00');
 
 -- Order Items
 INSERT INTO order_items (order_id, inventory_id, amount) VALUES
