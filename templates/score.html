@@ -31,7 +31,7 @@ Criteria: Student should be able to view his/her marks for all submissions. -->
 <!-- <h2 id="get_subAID" hidden>{{get_subAID}}</h2>
 <h2 id="get_subscore" hidden>{{get_subscore}}</h2> -->
 
-<h2 id="s_details_tup">{{s_details_tup}}</h2>
+<h2 id="s_details_tup" hidden>{{s_details_tup}}</h2>
 
 <!--  i want a var to show on top -->
 <p style="text-align: center;"> Scores </p>  
@@ -42,12 +42,10 @@ Criteria: Student should be able to view his/her marks for all submissions. -->
 <table id='assgScoreTable'> <!--  create table skeleton -->
 <tr><th>AID</th><th>Scores</th></tr>
 
-<!-- submission_id, aid, username, attempt, score, submitted_at -->
-<!-- 
 {% for detail in s_details_tup %}
   <tr><td> {{detail[0]}} </td><td> {{detail[1]}} </td></tr>
 {% endfor %}
--->
+
 
 
 </table>

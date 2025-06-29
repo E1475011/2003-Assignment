@@ -15,7 +15,7 @@ import mysql.connector
 
 
 def get_data_submission(aid):
-    #sessionnumber is a string
+    #aid is an int
     try:
         cnx = mysql.connector.connect(
             host="benntay.mysql.pythonanywhere-services.com",
