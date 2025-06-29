@@ -313,6 +313,7 @@ def export():
     result_rows = cursor.fetchall()
     export_file = io.StringIO()
     writer = csv.writer(export_file)
+    writer.writerow(['submission_id', 'aid', 'username', 'code', 'attempt_no', 'score', 'submitted_at'])
     writer.writerows(result_rows)
     cursor.close()
     cnx.close()
