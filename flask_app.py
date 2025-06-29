@@ -66,7 +66,6 @@ def submit_select_question():
 @app.route('/submitquestion', methods = ['GET', 'POST'])
 def submit():
     if request.method == 'POST':
-        submitted_at = datetime.datetime.now()
         counter = 1
         tid = []
         code = []
@@ -128,12 +127,16 @@ def submit():
                     model_execute = cursor.fetchall()
                     grade = submission_grading.rs_similarity(code_execute, model_execute)
                     task_grade.append(grade)
-            assessment_grade.append(average(task_grade))
-        overall_grade = average(assessment_grade)
-
+            assessment_grade.append(sum(task_grade)/len(task_grade))
+        overall_grade = sum(assessment_grade)/len(assessment_grade)
+        # insert submission into submission table
+        cursor.execute("INSERT INTO submission (aid, username, code, attempt_no, score, submitted_at) VALUES %s, %s, %s, %s, %s, now()", (aid, username, '\n\n'.join(code), attempt_no, overall_grade))
         cursor.close()
         cnx.close()
-        return f"<p>{tid}, {code_results}, {aid}, {username}, {attempt_no}, {overall_grade}, {submitted_at}</p>"
+        return f"<p>{aid}, {username}, {attempt_no}, {overall_grade}</p>"
+    
+    # GET method - sample route: /submitquestion?question_no=(1, 'Math Quiz 1', datetime.datetime(2025, 7, 1, 9, 0))
+
     # request.args.get('question_no') = '(1, 'Math Quiz 1', datetime.datetime(2025, 7, 1, 9, 0))'
     question_no = request.args.get('question_no')[1:]
     # question_no = '1, 'Math Quiz 1', datetime.datetime(2025, 7, 1, 9, 0))'
@@ -142,11 +145,11 @@ def submit():
     date_str = question_parts[2][2:-1]
     # date_str = 'datetime.datetime(2025, 7, 1, 9, 0)'
     date_time = eval(date_str)
-    # eval changes str to datetime
+    # eval changes datetime format to str -> 2025-07-01 09:00:00
     assessment = {
         "aid":question_parts[0][:-2], # aid = '1'
         "title":question_parts[1], # title = Math Quiz 1
-        "due_date":date_time,
+        "due_date":date_time, # due_date = 2025-07-01 09:00:00
     }
     cnx = mysql.connector.connect(
             host="benntay.mysql.pythonanywhere-services.com",
@@ -212,6 +215,7 @@ def leaderboard_select_question():
 
     names = ['bob','charlie','adam','eve','ben']
     return render_template("leaderboard.html", title = question_parts[1], topscorers = topscorers)
+    # return render_template("leaderboard.html", question_no = question_no, topscorers = names)
 
 # Change Password
 @app.route('/changepassword', methods = ['GET', 'POST'])
@@ -258,7 +262,7 @@ def export():
             database="benntay$default"
         )
         cursor = cnx.cursor()
-        df = pandas.read_sql("SELECT submission_id, aid, username, code, attempt_no, score, submitted_at FROM submission", cnx)
+        df = pandas.read_sql("SELECT submission_id, tid, username, code, attempt_no, score, submitted_at FROM submission", cnx)
         file_path = "/home/BenOng/mysite/score.csv"
         df.to_csv(file_path, index=False)
         cursor.close()
