@@ -209,7 +209,7 @@ def leaderboard_select_question():
         )
     cursor = cnx.cursor()
     aid = int(question_parts[0][:-2])
-    cursor.execute("SELECT username, score FROM submission WHERE aid = %s ORDER BY score DESC LIMIT 5;",(aid))
+    cursor.execute("SELECT username, score FROM submission WHERE aid = %d ORDER BY score DESC LIMIT 5;",(aid))
     topscorers = cursor.fetchall()
     cursor.close()
     cnx.close()
