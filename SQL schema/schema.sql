@@ -34,8 +34,9 @@ CREATE TABLE task (
 );
 
 CREATE TABLE parts (
-    pid INT PRIMARY KEY AUTO_INCREMENT,
+    pid INT,
     tid INT,
+    PRIMARY KEY (pid, tid),
     model_ans VARCHAR(60000),
     query VARCHAR (60000),
     FOREIGN KEY (tid) REFERENCES task(tid)
@@ -73,57 +74,73 @@ INSERT INTO assessment (title, due_date) VALUES
 ('Assessment 8', '2025-08-01 00:00:00');
 
 INSERT INTO task (aid, title) VALUES
-(1, 'Select all customers full names.'), 
---SELECT first_name, last_name FROM customers;
-(1, 'List all orders with their order ID and table number.'),    
---SELECT order_id, table_no FROM orders;
+(1, 'Select all customers full names.'),
+(1, 'List all orders with their order ID and table number.'),
 
-(2, 'Find all items in the inventory with an amount greater than 10.'),  
---SELECT * FROM inventory WHERE amount > 10;
-(2, 'Retrieve the titles of all inventory items.'),  
---SELECT title FROM inventory;
+(2, 'Find all items in the inventory with an amount greater than 10.'),
+(2, 'Retrieve the titles of all inventory items.'),
 
 (3, 'List all orders along with the name of the customer who placed them.'), 
+(3, 'Count how many orders each customer has made.'),
+
+
+(4, 'Find the total number of items ordered per order.'),   
+(4, 'List all customers who have never placed an order.'),  
+
+
+(5, 'Show the most recent order placed and the customer who placed it.'),   
+(5, 'Find the total amount of inventory used across all orders.'),  
+
+(6, 'List the top 3 most frequently ordered inventory items.'), 
+(6, 'Find the average number of items per order.'),  
+
+(7, 'Write a query to delete all orders placed before a certain date.'),  
+(7, 'Update the inventory amount after an order is placed.'),  
+
+INSERT INTO parts (pid, tid, model_ans, query) VALUES
+(0, 1, "(('Alice', 'Smith'),('Bob','Johnson'),('Charlie','Lee'),('Diana','Wong'),('Ethan','Brown'))", ''), --SELECT first_name, last_name FROM customers;    
+(1, 1, "((1, 101),(2,102),(3,103),(4,101))", ''), --SELECT order_id, table_no FROM orders;  
+
+(0, 2, "((1,'Hammer',30),(2,'Screwdriver',50),(3,'Wrench',40),(4,'Drill',20),(5,'Tape Measure',60))"), --SELECT * FROM inventory WHERE amount > 10;  
+(1, 2, "(('Hammer'),('Screwdriver'),('Wrench'),('Drill'),('Tape Measure'))")--SELECT title FROM inventory;
+  
 --SELECT o.order_id, c.first_name, c.last_name
 --FROM orders o
---JOIN customers c ON o.ordered_by = c.cid;
-(3, 'Count how many orders each customer has made.'),   
+--JOIN customers c ON o.ordered_by = c.cid; 
+
 -- SELECT c.first_name, c.last_name, COUNT(o.order_id) AS total_orders
 -- FROM customers c
 -- LEFT JOIN orders o ON c.cid = o.ordered_by
 -- GROUP BY c.cid;
 
 
-(4, 'Find the total number of items ordered per order.'),    
 --SELECT order_id, COUNT(*) AS total_items
 -- FROM order_items
 -- GROUP BY order_id;
-(4, 'List all customers who have never placed an order.'), 
+
 --SELECT c.first_name, c.last_name
 -- FROM customers c
 -- LEFT JOIN orders o ON c.cid = o.ordered_by
 -- WHERE o.order_id IS NULL;
 
 
-(5, 'Show the most recent order placed and the customer who placed it.'),    
 --SELECT o.order_id, o.ordered_at, c.first_name, c.last_name
 -- FROM orders o
 -- JOIN customers c ON o.ordered_by = c.cid
 -- ORDER BY o.ordered_at DESC
 -- LIMIT 1;
-(5, 'Find the total amount of inventory used across all orders.'), 
+
 --SELECT COUNT(*) AS total_inventory_used
 -- FROM order_items;
 
 
-(6, 'List the top 3 most frequently ordered inventory items.'),  
 --SELECT i.title, COUNT(*) AS times_ordered
 -- FROM order_items oi
 -- JOIN inventory i ON oi.inventory_id = i.inventory_id
 -- GROUP BY i.inventory_id
 -- ORDER BY times_ordered DESC
--- LIMIT 3;
-(6, 'Find the average number of items per order.'),    
+-- LIMIT 3;  
+
 --SELECT AVG(item_count) AS avg_items_per_order
 -- FROM (
 --     SELECT order_id, COUNT(*) AS item_count
@@ -132,10 +149,9 @@ INSERT INTO task (aid, title) VALUES
 -- ) AS order_counts;
 
 
-(7, 'Write a query to delete all orders placed before a certain date.'),    
 --DELETE FROM orders
--- WHERE ordered_at < '2025-01-01';
-(7, 'Update the inventory amount after an order is placed.'),   
+-- WHERE ordered_at < '2025-01-01';  
+ 
 --UPDATE inventory
 -- SET amount = amount - (
 --     SELECT COUNT(*)
@@ -146,12 +162,8 @@ INSERT INTO task (aid, title) VALUES
 --     SELECT inventory_id FROM order_items
 -- );
 
-    ('ben', '6edfe0531855295c5541d2666d604463'),
-    ('benn', 'ea2b11c7e6bc373c628be113847b039d'),
-    ('sasi', 'aa6bfe8bcf6eb51f7e158d8e5101fb71'),
-    ('tricia', '0b4d4ee0c8e3cda51616f1f6cc64a655'),
-    ('zongyu', '6e4a828704323be31656ec168be89920'),
-    ('jiang', '7ab645365238e9d6691ba55947269b20');
+
+
 INSERT INTO submission (aid, username, code, attempt_no, score, submitted_at) VALUES
 (1, 'ben', 'SELECT first_name, last_name FROM customers;', 1, 1.0, '2025-05-30 00:00:00'),
 (1, 'benn', 'SELECT first_name, last_name FROM customers;', 1, 1.0, '2025-05-30 00:00:00'),
