@@ -267,11 +267,7 @@ def export():
         zy_export.export()
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-        
-    if os.path.exists(file_path):
-        return send_file(file_path, as_attachment=True)
-    else:
-        return abort(404, description="CSV file not found.")
+
 
 
 

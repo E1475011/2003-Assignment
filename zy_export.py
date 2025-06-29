@@ -1,5 +1,6 @@
 import mysql.connector
 import pandas as pd
+import os
 
 def export():
     try:
@@ -28,3 +29,9 @@ def export():
         cnx.close()
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
+
+                
+    if os.path.exists(file_path):
+        return send_file(file_path, as_attachment=True)
+    else:
+        return abort(404, description="CSV file not found.")
