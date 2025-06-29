@@ -20,6 +20,3 @@ def get_all_questions():
     for result in result_rows:
         return_list.append(result[1])
     return (result_rows, return_list)
-
-def get_all_scores():
-    return 

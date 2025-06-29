@@ -63,43 +63,105 @@ INSERT INTO students (username, password_hash)
     ('jiang', '7ab645365238e9d6691ba55947269b20');
 
 INSERT INTO assessment (title, due_date) VALUES
-('Math Quiz 1', '2025-07-01 09:00:00'),
-('Science Project Submission', '2025-07-05 23:59:00'),
-('History Essay', '2025-07-10 17:00:00'),
-('Computer Science Midterm', '2025-07-15 10:30:00'),
-('English Literature Presentation', '2025-07-20 14:00:00'),
-('Biology Lab Report', '2025-07-25 12:00:00'),
-('Geography Fieldwork', '2025-07-30 08:00:00'),
-('Economics Assignment', '2025-08-01 16:00:00');
+('Assessment 1', '2025-06-01 00:00:00'),
+('Assessment 2', '2025-06-14 00:00:00'),
+('Assessment 3', '2025-06-25 00:00:00'),
+('Assessment 4', '2025-07-04 00:00:00'),
+('Assessment 5', '2025-07-18 00:00:00'),
+('Assessment 6', '2025-07-25 00:00:00'),
+('Assessment 7', '2025-07-30 00:00:00'),
+('Assessment 8', '2025-08-01 00:00:00');
 
 INSERT INTO task (aid, title) VALUES
-(1, 'Review algebra concepts'),
-(1, 'Practice quiz questions'),
+(1, 'Select all customers full names.'), 
+--SELECT first_name, last_name FROM customers;
+(1, 'List all orders with their order ID and table number.'),    
+--SELECT order_id, table_no FROM orders;
 
-(2, 'Research topic and gather materials'),
-(2, 'Prepare project slides'),
+(2, 'Find all items in the inventory with an amount greater than 10.'),  
+--SELECT * FROM inventory WHERE amount > 10;
+(2, 'Retrieve the titles of all inventory items.'),  
+--SELECT title FROM inventory;
 
-(3, 'Outline essay structure'),
-(3, 'Write first draft'),
+(3, 'List all orders along with the name of the customer who placed them.'), 
+--SELECT o.order_id, c.first_name, c.last_name
+--FROM orders o
+--JOIN customers c ON o.ordered_by = c.cid;
+(3, 'Count how many orders each customer has made.'),   
+-- SELECT c.first_name, c.last_name, COUNT(o.order_id) AS total_orders
+-- FROM customers c
+-- LEFT JOIN orders o ON c.cid = o.ordered_by
+-- GROUP BY c.cid;
 
-(4, 'Revise lecture notes'),
-(4, 'Complete sample midterm'),
 
-(5, 'Select literary work'),
-(5, 'Prepare presentation slides'),
+(4, 'Find the total number of items ordered per order.'),    
+--SELECT order_id, COUNT(*) AS total_items
+-- FROM order_items
+-- GROUP BY order_id;
+(4, 'List all customers who have never placed an order.'), 
+--SELECT c.first_name, c.last_name
+-- FROM customers c
+-- LEFT JOIN orders o ON c.cid = o.ordered_by
+-- WHERE o.order_id IS NULL;
 
-(6, 'Conduct lab experiment'),
-(6, 'Write lab report'),
 
-(7, 'Visit field site'),
-(7, 'Document observations'),
+(5, 'Show the most recent order placed and the customer who placed it.'),    
+--SELECT o.order_id, o.ordered_at, c.first_name, c.last_name
+-- FROM orders o
+-- JOIN customers c ON o.ordered_by = c.cid
+-- ORDER BY o.ordered_at DESC
+-- LIMIT 1;
+(5, 'Find the total amount of inventory used across all orders.'), 
+--SELECT COUNT(*) AS total_inventory_used
+-- FROM order_items;
 
-(8, 'Analyze economic data'),
-(8, 'Write summary report');
 
+(6, 'List the top 3 most frequently ordered inventory items.'),  
+--SELECT i.title, COUNT(*) AS times_ordered
+-- FROM order_items oi
+-- JOIN inventory i ON oi.inventory_id = i.inventory_id
+-- GROUP BY i.inventory_id
+-- ORDER BY times_ordered DESC
+-- LIMIT 3;
+(6, 'Find the average number of items per order.'),    
+--SELECT AVG(item_count) AS avg_items_per_order
+-- FROM (
+--     SELECT order_id, COUNT(*) AS item_count
+--     FROM order_items
+--     GROUP BY order_id
+-- ) AS order_counts;
+
+
+(7, 'Write a query to delete all orders placed before a certain date.'),    
+--DELETE FROM orders
+-- WHERE ordered_at < '2025-01-01';
+(7, 'Update the inventory amount after an order is placed.'),   
+--UPDATE inventory
+-- SET amount = amount - (
+--     SELECT COUNT(*)
+--     FROM order_items oi
+--     WHERE oi.inventory_id = inventory.inventory_id
+-- )
+-- WHERE inventory_id IN (
+--     SELECT inventory_id FROM order_items
+-- );
+
+    ('ben', '6edfe0531855295c5541d2666d604463'),
+    ('benn', 'ea2b11c7e6bc373c628be113847b039d'),
+    ('sasi', 'aa6bfe8bcf6eb51f7e158d8e5101fb71'),
+    ('tricia', '0b4d4ee0c8e3cda51616f1f6cc64a655'),
+    ('zongyu', '6e4a828704323be31656ec168be89920'),
+    ('jiang', '7ab645365238e9d6691ba55947269b20');
 INSERT INTO submission (aid, username, code, attempt_no, score, submitted_at) VALUES
-(1, 'ben', 'print("Algebra done")', 1, 85.0, '2025-06-30 08:00:00'),
-(1, 'zongyu', 'print("Quiz practice")', 1, 90.0, '2025-06-30 08:30:00'),
+(1, 'ben', 'SELECT first_name, last_name FROM customers;', 1, 1.0, '2025-05-30 00:00:00'),
+(1, 'benn', 'SELECT first_name, last_name FROM customers;', 1, 1.0, '2025-05-30 00:00:00'),
+(1, 'sasi', 'SELECT first_name, last_name FROM customers;', 1, 1.0, '2025-05-30 00:00:00'),
+(1, 'tricia', 'SELECT first_name, last_name FROM customers;', 1, 1.0, '2025-05-30 00:00:00'),
+(1, 'zongyu', 'SELECT first_name, last_name FROM customers;', 1, 1.0, '2025-05-30 00:00:00'),
+(1, 'jiang', 'SELECT first_name, last_name FROM customers;', 1, 1.0, '2025-05-30 00:00:00'),
+
+(1, 'ben', 'SELECT first_name, last_name FROM customers;', 1, 1.0, '2025-05-30 00:00:00'),
+
 (2, 'tricia', 'print("Research complete")', 1, 88.0, '2025-07-04 22:00:00'),
 (2, 'ben', 'print("Slides ready")', 1, 92.0, '2025-07-05 20:00:00'),
 (3, 'zongyu', 'print("Essay outline")', 1, 80.0, '2025-07-09 15:00:00'),
@@ -112,7 +174,5 @@ INSERT INTO submission (aid, username, code, attempt_no, score, submitted_at) VA
 (6, 'tricia', 'print("Lab report")', 1, 82.0, '2025-07-25 11:30:00'),
 (7, 'ben', 'print("Field site visited")', 1, 88.0, '2025-07-29 07:00:00'),
 (7, 'zongyu', 'print("Observations documented")', 1, 91.0, '2025-07-30 07:30:00'),
-(8, 'tricia', 'print("Data analyzed")', 1, 84.0, '2025-07-31 15:00:00'),
-(8, 'ben', 'print("Summary written")', 1, 86.0, '2025-08-01 15:30:00');
 
 

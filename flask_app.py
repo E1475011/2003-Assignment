@@ -195,9 +195,23 @@ def leaderboard():
 # Leaderboard - Select Question
 @app.route('/leaderboardquestion', methods = ['GET'])
 def leaderboard_select_question():
-    question_no = request.args.get('question_no')
+    question_no = request.args.get('question_no')[1:]
+    question_parts = question_no.split("'")
+    
+    cnx = mysql.connector.connect(
+            host="benntay.mysql.pythonanywhere-services.com",
+            user="benntay",
+            password="pythonanywhere",
+            database="benntay$default"
+        )
+    cursor = cnx.cursor()
+    cursor.execute("SELECT username, score FROM submission WHERE aid = %s ORDER BY score DESC LIMIT 5;",(question_parts[0][:-2]))
+    topscorers = cursor.fetchall()
+    cursor.close()
+    cnx.close()
+
     names = ['bob','charlie','adam','eve','ben']
-    return render_template("leaderboard.html", question_no = question_no, topscorers = names)
+    return render_template("leaderboard.html", title = question_parts[1], topscorers = topscorers)
 
 # Change Password
 @app.route('/changepassword', methods = ['GET', 'POST'])
@@ -244,7 +258,7 @@ def export():
             database="benntay$default"
         )
         cursor = cnx.cursor()
-        df = pandas.read_sql("SELECT submission_id, tid, username, code, attempt_no, score, submitted_at FROM submission", cnx)
+        df = pandas.read_sql("SELECT submission_id, aid, username, code, attempt_no, score, submitted_at FROM submission", cnx)
         file_path = "/home/BenOng/mysite/score.csv"
         df.to_csv(file_path, index=False)
         cursor.close()
