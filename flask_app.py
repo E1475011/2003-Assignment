@@ -3,7 +3,7 @@ import mysql.connector
 from uuid import uuid4
 import hashlib
 import select_question_sql
-import get_all_scores
+import get_scores_curruser
 import submission_grading
 import datetime
 import pandas
@@ -66,6 +66,7 @@ def submit_select_question():
 @app.route('/submitquestion', methods = ['GET', 'POST'])
 def submit():
     if request.method == 'POST':
+        message = None
         counter = 1
         tid = []
         code = []
@@ -73,7 +74,7 @@ def submit():
             tid.append(request.form[f"tid {counter}"])
             code.append(request.form[f"code {counter}"])
             counter += 1
-
+        joined_code = '\n\n'.join(code)
         cnx = mysql.connector.connect(
             host="benntay.mysql.pythonanywhere-services.com",
             user="benntay",
@@ -107,8 +108,11 @@ def submit():
             for part_idx in range(len(task_answer)):
                 if task_answer[part_idx].lower().strip().startswith("select"):
                     # submission
-                    cursor1.execute(task_answer[part_idx])
-                    code_execute = cursor1.fetchall()
+                    try:
+                        cursor1.execute(task_answer[part_idx])
+                        code_execute = cursor1.fetchall()
+                    except:
+                        code_execute = ()
                     # model
                     cursor.execute("SELECT model_ans FROM parts where tid = %s and pid = %s", (tid[task_idx], part_idx))
                     model_execute = cursor.fetchall()
@@ -116,12 +120,15 @@ def submit():
                     task_grade.append(grade)
                 else:
                     # submission
-                    cursor1.execute(task_answer[part_idx])
-                    cnx1.commit()
-                    cursor.execute("SELECT query FROM parts where tid = %s and pid = %s", (tid[task_idx], part_idx))
-                    query = cursor.fetchall()
-                    cursor1.execute(query)
-                    code_execute = cursor1.fetchall()
+                    try:
+                        cursor1.execute(task_answer[part_idx])
+                        cnx1.commit()
+                        cursor.execute("SELECT query FROM parts where tid = %s and pid = %s", (tid[task_idx], part_idx))
+                        query = cursor.fetchall()
+                        cursor1.execute(query)
+                        code_execute = cursor1.fetchall()
+                    except:
+                        code_execute = ()
                     # model
                     cursor.execute("SELECT model_ans FROM parts where tid = %s and pid = %s", (tid[task_idx], part_idx))
                     model_execute = cursor.fetchall()
@@ -130,10 +137,11 @@ def submit():
             assessment_grade.append(sum(task_grade)/len(task_grade))
         overall_grade = sum(assessment_grade)/len(assessment_grade)
         # insert submission into submission table
-        cursor.execute("INSERT INTO submission (aid, username, code, attempt_no, score, submitted_at) VALUES %s, %s, %s, %s, %s, now()", (aid, username, '\n\n'.join(code), attempt_no, overall_grade))
+        cursor.execute("INSERT INTO submission (aid, username, code, attempt_no, score, submitted_at) VALUES (%s, %s, %s, %s, %s, now())", (aid, username, joined_code, attempt_no, overall_grade))
+        cnx.commit()
         cursor.close()
         cnx.close()
-        return f"<p>{aid}, {username}, {attempt_no}, {overall_grade}</p>"
+        return redirect('/home')
     
     # GET method - sample route: /submitquestion?question_no=(1, 'Math Quiz 1', datetime.datetime(2025, 7, 1, 9, 0))
 
@@ -173,21 +181,29 @@ def score_select_question():
 # Score - After Select Question
 @app.route('/scorequestion', methods = ['GET'])
 def score():
-    question_details = request.args.get('question_no')
+
+    #get aid - need to split question_no which is a string
+    question_no = request.args.get('question_no')[1:]
     #output: (1, 'Math Quiz 1', datetime.datetime(2025, 7, 1, 9, 0))
-    assessment_id = question_details[0]
-    task_id = question_details[1]
-
+    question_parts = question_no.split("'")
+    assessment_id = int(question_parts[0][:-2])
     
-    submission_details = get_all_scores.get_data_submission(session['number'])
-    #   submission_id, aid, username, attempt, score, submitted_at
-    #output: (1,        1,   'ben',     1,     0.85,   submit_time)
+    submission_details = get_scores_curruser.get_data_submission(assessment_id)
 
-    get_subAID = submission_details[1]
-    get_subscore = submission_details[4]
+    # submission_id, aid, username, attempt, score,          submitted_at
+    #output: ( 7,       2,    'ben',   1,       0.0,  datetime.datetime(2025, 5, 31, 0, 0))
+
+    #building tuple for AID and score
+    s_details_tup = []
+    current_user = get_scores_curruser.get_current_user() # get username
+    for s_items in submission_details:
+        if s_items[2] == current_user:
+            s_details_tup.append((s_items[1], s_items[4]))
 
     #final - pass a var to score page, with the data from get scores
-    return render_template("score.html", get_subAID = get_subAID, get_subscore = get_subscore)
+    return render_template("score.html", s_details_tup = s_details_tup, title = question_parts[1])
+
+
 
 # Leaderboard
 @app.route('/leaderboard', methods = ['GET'])
