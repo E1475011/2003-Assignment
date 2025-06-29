@@ -263,6 +263,7 @@ def change_password():
 
 @app.route('/export', methods = ['GET'])
 def export():
+    file_path = "~/mysite2/score.csv"
     try:
         cnx = mysql.connector.connect(
             host="benntay.mysql.pythonanywhere-services.com",
@@ -283,7 +284,7 @@ def export():
         #df = pandas.read_sql("SELECT submission_id, tid, username, code, attempt_no, score, submitted_at FROM submission", cnx)
         
         
-        file_path = "~/mysite2/score.csv"
+
         df_result_rows.to_csv(file_path, index=False)
         cursor.close()
         cnx.close()
