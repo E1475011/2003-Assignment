@@ -3,6 +3,7 @@ import mysql.connector
 from uuid import uuid4
 import hashlib
 import select_question_sql
+import get_all_scores
 import submission_grading
 import datetime
 import pandas
@@ -42,6 +43,7 @@ def home_page():
             cnx.close()
         else:
             session['number'] = str(uuid4())
+            #session['curr_user'] = username
             cursor.execute("INSERT INTO login_session (session_id, username, started_at) VALUES (%s, %s, now())", (session['number'], username))
             cnx.commit()
             cursor.close()
@@ -64,19 +66,77 @@ def submit_select_question():
 @app.route('/submitquestion', methods = ['GET', 'POST'])
 def submit():
     if request.method == 'POST':
-        # cnx = mysql.connector.connect(
-        #     host="benntay.mysql.pythonanywhere-services.com",
-        #     user="benntay",
-        #     password="pythonanywhere",
-        #     database="benntay$default"
-        # )
-        # cursor = cnx.cursor()
-        # cursor.execute("SELECT username FROM students WHERE username=%s AND password_hash=%s",(username, password))
-        # result_rows = cursor.fetchall()
-        grade = submission_grading.rs_similarity(
-        ('jennybeckham1992@gmail.com', 'datetime.date(2023, 7, 27)'),
-        ('jennybeckham1992@gmail.com', 'datetime.date(2023, 7, 27)')
+        counter = 1
+        tid = []
+        code = []
+        while request.form.get(f"tid {counter}"):
+            tid.append(request.form[f"tid {counter}"])
+            code.append(request.form[f"code {counter}"])
+            counter += 1
+
+        cnx = mysql.connector.connect(
+            host="benntay.mysql.pythonanywhere-services.com",
+            user="benntay",
+            password="pythonanywhere",
+            database="benntay$default"
         )
+        cursor = cnx.cursor()
+        cursor.execute("SELECT aid from task t where t.tid = %s",(tid[0], ))
+        aid = cursor.fetchall()[0][0]
+        cursor.execute("SELECT s.username FROM students s, login_session l WHERE s.username = l.username AND l.session_id = %s",(session['number'],))
+        username = cursor.fetchall()[0][0]
+        cursor.execute("SELECT attempt_no from submission s where s.aid =%s and s.username = %s ORDER BY attempt_no DESC LIMIT 1",(aid, username))
+        results = cursor.fetchall()
+        if len(results) == 0:
+            attempt_no = 1
+        else:
+            attempt_no = results[0][0] + 1
+        # new connection needed for test database
+        cnx1 = mysql.connector.connect(
+            host="benntay.mysql.pythonanywhere-services.com",
+            user="benntay",
+            password="pythonanywhere",
+            database="benntay$test"
+        )
+        cursor1 = cnx1.cursor()
+        assessment_grade = []
+        # submission / model results
+        for task_idx in range(len(code)):
+            task_grade = []
+            task_answer = code[task_idx].split(";")
+            for part_idx in range(len(task_answer)):
+                if task_answer[part_idx].lower().strip().startswith("select"):
+                    # submission
+                    cursor1.execute(task_answer[part_idx])
+                    code_execute = cursor1.fetchall()
+                    # model
+                    cursor.execute("SELECT model_ans FROM parts where tid = %s and part = %s", (tid[task_idx], part_idx))
+                    model_execute = cursor.fetchall()
+                    grade = submission_grading.rs_similarity(code_execute, model_execute)
+                    task_grade.append(grade)
+                else:
+                    # submission
+                    cursor1.execute(task_answer[part_idx])
+                    cnx1.commit()
+                    cursor.execute("SELECT query FROM parts where tid = %s and part = %s", (tid[task_idx], part_idx))
+                    query = cursor.fetchall()
+                    cursor1.execute(query)
+                    code_execute = cursor1.fetchall()
+                    # model
+                    cursor.execute("SELECT model_ans FROM parts where tid = %s and part = %s", (tid[task_idx], part_idx))
+                    model_execute = cursor.fetchall()
+                    grade = submission_grading.rs_similarity(code_execute, model_execute)
+                    task_grade.append(grade)
+            assessment_grade.append(sum(task_grade)/len(task_grade))
+        overall_grade = sum(assessment_grade)/len(assessment_grade)
+        # insert submission into submission table
+        cursor.execute("INSERT INTO submission (aid, username, code, attempt_no, score, submitted_at) VALUES %s, %s, %s, %s, %s, now()", (aid, username, '\n\n'.join(code), attempt_no, overall_grade))
+        cursor.close()
+        cnx.close()
+        return f"<p>{aid}, {username}, {attempt_no}, {overall_grade}</p>"
+    
+    # GET method - sample route: /submitquestion?question_no=(1, 'Math Quiz 1', datetime.datetime(2025, 7, 1, 9, 0))
+
     # request.args.get('question_no') = '(1, 'Math Quiz 1', datetime.datetime(2025, 7, 1, 9, 0))'
     question_no = request.args.get('question_no')[1:]
     # question_no = '1, 'Math Quiz 1', datetime.datetime(2025, 7, 1, 9, 0))'
@@ -85,11 +145,11 @@ def submit():
     date_str = question_parts[2][2:-1]
     # date_str = 'datetime.datetime(2025, 7, 1, 9, 0)'
     date_time = eval(date_str)
-    # eval changes str to datetime
+    # eval changes datetime format to str -> 2025-07-01 09:00:00
     assessment = {
         "aid":question_parts[0][:-2], # aid = '1'
         "title":question_parts[1], # title = Math Quiz 1
-        "due_date":date_time,
+        "due_date":date_time, # due_date = 2025-07-01 09:00:00
     }
     cnx = mysql.connector.connect(
             host="benntay.mysql.pythonanywhere-services.com",
@@ -102,7 +162,7 @@ def submit():
     tasks = cursor.fetchall()
     cursor.close()
     cnx.close()
-    return render_template("submit.html", assessment = assessment, tasks = tasks) # grade = grade
+    return render_template("submit.html", assessment = assessment, tasks = tasks)
 
 # Score - Select Question
 @app.route('/score', methods = ['GET'])
@@ -113,8 +173,21 @@ def score_select_question():
 # Score - After Select Question
 @app.route('/scorequestion', methods = ['GET'])
 def score():
-    question_no = request.args.get('question_no')
-    return render_template("score.html", question_no = question_no)
+    question_details = request.args.get('question_no')
+    #output: (1, 'Math Quiz 1', datetime.datetime(2025, 7, 1, 9, 0))
+    assessment_id = question_details[0]
+    task_id = question_details[1]
+
+    
+    submission_details = get_all_scores.get_data_submission(session['number'])
+    #   submission_id, aid, username, attempt, score, submitted_at
+    #output: (1,        1,   'ben',     1,     0.85,   submit_time)
+
+    get_subAID = submission_details[1]
+    get_subscore = submission_details[4]
+
+    #final - pass a var to score page, with the data from get scores
+    return render_template("score.html", get_subAID = get_subAID, get_subscore = get_subscore)
 
 # Leaderboard
 @app.route('/leaderboard', methods = ['GET'])
@@ -125,9 +198,23 @@ def leaderboard():
 # Leaderboard - Select Question
 @app.route('/leaderboardquestion', methods = ['GET'])
 def leaderboard_select_question():
-    question_no = request.args.get('question_no')
-    names = ['bob','charlie','adam','eve','ben']
-    return render_template("leaderboard.html", question_no = question_no, topscorers = names)
+    question_no = request.args.get('question_no')[1:] # question_no = request.args.get('question_no')
+    question_parts = question_no.split("'")
+    
+    cnx = mysql.connector.connect(
+            host="benntay.mysql.pythonanywhere-services.com",
+            user="benntay",
+            password="pythonanywhere",
+            database="benntay$default"
+        )
+    cursor = cnx.cursor()
+    cursor.execute("SELECT username, score FROM submission WHERE aid = %s ORDER BY score DESC LIMIT 5;",(question_parts[0][:-2]))
+    topscorers = cursor.fetchall()
+    cursor.close()
+    cnx.close()
+    return render_template("leaderboard.html", title = question_parts[1], topscorers = topscorers)
+    # names = ['bob','charlie','adam','eve','ben']
+    # return render_template("leaderboard.html", question_no = question_no, topscorers = names)
 
 # Change Password
 @app.route('/changepassword', methods = ['GET', 'POST'])
