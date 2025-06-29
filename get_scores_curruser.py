@@ -46,7 +46,8 @@ def get_current_user(sessionnumber):
             database="benntay$default"
         )
         cursor = cnx.cursor()
-        SQL_cmd = f"SELECT s.username FROM students s, login_session l WHERE s.username = l.username AND l.session_id = {sessionnumber}"
+        #SQL_cmd = f"SELECT s.username FROM students s, login_session l WHERE s.username = l.username AND l.session_id = {sessionnumber}"
+        SQL_cmd = f"SELECT s.username FROM students s, login_session l WHERE s.username = l.username"
         cursor.execute(SQL_cmd)
         curr_user = cursor.fetchall()[0][0]
         cnx.commit()
