@@ -66,6 +66,7 @@ def submit_select_question():
 @app.route('/submitquestion', methods = ['GET', 'POST'])
 def submit():
     if request.method == 'POST':
+        message = None
         counter = 1
         tid = []
         code = []
@@ -137,9 +138,10 @@ def submit():
         overall_grade = sum(assessment_grade)/len(assessment_grade)
         # insert submission into submission table
         cursor.execute("INSERT INTO submission (aid, username, code, attempt_no, score, submitted_at) VALUES (%s, %s, %s, %s, %s, now())", (aid, username, joined_code, attempt_no, overall_grade))
+        cnx.commit()
         cursor.close()
         cnx.close()
-        return f"<p>{aid}, {username}, {attempt_no}, {overall_grade}</p>"
+        return redirect('/home')
     
     # GET method - sample route: /submitquestion?question_no=(1, 'Math Quiz 1', datetime.datetime(2025, 7, 1, 9, 0))
 
