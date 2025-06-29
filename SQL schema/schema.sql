@@ -91,7 +91,7 @@ INSERT INTO task (aid, title) VALUES
 (6, 'List the top 3 most frequently ordered inventory items.'), 
 (6, 'Find the average number of items per order.'),  
 
-(7, 'Write a query to delete all orders placed before a certain date.'),  
+(7, 'Write a query to delete all orders placed before 2025-06-28.'),  
 (7, 'Insert and order of 3 Hammers at 2025-06-27 10:00:00 by Alice Smith, then Update the inventory amount after an order is placed.');
  
 -- 0, 1, SELECT first_name, last_name FROM customers;
@@ -155,7 +155,7 @@ INSERT INTO parts (pid, tid, model_ans, query) VALUES
 (0, 6, "(('Alice','Smith',2),('Bob','Johnson',1),('Charlie','Lee',1),('Diana','Wong',0),('Ethan','Brown',0))", ""),
 (0, 7, "((1,2)(2,8)(3,7)(4,10))", ""),
 (0, 8, "(('Diana','Wong'),('Ethan','Brown'))", ""),
-(0, 9, "(4,'2025-06-28 13:00:00','Alice','Smith')", ""),
+(0, 9, "(4,'2025-06-29 13:00:00','Alice','Smith')", ""),
 (0, 10, "((27))", ""),
 (0, 11, "(('Screwdriver',4),('Hammer',1),('Wrench',1))", ""),
 (0, 12, "((2.0000))", ""),
