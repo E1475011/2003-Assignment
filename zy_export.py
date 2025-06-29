@@ -24,7 +24,7 @@ def export():
         
         
         file_path = "/home/ProwlT/mysite2/score.csv"
-        df.to_csv(df_result_rows, index=False)
+        df_result_rows.to_csv(file_path, index=False)
         cursor.close()
         cnx.close()
     except Exception as e:
