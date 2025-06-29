@@ -14,7 +14,6 @@ CREATE TABLE customers (
 CREATE TABLE orders (
     order_id INT PRIMARY KEY AUTO_INCREMENT,
     ordered_by INT,
-    table_no INT,
     ordered_at DATETIME,
     FOREIGN KEY (ordered_by) REFERENCES customers(cid) ON DELETE CASCADE
 );
@@ -51,11 +50,11 @@ INSERT INTO inventory (title, amount) VALUES
 ('Tape Measure', 60);
 
 -- Orders
-INSERT INTO orders (ordered_by, table_no, ordered_at) VALUES
-(1, 101, '2025-06-27 10:00:00'),
-(2, 102, '2025-06-28 11:00:00'),
-(3, 103, '2025-06-28 12:00:00'),
-(1, 101, '2025-06-29 13:00:00');
+INSERT INTO orders (ordered_by, ordered_at) VALUES
+(1, '2025-06-27 10:00:00'),
+(2, '2025-06-28 11:00:00'),
+(3, '2025-06-28 12:00:00'),
+(1, '2025-06-29 13:00:00');
 
 -- Order Items
 INSERT INTO order_items (order_id, inventory_id, amount) VALUES
