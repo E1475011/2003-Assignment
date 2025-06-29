@@ -205,7 +205,7 @@ def leaderboard_select_question():
             database="benntay$default"
         )
     cursor = cnx.cursor()
-    cursor.execute("SELECT username, score FROM submission, WHERE a.aid = %s ORDER BY score DESC LIMIT 5;",(assessment['aid']))
+    cursor.execute("SELECT username, score FROM submission, WHERE a.aid = %s ORDER BY score DESC LIMIT 5;",(question_parts[0][:-2]))
     topscorers = cursor.fetchall()
     cursor.close()
     cnx.close()
