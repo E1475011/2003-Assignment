@@ -28,7 +28,17 @@ CREATE TABLE task (
     tid INT PRIMARY KEY AUTO_INCREMENT,
     aid INT,
     title VARCHAR(200),
+    model_ans VARCHAR(60000),
+    query VARCHAR (60000),
     FOREIGN KEY (aid) REFERENCES assessment(aid)
+);
+
+CREATE TABLE parts (
+    pid INT PRIMARY KEY AUTO_INCREMENT,
+    tid INT,
+    model_ans VARCHAR(60000),
+    query VARCHAR (60000),
+    FOREIGN KEY (tid) REFERENCES task(tid)
 );
 
 CREATE TABLE submission (
