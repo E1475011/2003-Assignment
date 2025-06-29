@@ -105,6 +105,7 @@ def submit():
         assessment_grade = []
         # submission / model results
         for task_idx in range(len(code)):
+            cursor1.callproc("ResetDatabase")
             task_grade = []
             task_answer = code[task_idx].split(";")[:-1]
             for part_idx in range(len(task_answer)):
@@ -131,7 +132,6 @@ def submit():
                         query = cursor.fetchall()
                         cursor1.execute(query)
                         code_execute = cursor1.fetchall()
-                        # cursor1.callproc("ResetDatabase")
                     except:
                         code_execute = ()
                     # model
