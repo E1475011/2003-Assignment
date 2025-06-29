@@ -16,8 +16,7 @@ CREATE TABLE orders (
     ordered_by INT,
     table_no INT,
     ordered_at DATETIME,
-    FOREIGN KEY (ordered_by) REFERENCES customers(cid),
-    ON DELETE CASCADE
+    FOREIGN KEY (ordered_by) REFERENCES customers(cid) ON DELETE CASCADE
 );
 
 CREATE TABLE inventory (
