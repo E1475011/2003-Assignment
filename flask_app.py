@@ -179,14 +179,17 @@ def score():
     assessment_title = question_details[1]
 
     
-    submission_details = get_all_scores.get_data_submission()
-    #   submission_id, aid, username, attempt, score, submitted_at
-    #output: (1,        1,   'ben',     1,     0.85,   submit_time)
+    submission_details = get_all_scores.get_data_submission(assessment_id)
+    # submission_id, aid, username, attempt, score,          submitted_at
+    #output: ( 7,       2,    'ben',   1,       0.0,  datetime.datetime(2025, 5, 31, 0, 0))
 
     #building tuple for username and score
-    s_details_tup = []
-    for s_items in submission_details:
-        s_details_tup.append((submission_details[1], submission_details[4]))
+    # s_details_tup = []
+    # for s_items in submission_details:
+    #     s_details_tup.append(submission_details[1], submission_details[4])
+
+    #debug - remove later
+    s_details_tup = submission_details
 
     # get_subAID = submission_details[1] 
     # get_subscore = submission_details[4]

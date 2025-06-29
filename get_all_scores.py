@@ -14,7 +14,7 @@ import mysql.connector
 
 
 
-def get_data_submission():
+def get_data_submission(aid):
     #sessionnumber is a string
     try:
         cnx = mysql.connector.connect(
@@ -24,7 +24,8 @@ def get_data_submission():
             database="benntay$default"
         )
         cursor = cnx.cursor()
-        cursor.execute(f"SELECT sub.submission_id, sub.aid, sub.username, sub.attempt_no, sub.score, sub.submitted_at FROM submission sub, login_session lgs WHERE sub.username = lgs.username")
+        #gets scores for specified aid
+        cursor.execute(f"SELECT submission_id, aid, username, attempt_no, score, submitted_at FROM submission WHERE aid = {aid}")
         result_rows = cursor.fetchall()
         cnx.commit()
         cursor.close()
