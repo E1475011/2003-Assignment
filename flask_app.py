@@ -198,7 +198,7 @@ def leaderboard():
 # Leaderboard - Select Question
 @app.route('/leaderboardquestion', methods = ['GET'])
 def leaderboard_select_question():
-    question_no = request.args.get('question_no')[1:]
+    question_no = request.args.get('question_no')[1:] # question_no = request.args.get('question_no')
     question_parts = question_no.split("'")
     
     cnx = mysql.connector.connect(
@@ -212,9 +212,8 @@ def leaderboard_select_question():
     topscorers = cursor.fetchall()
     cursor.close()
     cnx.close()
-
-    names = ['bob','charlie','adam','eve','ben']
     return render_template("leaderboard.html", title = question_parts[1], topscorers = topscorers)
+    # names = ['bob','charlie','adam','eve','ben']
     # return render_template("leaderboard.html", question_no = question_no, topscorers = names)
 
 # Change Password
