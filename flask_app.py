@@ -73,7 +73,7 @@ def submit():
             tid.append(request.form[f"tid {counter}"])
             code.append(request.form[f"code {counter}"])
             counter += 1
-
+        joined_code = '\n\n'.join(code)
         cnx = mysql.connector.connect(
             host="benntay.mysql.pythonanywhere-services.com",
             user="benntay",
@@ -136,7 +136,7 @@ def submit():
             assessment_grade.append(sum(task_grade)/len(task_grade))
         overall_grade = sum(assessment_grade)/len(assessment_grade)
         # insert submission into submission table
-        cursor.execute("INSERT INTO submission (aid, username, code, attempt_no, score, submitted_at) VALUES %s, %s, %s, %s, %s, now()", (aid, username, '\n\n'.join(code), attempt_no, overall_grade))
+        cursor.execute("INSERT INTO submission (aid, username, code, attempt_no, score, submitted_at) VALUES %s, %s, %s, %s, %s, now())", (aid, username, joined_code, attempt_no, overall_grade))
         cursor.close()
         cnx.close()
         return f"<p>{aid}, {username}, {attempt_no}, {overall_grade}</p>"
