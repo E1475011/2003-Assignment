@@ -184,7 +184,7 @@ def score():
     #output: (1,        1,   'ben',     1,     0.85,   submit_time)
 
     #building tuple for username and score
-    s_details_tup = ()
+    s_details_tup = []
     for s_items in submission_details:
         s_details_tup.append((submission_details[1], submission_details[4]))
 
