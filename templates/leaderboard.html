@@ -83,8 +83,8 @@
          {% for topfive in topscorers %}
     
         <tr>
-            <td>{{ topfive.username }}</td>
-            <td>{{ topfive.score }} </td>
+            <td>{{ topfive[0] }}</td>
+            <td>{{ topfive[1] }} </td>
         </tr>
         {% endfor %}
     </tbody>
