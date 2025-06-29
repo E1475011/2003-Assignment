@@ -193,7 +193,7 @@ def score():
 
     #building tuple for AID and score
     s_details_tup = []
-    current_user = get_scores_curruser.get_current_user(session['number']) # get username
+    current_user = get_scores_curruser.get_current_user() # get username
     for s_items in submission_details:
         if s_items[2] == current_user:
             s_details_tup.append((s_items[1], s_items[4]))
