@@ -134,8 +134,8 @@ INSERT INTO task (aid, title) VALUES
 -- ) AS order_counts;
 -- 0, 13, DELETE FROM orders
 -- WHERE ordered_at < '2025-06-28';
--- 0, 14, INSERT INTO orders (ordered_by, ordered_at) VALUES (1, '2025-06-27 10:00:00'),
--- 1, 14, INSERT INTO order_items (order_id, inventory_id, amount) VALUES (5, 1, 3),
+-- 0, 14, INSERT INTO orders (ordered_by, ordered_at) VALUES (1, '2025-06-27 10:00:00');
+-- 1, 14, INSERT INTO order_items (order_id, inventory_id, amount) VALUES (5, 1, 3);
 -- 2, 14, UPDATE inventory
 -- SET amount = amount - (
 --     SELECT amount
