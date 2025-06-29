@@ -22,6 +22,7 @@ CREATE TABLE orders (
 CREATE TABLE order_items (
     order_id INT,
     inventory_id INT,
+    amount INT,
     PRIMARY KEY (order_id, inventory_id),
     FOREIGN KEY (order_id) REFERENCES orders(order_id)
     FOREIGN KEY (inventory_id) REFERENCES inventory(inventory_id)
@@ -57,12 +58,12 @@ INSERT INTO orders (ordered_by, table_no, ordered_at) VALUES
 (1, 101, '2025-06-28 13:00:00');
 
 -- Order Items
-INSERT INTO order_items (order_id, inventory_id) VALUES
-(1, 1),
-(1, 2),
-(2, 2),
-(2, 3),
-(3, 2),
-(3, 4),
-(4, 2),
-(4, 5);
+INSERT INTO order_items (order_id, inventory_id, amount) VALUES
+(1, 1, 1),
+(1, 2, 1),
+(2, 2, 3),
+(2, 3, 5),
+(3, 2, 1),
+(3, 4, 6),
+(4, 2, 8),
+(4, 5, 2);
