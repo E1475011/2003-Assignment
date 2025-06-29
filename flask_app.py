@@ -263,7 +263,7 @@ def change_password():
 
 @app.route('/export', methods = ['GET'])
 def export():
-    file_path = "~/mysite2/score.csv"
+    file_path = "score.csv"
     try:
         cnx = mysql.connector.connect(
             host="benntay.mysql.pythonanywhere-services.com",
@@ -292,10 +292,10 @@ def export():
         print(f"An unexpected error occurred: {e}")
 
                 
-    # if os.path.exists(file_path):
-    #     return send_file(file_path, as_attachment=True)
-    # else:
-    #     return abort(404, description="CSV file not found.")
+    if os.path.exists(file_path):
+        return send_file(file_path, as_attachment=True)
+    else:
+        return abort(404, description="CSV file not found.")
 
 
 if __name__ == '__main__':
