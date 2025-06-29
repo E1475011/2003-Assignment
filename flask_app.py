@@ -136,7 +136,7 @@ def submit():
             assessment_grade.append(sum(task_grade)/len(task_grade))
         overall_grade = sum(assessment_grade)/len(assessment_grade)
         # insert submission into submission table
-        cursor.execute("INSERT INTO submission (aid, username, code, attempt_no, score, submitted_at) VALUES %s, %s, %s, %s, %s, now())", (aid, username, joined_code, attempt_no, overall_grade))
+        cursor.execute("INSERT INTO submission (aid, username, code, attempt_no, score, submitted_at) VALUES (%s, %s, %s, %s, %s, now())", (aid, username, joined_code, attempt_no, overall_grade))
         cursor.close()
         cnx.close()
         return f"<p>{aid}, {username}, {attempt_no}, {overall_grade}</p>"
