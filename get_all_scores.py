@@ -14,7 +14,8 @@ import mysql.connector
 
 
 
-def get_data_submission(sessionnumber):
+def get_data_submission():
+    #sessionnumber is a string
     try:
         cnx = mysql.connector.connect(
             host="benntay.mysql.pythonanywhere-services.com",
@@ -23,7 +24,8 @@ def get_data_submission(sessionnumber):
             database="benntay$default"
         )
         cursor = cnx.cursor()
-        cursor.execute(f"SELECT sub.submission_id, sub.aid, sub.username, sub.attempt_no, sub.score, sub.submitted_at FROM submission sub, login_session lgs WHERE sub.username = lgs.username AND lgs.session_id = {sessionnumber}")
+        #using F-strings to get session number, which comes from flask_app.py
+        cursor.execute(f"SELECT sub.submission_id, sub.aid, sub.username, sub.attempt_no, sub.score, sub.submitted_at FROM submission sub, login_session lgs WHERE sub.username = lgs.username")
         result_rows = cursor.fetchall()
         cnx.commit()
         cursor.close()

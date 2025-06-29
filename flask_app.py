@@ -176,18 +176,19 @@ def score():
     question_details = request.args.get('question_no')
     #output: (1, 'Math Quiz 1', datetime.datetime(2025, 7, 1, 9, 0))
     assessment_id = question_details[0]
-    task_id = question_details[1]
+    assessment_title = question_details[1]
 
     
-    submission_details = get_all_scores.get_data_submission(session['number'])
+    submission_details = get_all_scores.get_data_submission()
     #   submission_id, aid, username, attempt, score, submitted_at
     #output: (1,        1,   'ben',     1,     0.85,   submit_time)
 
-    get_subAID = submission_details[1]
-    get_subscore = submission_details[4]
+    # get_subAID = submission_details[1] 
+    # get_subscore = submission_details[4]
 
     #final - pass a var to score page, with the data from get scores
-    return render_template("score.html", get_subAID = get_subAID, get_subscore = get_subscore)
+    return render_template("score.html", submission_details = submission_details)
+    #return render_template("score.html", get_subAID = get_subAID, get_subscore = get_subscore)
 
 # Leaderboard
 @app.route('/leaderboard', methods = ['GET'])
