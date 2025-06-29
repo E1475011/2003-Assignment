@@ -19,6 +19,12 @@ CREATE TABLE orders (
     FOREIGN KEY (ordered_by) REFERENCES customers(cid)
 );
 
+CREATE TABLE inventory (
+    inventory_id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(200),
+    amount INT
+);
+
 CREATE TABLE order_items (
     order_id INT,
     inventory_id INT,
@@ -26,12 +32,6 @@ CREATE TABLE order_items (
     PRIMARY KEY (order_id, inventory_id),
     FOREIGN KEY (order_id) REFERENCES orders(order_id),
     FOREIGN KEY (inventory_id) REFERENCES inventory(inventory_id)
-);
-
-CREATE TABLE inventory (
-    inventory_id INT PRIMARY KEY AUTO_INCREMENT,
-    title VARCHAR(200),
-    amount INT
 );
 
 -- Customers
