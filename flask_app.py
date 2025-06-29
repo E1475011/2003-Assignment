@@ -105,7 +105,7 @@ def submit():
         # submission / model results
         for task_idx in range(len(code)):
             task_grade = []
-            task_answer = code[task_idx].split(";")
+            task_answer = code[task_idx].split(";")[:-1]
             for part_idx in range(len(task_answer)):
                 if task_answer[part_idx].lower().strip().startswith("select"):
                     # submission
