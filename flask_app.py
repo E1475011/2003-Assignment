@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session, redirect, url_for, send_file, abort
+from flask import Flask, render_template, request, session, redirect, url_for, send_file, abort, make_response
 import mysql.connector
 from uuid import uuid4
 import hashlib
@@ -8,7 +8,8 @@ import submission_grading
 import datetime
 import pandas
 import os
-
+import csv
+import io
 
 app = Flask(__name__)
 app.debug = True
@@ -130,6 +131,7 @@ def submit():
                         query = cursor.fetchall()
                         cursor1.execute(query)
                         code_execute = cursor1.fetchall()
+                        cursor1.callproc("ResetDatabase")
                     except:
                         code_execute = ()
                     # model
@@ -144,6 +146,8 @@ def submit():
         # insert submission into submission table
         cursor.execute("INSERT INTO submission (aid, username, code, attempt_no, score, submitted_at) VALUES (%s, %s, %s, %s, %s, now())", (aid, username, joined_code, attempt_no, overall_grade))
         cnx.commit()
+        cursor1.close()
+        cnx1.close()
         cursor.close()
         cnx.close()
         # return f'{debug_code}, {debug_model}'
@@ -273,30 +277,49 @@ def change_password():
             return redirect('/login')
     return render_template("changepassword.html", error = error)
 
+# @app.route('/export', methods = ['GET'])
+# def export():
+#     try:
+#         cnx = mysql.connector.connect(
+#             host="benntay.mysql.pythonanywhere-services.com",
+#             user="benntay",
+#             password="pythonanywhere",
+#             database="benntay$default"
+#         )
+#         cursor = cnx.cursor()
+#         df = pandas.read_sql("SELECT submission_id, aid, username, code, attempt_no, score, submitted_at FROM submission", cnx)
+#         file_path = "/home/BenOng/mysite/score.csv"
+#         df.to_csv(file_path, index=False)
+#         cursor.close()
+#         cnx.close()
+#     except Exception as e:
+#         print(f"An unexpected error occurred: {e}")
+        
+#     if os.path.exists(file_path):
+#         return send_file(file_path, as_attachment=True)
+#     else:
+#         return abort(404, description="CSV file not found.")
 
 @app.route('/export', methods = ['GET'])
 def export():
-    try:
-        cnx = mysql.connector.connect(
-            host="benntay.mysql.pythonanywhere-services.com",
-            user="benntay",
-            password="pythonanywhere",
-            database="benntay$default"
-        )
-        cursor = cnx.cursor()
-        df = pandas.read_sql("SELECT submission_id, aid, username, code, attempt_no, score, submitted_at FROM submission", cnx)
-        file_path = "/home/BenOng/mysite/score.csv"
-        df.to_csv(file_path, index=False)
-        cursor.close()
-        cnx.close()
-    except Exception as e:
-        print(f"An unexpected error occurred: {e}")
-        
-    if os.path.exists(file_path):
-        return send_file(file_path, as_attachment=True)
-    else:
-        return abort(404, description="CSV file not found.")
-
+    cnx = mysql.connector.connect(
+        host="benntay.mysql.pythonanywhere-services.com",
+        user="benntay",
+        password="pythonanywhere",
+        database="benntay$default"
+    )
+    cursor = cnx.cursor()
+    cursor.execute("SELECT submission_id, aid, username, code, attempt_no, score, submitted_at FROM submission")
+    result_rows = cursor.fetchall()
+    export_file = io.StringIO()
+    writer = csv.writer(export_file)
+    writer.writerows(result_rows)
+    cursor.close()
+    cnx.close()
+    response = make_response(export_file.getvalue())
+    response.headers["Content-Disposition"] = "attachment; filename=final_result.csv"
+    response.headers["Content-Type"] = "text/csv"
+    return response
 
 
 if __name__ == '__main__':
