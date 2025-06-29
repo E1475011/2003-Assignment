@@ -24,7 +24,7 @@ CREATE TABLE order_items (
     inventory_id INT,
     amount INT,
     PRIMARY KEY (order_id, inventory_id),
-    FOREIGN KEY (order_id) REFERENCES orders(order_id)
+    FOREIGN KEY (order_id) REFERENCES orders(order_id),
     FOREIGN KEY (inventory_id) REFERENCES inventory(inventory_id)
 );
 
