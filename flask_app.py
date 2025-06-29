@@ -110,7 +110,7 @@ def submit():
                     cursor1.execute(task_answer[part_idx])
                     code_execute = cursor1.fetchall()
                     # model
-                    cursor.execute("SELECT model_ans FROM parts where tid = %s and part = %s", (tid[task_idx], part_idx))
+                    cursor.execute("SELECT model_ans FROM parts where tid = %s and pid = %s", (tid[task_idx], part_idx))
                     model_execute = cursor.fetchall()
                     grade = submission_grading.rs_similarity(code_execute, model_execute)
                     task_grade.append(grade)
@@ -118,12 +118,12 @@ def submit():
                     # submission
                     cursor1.execute(task_answer[part_idx])
                     cnx1.commit()
-                    cursor.execute("SELECT query FROM parts where tid = %s and part = %s", (tid[task_idx], part_idx))
+                    cursor.execute("SELECT query FROM parts where tid = %s and pid = %s", (tid[task_idx], part_idx))
                     query = cursor.fetchall()
                     cursor1.execute(query)
                     code_execute = cursor1.fetchall()
                     # model
-                    cursor.execute("SELECT model_ans FROM parts where tid = %s and part = %s", (tid[task_idx], part_idx))
+                    cursor.execute("SELECT model_ans FROM parts where tid = %s and pid = %s", (tid[task_idx], part_idx))
                     model_execute = cursor.fetchall()
                     grade = submission_grading.rs_similarity(code_execute, model_execute)
                     task_grade.append(grade)
