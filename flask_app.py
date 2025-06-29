@@ -66,8 +66,8 @@ def submit_select_question():
 @app.route('/submitquestion', methods = ['GET', 'POST'])
 def submit():
     if request.method == 'POST':
-        debug_code = []
-        debug_model = []
+        # debug_code = []
+        # debug_model = []
         counter = 1
         tid = []
         code = []
@@ -117,8 +117,8 @@ def submit():
                     # model
                     cursor.execute("SELECT model_ans FROM parts where tid = %s and pid = %s", (tid[task_idx], part_idx))
                     model_execute = cursor.fetchall()
-                    debug_code.append(code_execute)
-                    debug_model.append(model_execute)
+                    # debug_code.append(code_execute)
+                    # debug_model.append(model_execute)
                     grade = submission_grading.rs_similarity(code_execute, model_execute)
                     task_grade.append(grade)
                 else:
@@ -135,8 +135,8 @@ def submit():
                     # model
                     cursor.execute("SELECT model_ans FROM parts where tid = %s and pid = %s", (tid[task_idx], part_idx))
                     model_execute = cursor.fetchall()
-                    debug_code.append(code_execute)
-                    debug_model.append(model_execute)
+                    # debug_code.append(code_execute)
+                    # debug_model.append(model_execute)
                     grade = submission_grading.rs_similarity(code_execute, model_execute)
                     task_grade.append(grade)
             assessment_grade.append(sum(task_grade)/len(task_grade))
@@ -146,7 +146,8 @@ def submit():
         cnx.commit()
         cursor.close()
         cnx.close()
-        return f'{debug_code}, {debug_model}'
+        # return f'{debug_code}, {debug_model}'
+        return redirect('/home')
     
     # GET method - sample route: /submitquestion?question_no=(1, 'Math Quiz 1', datetime.datetime(2025, 7, 1, 9, 0))
 
