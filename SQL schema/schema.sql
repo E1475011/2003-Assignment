@@ -93,68 +93,50 @@ INSERT INTO task (aid, title) VALUES
 
 (7, 'Write a query to delete all orders placed before a certain date.'),  
 (7, 'Insert and order of 3 Hammers at 2025-06-27 10:00:00 by Alice Smith, then Update the inventory amount after an order is placed.');
-
-INSERT INTO parts (pid, tid, model_ans, query) VALUES
-(0, 1, "(('Alice', 'Smith'),('Bob','Johnson'),('Charlie','Lee'),('Diana','Wong'),('Ethan','Brown'))", ""), --SELECT first_name, last_name FROM customers;    
-(0, 2, "((1),(2),(3),(4))", ""), --SELECT order_id FROM orders;  
-
-(0, 3, "((1,'Hammer',30),(2,'Screwdriver',50),(3,'Wrench',40),(4,'Drill',20),(5,'Tape Measure',60))", ""), --SELECT * FROM inventory WHERE amount > 10;  
-(0, 4, "(('Hammer'),('Screwdriver'),('Wrench'),('Drill'),('Tape Measure'))", ""),--SELECT title FROM inventory;
-  
-(0, 5, "((1, 'Alice', 'Smith'),(2,'Bob','Johnson'),(3,'Charlie','Lee'),(4,'Alice','Smith'))", ""),
--- SELECT o.order_id, c.first_name, c.last_name
+ 
+-- 0, 1, SELECT first_name, last_name FROM customers;
+-- 0, 2, SELECT order_id FROM orders;
+-- 0, 3, SELECT * FROM inventory WHERE amount > 10;  
+-- 0, 4, SELECT title FROM inventory;
+-- 0, 5, SELECT o.order_id, c.first_name, c.last_name
 -- FROM orders o
 -- JOIN customers c ON o.ordered_by = c.cid; 
-(0, 6, "(('Alice','Smith',2),('Bob','Johnson',1),('Charlie','Lee',1),('Diana','Wong',0),('Ethan','Brown',0))", ""),
--- SELECT c.first_name, c.last_name, COUNT(o.order_id) AS total_orders
+-- 0, 6, SELECT c.first_name, c.last_name, COUNT(o.order_id) AS total_orders
 -- FROM customers c
 -- LEFT JOIN orders o ON c.cid = o.ordered_by
 -- GROUP BY c.cid;
-
-(0, 7, "((1,2)(2,8)(3,7)(4,10))", ""),
--- SELECT order_id, SUM(amount) AS total_items
+-- 0, 7, SELECT order_id, SUM(amount) AS total_items
 -- FROM order_items
 -- GROUP BY order_id;
-(0, 8, "(('Diana','Wong'),('Ethan','Brown'))", ""),
--- SELECT c.first_name, c.last_name
+-- 0, 8, SELECT c.first_name, c.last_name
 -- FROM customers c
 -- LEFT JOIN orders o ON c.cid = o.ordered_by
 -- WHERE o.order_id IS NULL;
-
-(0, 9, "(4,'2025-06-28 13:00:00','Alice','Smith')", ""),
+-- 0, 9, 
 -- SELECT o.order_id, o.ordered_at, c.first_name, c.last_name
 -- FROM orders o
 -- JOIN customers c ON o.ordered_by = c.cid
 -- ORDER BY o.ordered_at DESC
 -- LIMIT 1;
-(0, 10, "((27))", ""),
--- SELECT SUM(amount) AS total_inventory_used
+-- 0, 10, SELECT SUM(amount) AS total_inventory_used
 -- FROM order_items;
-
-(0, 11, "(('Screwdriver',4),('Hammer',1),('Wrench',1))", ""),
--- SELECT i.title, COUNT(*) AS times_ordered
+-- 0, 11, SELECT i.title, COUNT(*) AS times_ordered
 -- FROM order_items oi
 -- JOIN inventory i ON oi.inventory_id = i.inventory_id
 -- GROUP BY i.inventory_id
 -- ORDER BY times_ordered DESC
 -- LIMIT 3;  
-(0, 12, "((2.0000))", ""),
--- SELECT AVG(item_count) AS avg_items_per_order
+-- 0, 12, SELECT AVG(item_count) AS avg_items_per_order
 -- FROM (
 --     SELECT order_id, COUNT(*) AS item_count
 --     FROM order_items
 --     GROUP BY order_id
 -- ) AS order_counts;
-
-(0, 13, "((2),(3),(4))", "SELECT order_id FROM orders;"),
--- DELETE FROM orders
+-- 0, 13, DELETE FROM orders
 -- WHERE ordered_at < '2025-06-28';
-(0, 14, "((5))", "SELECT order_id FROM orders WHERE order_id = 5;"),
-(1, 14, "((5, 1, 3))", "SELECT order_id, inventory_id, amount FROM order_items WHERE order_id = 5, inventory_id = 1"),
-(2, 14, "((27))", "SELECT amount FROM inventory WHERE inventory_id = 1;");
---INSERT INTO orders (ordered_by, ordered_at) VALUES (1, '2025-06-27 10:00:00'),
---INSERT INTO order_items (order_id, inventory_id, amount) VALUES (5, 1, 3),
---UPDATE inventory
+-- 0, 14, INSERT INTO orders (ordered_by, ordered_at) VALUES (1, '2025-06-27 10:00:00'),
+-- 1, 14, INSERT INTO order_items (order_id, inventory_id, amount) VALUES (5, 1, 3),
+-- 2, 14, UPDATE inventory
 -- SET amount = amount - (
 --     SELECT amount
 --     FROM order_items oi
@@ -164,6 +146,24 @@ INSERT INTO parts (pid, tid, model_ans, query) VALUES
 --     SELECT inventory_id FROM order_items
 -- );
 
+INSERT INTO parts (pid, tid, model_ans, query) VALUES
+(0, 1, "(('Alice', 'Smith'),('Bob','Johnson'),('Charlie','Lee'),('Diana','Wong'),('Ethan','Brown'))", ""),   
+(0, 2, "((1),(2),(3),(4))", ""),
+(0, 3, "((1,'Hammer',30),(2,'Screwdriver',50),(3,'Wrench',40),(4,'Drill',20),(5,'Tape Measure',60))", ""), 
+(0, 4, "(('Hammer'),('Screwdriver'),('Wrench'),('Drill'),('Tape Measure'))", ""),
+(0, 5, "((1, 'Alice', 'Smith'),(2,'Bob','Johnson'),(3,'Charlie','Lee'),(4,'Alice','Smith'))", ""),
+(0, 6, "(('Alice','Smith',2),('Bob','Johnson',1),('Charlie','Lee',1),('Diana','Wong',0),('Ethan','Brown',0))", ""),
+(0, 7, "((1,2)(2,8)(3,7)(4,10))", ""),
+(0, 8, "(('Diana','Wong'),('Ethan','Brown'))", ""),
+(0, 9, "(4,'2025-06-28 13:00:00','Alice','Smith')", ""),
+(0, 10, "((27))", ""),
+(0, 11, "(('Screwdriver',4),('Hammer',1),('Wrench',1))", ""),
+(0, 12, "((2.0000))", ""),
+
+(0, 13, "((2),(3),(4))", "SELECT order_id FROM orders;"),
+(0, 14, "((5))", "SELECT order_id FROM orders WHERE order_id = 5;"),
+(1, 14, "((5, 1, 3))", "SELECT order_id, inventory_id, amount FROM order_items WHERE order_id = 5, inventory_id = 1"),
+(2, 14, "((27))", "SELECT amount FROM inventory WHERE inventory_id = 1;");
 
 
 INSERT INTO submission (aid, username, code, attempt_no, score, submitted_at) VALUES
