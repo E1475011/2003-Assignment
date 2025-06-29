@@ -318,7 +318,7 @@ def export():
     cursor.close()
     cnx.close()
     response = make_response(export_file.getvalue())
-    response.headers["Content-Disposition"] = "attachment; filename=final_result.csv"
+    response.headers["Content-Disposition"] = "attachment; filename=export.csv"
     response.headers["Content-Type"] = "text/csv"
     return response
 
