@@ -36,8 +36,7 @@ def get_data_submission(aid):
     return result_rows
 
 
-def get_current_user(sessionnumber):
-    #sessionnumber is an str
+def get_current_user():
     try:
         cnx = mysql.connector.connect(
             host="benntay.mysql.pythonanywhere-services.com",
