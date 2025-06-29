@@ -28,8 +28,6 @@ CREATE TABLE task (
     tid INT PRIMARY KEY AUTO_INCREMENT,
     aid INT,
     title VARCHAR(200),
-    model_ans VARCHAR(60000),
-    query VARCHAR (60000),
     FOREIGN KEY (aid) REFERENCES assessment(aid)
 );
 
@@ -168,26 +166,27 @@ INSERT INTO parts (pid, tid, model_ans, query) VALUES
 
 
 INSERT INTO submission (aid, username, code, attempt_no, score, submitted_at) VALUES
-(1, 'ben', 'SELECT first_name, last_name FROM customers;', 1, 1.0, '2025-05-30 00:00:00'),
-(1, 'benn', 'SELECT first_name, last_name FROM customers;', 1, 1.0, '2025-05-30 00:00:00'),
-(1, 'sasi', 'SELECT first_name, last_name FROM customers;', 1, 1.0, '2025-05-30 00:00:00'),
-(1, 'tricia', 'SELECT first_name, last_name FROM customers;', 1, 1.0, '2025-05-30 00:00:00'),
-(1, 'zongyu', 'SELECT first_name, last_name FROM customers;', 1, 1.0, '2025-05-30 00:00:00'),
-(1, 'jiang', 'SELECT first_name, last_name FROM customers;', 1, 1.0, '2025-05-30 00:00:00'),
+(1, 'ben', "'SELECT first_name, last_name FROM customers;\n\n'SELECT order_id FROM orders;'", 1, 1.0, '2025-05-30 00:00:00'),
+(1, 'benn', "'SELECT first_name, last_name FROM customers;\n\n'SELECT order_id FROM orders;'", 1, 1.0, '2025-05-30 00:00:00'),
+(1, 'sasi', "'SELECT first_name, last_name FROM customers;\n\n'SELECT order_id FROM orders;'", 1, 1.0, '2025-05-30 00:00:00'),
+(1, 'tricia', "'SELECT first_name, last_name FROM customers;\n\n'SELECT order_id FROM orders;'", 1, 1.0, '2025-05-30 00:00:00'),
+(1, 'zongyu', "'SELECT first_name, last_name FROM customers;\n\n'SELECT order_id FROM orders;'", 1, 1.0, '2025-05-30 00:00:00'),
+(1, 'jiang', "'SELECT first_name, last_name FROM customers;\n\n'SELECT order_id FROM orders;'", 1, 1.0, '2025-05-30 00:00:00'),
 
-(1, 'ben', 'SELECT first_name, last_name FROM customers;', 1, 1.0, '2025-05-30 00:00:00'),
+(2, 'ben', "", 1, 0.0, '2025-05-31 00:00:00'),
+(2, 'benn', "'SELECT * FROM inventory WHERE amount > 10;'\n\n'SELECT title FROM inventory;'", 1, 1.0, '2025-05-31 00:00:00'),
+(2, 'sasi', "'SELECT * FROM inventory WHERE amount > 10;'\n\n'SELECT title FROM inventory;'", 1, 1.0, '2025-05-31 00:00:00'),
+(2, 'tricia', "'SELECT * FROM inventory WHERE amount > 10;'\n\n'SELECT title FROM inventory;'", 1, 1.0, '2025-05-31 00:00:00'),
+(2, 'zongyu', "'SELECT * FROM inventory WHERE amount > 10;'\n\n'SELECT title FROM inventory;'", 1, 1.0, '2025-05-31 00:00:00'),
+(2, 'jiang', "", 1, 0.0, '2025-05-31 00:00:00'),
 
-(2, 'tricia', 'print("Research complete")', 1, 88.0, '2025-07-04 22:00:00'),
-(2, 'ben', 'print("Slides ready")', 1, 92.0, '2025-07-05 20:00:00'),
-(3, 'zongyu', 'print("Essay outline")', 1, 80.0, '2025-07-09 15:00:00'),
-(3, 'tricia', 'print("Draft written")', 1, 75.0, '2025-07-10 16:00:00'),
-(4, 'ben', 'print("Notes revised")', 1, 95.0, '2025-07-14 09:00:00'),
-(4, 'zongyu', 'print("Midterm prep")', 1, 89.0, '2025-07-14 10:00:00'),
-(5, 'tricia', 'print("Literature selected")', 1, 87.0, '2025-07-19 13:00:00'),
-(5, 'ben', 'print("Slides done")', 1, 93.0, '2025-07-19 13:30:00'),
-(6, 'zongyu', 'print("Lab experiment")', 1, 78.0, '2025-07-24 11:00:00'),
-(6, 'tricia', 'print("Lab report")', 1, 82.0, '2025-07-25 11:30:00'),
-(7, 'ben', 'print("Field site visited")', 1, 88.0, '2025-07-29 07:00:00'),
-(7, 'zongyu', 'print("Observations documented")', 1, 91.0, '2025-07-30 07:30:00'),
+-- this is for demo of leaderboard
+(3, 'ben', "", 1, 0.5, '2025-05-31 00:00:00'),
+(3, 'benn', "", 1, 1.0, '2025-05-31 00:00:00'),
+(3, 'sasi', "", 1, 0.9, '2025-05-31 00:00:00'),
+(3, 'tricia', "", 1, 0.8, '2025-05-31 00:00:00'),
+(3, 'zongyu', "", 1, 0.7, '2025-05-31 00:00:00'),
+(3, 'jiang', "", 1, 0.6, '2025-05-31 00:00:00'),
+
 
 
