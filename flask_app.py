@@ -278,7 +278,7 @@ def export():
             database="benntay$default"
         )
         cursor = cnx.cursor()
-        df = pandas.read_sql("SELECT submission_id, tid, username, code, attempt_no, score, submitted_at FROM submission", cnx)
+        df = pandas.read_sql("SELECT submission_id, aid, username, code, attempt_no, score, submitted_at FROM submission", cnx)
         file_path = "/home/BenOng/mysite/score.csv"
         df.to_csv(file_path, index=False)
         cursor.close()
