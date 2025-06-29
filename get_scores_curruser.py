@@ -36,3 +36,22 @@ def get_data_submission(aid):
     return result_rows
 
 
+def get_current_user(sessionnumber):
+    #sessionnumber is an str
+    try:
+        cnx = mysql.connector.connect(
+            host="benntay.mysql.pythonanywhere-services.com",
+            user="benntay",
+            password="pythonanywhere",
+            database="benntay$default"
+        )
+        cursor = cnx.cursor()
+        SQL_cmd = f"SELECT s.username FROM students s, login_session l WHERE s.username = l.username AND l.session_id = {sessionnumber}"
+        cursor.execute(SQL_cmd)
+        curr_user = cursor.fetchall()
+        cnx.commit()
+        cursor.close()
+        cnx.close()
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+    return curr_user

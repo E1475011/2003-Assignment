@@ -3,7 +3,7 @@ import mysql.connector
 from uuid import uuid4
 import hashlib
 import select_question_sql
-import get_all_scores
+import get_scores_curruser
 import submission_grading
 import datetime
 import pandas
@@ -180,23 +180,22 @@ def score():
     question_parts = question_no.split("'")
     assessment_id = int(question_parts[0][:-2])
     
-    submission_details = get_all_scores.get_data_submission(assessment_id)
+    submission_details = get_scores_curruser.get_data_submission(assessment_id)
 
     # submission_id, aid, username, attempt, score,          submitted_at
     #output: ( 7,       2,    'ben',   1,       0.0,  datetime.datetime(2025, 5, 31, 0, 0))
 
-    #building tuple for username and score
+    #building tuple for AID and score
     s_details_tup = []
+    current_user = get_scores_curruser.get_current_user(session['number']) # get username
     for s_items in submission_details:
-        #if s_items[2]:
-        s_details_tup.append((s_items[1], s_items[4]))
-
-    # get_subAID = submission_details[1] 
-    # get_subscore = submission_details[4]
+        if s_items[2] == current_user:
+            s_details_tup.append((s_items[1], s_items[4]))
 
     #final - pass a var to score page, with the data from get scores
-    return render_template("score.html", s_details_tup = s_details_tup)
-    #return render_template("score.html", get_subAID = get_subAID, get_subscore = get_subscore)
+    return render_template("score.html", s_details_tup = s_details_tup, title = question_parts[1])
+
+
 
 # Leaderboard
 @app.route('/leaderboard', methods = ['GET'])
