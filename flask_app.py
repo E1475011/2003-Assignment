@@ -183,11 +183,16 @@ def score():
     #   submission_id, aid, username, attempt, score, submitted_at
     #output: (1,        1,   'ben',     1,     0.85,   submit_time)
 
+    #building tuple for username and score
+    s_details_tup = ()
+    for s_items in submission_details:
+        s_details_tup.append((submission_details[1], submission_details[4]))
+
     # get_subAID = submission_details[1] 
     # get_subscore = submission_details[4]
 
     #final - pass a var to score page, with the data from get scores
-    return render_template("score.html", submission_details = submission_details)
+    return render_template("score.html", s_details_tup = s_details_tup)
     #return render_template("score.html", get_subAID = get_subAID, get_subscore = get_subscore)
 
 # Leaderboard

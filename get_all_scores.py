@@ -24,7 +24,6 @@ def get_data_submission():
             database="benntay$default"
         )
         cursor = cnx.cursor()
-        #using F-strings to get session number, which comes from flask_app.py
         cursor.execute(f"SELECT sub.submission_id, sub.aid, sub.username, sub.attempt_no, sub.score, sub.submitted_at FROM submission sub, login_session lgs WHERE sub.username = lgs.username")
         result_rows = cursor.fetchall()
         cnx.commit()
