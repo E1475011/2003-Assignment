@@ -7,7 +7,7 @@ import get_scores_curruser
 import zy_export
 import submission_grading
 import datetime
-import pandas
+import pandas as pd
 import os
 
 
@@ -273,14 +273,14 @@ def export():
         )
         cursor = cnx.cursor()
         
-        SQL_cmd = f"SELECT submission_id, tid, username, code, attempt_no, score, submitted_at FROM submission"
+        SQL_cmd = f"SELECT submission_id, aid, username, code, attempt_no, score, submitted_at FROM submission"
         cursor.execute(SQL_cmd)
         result_rows = cursor.fetchall()
 
 
         # submission_id, aid, username, attempt, score,          submitted_at
         #output: ( 7,       2,    'ben',   1,       0.0,  datetime.datetime(2025, 5, 31, 0, 0))
-        df_result_rows = pd.DataFrame(result_rows)
+        df_result_rows = pd.DataFrame(result_rows, index=False)
         #df = pandas.read_sql("SELECT submission_id, tid, username, code, attempt_no, score, submitted_at FROM submission", cnx)
         
         
@@ -292,10 +292,10 @@ def export():
         print(f"An unexpected error occurred: {e}")
 
                 
-    if os.path.exists(file_path):
-        return send_file(file_path, as_attachment=True)
-    else:
-        return abort(404, description="CSV file not found.")
+    # if os.path.exists(file_path):
+    #     return send_file(file_path, as_attachment=True)
+    # else:
+    #     return abort(404, description="CSV file not found.")
 
 
 if __name__ == '__main__':
