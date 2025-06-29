@@ -17,6 +17,7 @@ def tuple_similarity(t1, t2):
     union_sum = sum(union.values())
     return 0.0 if union_sum == 0 else intersection_sum / union_sum
 
+#set1 must always be modal answer
 def rs_similarity(set1, set2):
     s1, s2 = [], []
     for t1 in set1:
@@ -25,12 +26,5 @@ def rs_similarity(set1, set2):
             score = tuple_similarity(t1, t2)
             temp.append(score)
         s1.append(0.0 if len(temp) == 0 else max(temp))
-    for t2 in set2:
-        temp = []
-        for t1 in set1:
-            score = tuple_similarity(t2, t1)
-            temp.append(score)
-        s2.append(0.0 if len(temp) == 0 else max(temp))
-    s1.extend(s2)
     score = 0.0 if len(s1) == 0 else sum(s1) / len(s1)
     return score
