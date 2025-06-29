@@ -131,7 +131,7 @@ def submit():
                         query = cursor.fetchall()
                         cursor1.execute(query)
                         code_execute = cursor1.fetchall()
-                        cursor1.callproc("ResetDatabase")
+                        # cursor1.callproc("ResetDatabase")
                     except:
                         code_execute = ()
                     # model
