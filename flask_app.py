@@ -173,6 +173,8 @@ def score_select_question():
 # Score - After Select Question
 @app.route('/scorequestion', methods = ['GET'])
 def score():
+
+    #get aid - need to split question_no which is a string
     question_no = request.args.get('question_no')[1:]
     #output: (1, 'Math Quiz 1', datetime.datetime(2025, 7, 1, 9, 0))
     question_parts = question_no.split("'")
@@ -186,6 +188,7 @@ def score():
     #building tuple for username and score
     s_details_tup = []
     for s_items in submission_details:
+        #if s_items[2]:
         s_details_tup.append((s_items[1], s_items[4]))
 
     # get_subAID = submission_details[1] 
