@@ -107,8 +107,11 @@ def submit():
             for part_idx in range(len(task_answer)):
                 if task_answer[part_idx].lower().strip().startswith("select"):
                     # submission
-                    cursor1.execute(task_answer[part_idx])
-                    code_execute = cursor1.fetchall()
+                    try:
+                        cursor1.execute(task_answer[part_idx])
+                        code_execute = cursor1.fetchall()
+                    except:
+                        code_execute = ()
                     # model
                     cursor.execute("SELECT model_ans FROM parts where tid = %s and part = %s", (tid[task_idx], part_idx))
                     model_execute = cursor.fetchall()
@@ -116,12 +119,15 @@ def submit():
                     task_grade.append(grade)
                 else:
                     # submission
-                    cursor1.execute(task_answer[part_idx])
-                    cnx1.commit()
-                    cursor.execute("SELECT query FROM parts where tid = %s and part = %s", (tid[task_idx], part_idx))
-                    query = cursor.fetchall()
-                    cursor1.execute(query)
-                    code_execute = cursor1.fetchall()
+                    try:
+                        cursor1.execute(task_answer[part_idx])
+                        cnx1.commit()
+                        cursor.execute("SELECT query FROM parts where tid = %s and part = %s", (tid[task_idx], part_idx))
+                        query = cursor.fetchall()
+                        cursor1.execute(query)
+                        code_execute = cursor1.fetchall()
+                    except:
+                        code_execute = ()
                     # model
                     cursor.execute("SELECT model_ans FROM parts where tid = %s and part = %s", (tid[task_idx], part_idx))
                     model_execute = cursor.fetchall()
