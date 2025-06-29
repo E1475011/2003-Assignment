@@ -25,7 +25,8 @@ def get_data_submission(aid):
         )
         cursor = cnx.cursor()
         #gets scores for specified aid
-        cursor.execute(f"SELECT submission_id, aid, username, attempt_no, score, submitted_at FROM submission WHERE aid = {aid}")
+        SQL_cmd = f"SELECT submission_id, aid, username, attempt_no, score, submitted_at FROM submission WHERE aid = {aid}"
+        cursor.execute(SQL_cmd)
         result_rows = cursor.fetchall()
         cnx.commit()
         cursor.close()

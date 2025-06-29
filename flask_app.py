@@ -173,23 +173,20 @@ def score_select_question():
 # Score - After Select Question
 @app.route('/scorequestion', methods = ['GET'])
 def score():
-    question_details = request.args.get('question_no')
+    question_no = request.args.get('question_no')[1:]
     #output: (1, 'Math Quiz 1', datetime.datetime(2025, 7, 1, 9, 0))
-    assessment_id = question_details[0]
-    assessment_title = question_details[1]
-
+    question_parts = question_no.split("'")
+    assessment_id = int(question_parts[0][:-2])
     
     submission_details = get_all_scores.get_data_submission(assessment_id)
+    
     # submission_id, aid, username, attempt, score,          submitted_at
     #output: ( 7,       2,    'ben',   1,       0.0,  datetime.datetime(2025, 5, 31, 0, 0))
 
     #building tuple for username and score
-    # s_details_tup = []
-    # for s_items in submission_details:
-    #     s_details_tup.append(submission_details[1], submission_details[4])
-
-    #debug - remove later
-    s_details_tup = submission_details
+    s_details_tup = []
+    for s_items in submission_details:
+        s_details_tup.append(s_items[1], s_items[4])
 
     # get_subAID = submission_details[1] 
     # get_subscore = submission_details[4]
