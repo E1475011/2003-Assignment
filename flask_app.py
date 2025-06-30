@@ -102,10 +102,10 @@ def submit():
             database="benntay$test"
         )
         cursor1 = cnx1.cursor()
+        cursor1.callproc("ResetDatabase")
         assessment_grade = []
         # submission / model results
         for task_idx in range(len(code)):
-            cursor1.callproc("ResetDatabase")
             task_grade = []
             task_answer = code[task_idx].split(";")[:-1]
             for part_idx in range(len(task_answer)):
@@ -322,6 +322,7 @@ def export():
     response = make_response(export_file.getvalue())
     response.headers["Content-Disposition"] = "attachment; filename=export.csv"
     response.headers["Content-Type"] = "text/csv"
+    export_file.close()
     return response
 
 
