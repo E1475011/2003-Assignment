@@ -157,7 +157,7 @@ INSERT INTO parts (pid, tid, model_ans, query) VALUES
 (0, 8, "(('Diana','Wong'),('Ethan','Brown'))", ""),
 (0, 9, "((4,'2025-06-29 13:00:00','Alice','Smith'),)", ""),
 (0, 10, "((27,),)", ""),
-(0, 11, "(('Screwdriver',4),('Hammer',1),('Wrench',1),)", ""),
+(0, 11, "(('Screwdriver',4),('Hammer',1),('Wrench',1))", ""),
 (0, 12, "((2.0000,),)", ""),
 
 (0, 13, "((2,),(3,),(4,))", "SELECT order_id FROM orders;"),
