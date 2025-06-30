@@ -130,7 +130,7 @@ def submit():
                         cursor1.execute(task_answer[part_idx])
                         cnx1.commit()
                         cursor.execute("SELECT query FROM parts where tid = %s and pid = %s", (tid[task_idx], part_idx))
-                        query = cursor.fetchall()
+                        query = cursor.fetchall()[0][0]
                         cursor1.execute(query)
                         code_execute = cursor1.fetchall()
                     except:
