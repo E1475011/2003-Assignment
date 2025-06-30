@@ -148,22 +148,22 @@ INSERT INTO task (aid, title) VALUES
 
 INSERT INTO parts (pid, tid, model_ans, query) VALUES
 (0, 1, "(('Alice', 'Smith'),('Bob','Johnson'),('Charlie','Lee'),('Diana','Wong'),('Ethan','Brown'))", ""),   
-(0, 2, "((1),(2),(3),(4))", ""),
+(0, 2, "((1,),(2,),(3,),(4,))", ""),
 (0, 3, "((1,'Hammer',30),(2,'Screwdriver',50),(3,'Wrench',40),(4,'Drill',20),(5,'Tape Measure',60))", ""), 
-(0, 4, "(('Hammer'),('Screwdriver'),('Wrench'),('Drill'),('Tape Measure'))", ""),
+(0, 4, "(('Hammer',),('Screwdriver',),('Wrench',),('Drill',),('Tape Measure',))", ""),
 (0, 5, "((1, 'Alice', 'Smith'),(2,'Bob','Johnson'),(3,'Charlie','Lee'),(4,'Alice','Smith'))", ""),
 (0, 6, "(('Alice','Smith',2),('Bob','Johnson',1),('Charlie','Lee',1),('Diana','Wong',0),('Ethan','Brown',0))", ""),
 (0, 7, "((1,2)(2,8)(3,7)(4,10))", ""),
 (0, 8, "(('Diana','Wong'),('Ethan','Brown'))", ""),
-(0, 9, "(4,'2025-06-29 13:00:00','Alice','Smith')", ""),
-(0, 10, "((27))", ""),
-(0, 11, "(('Screwdriver',4),('Hammer',1),('Wrench',1))", ""),
-(0, 12, "((2.0000))", ""),
+(0, 9, "((4,'2025-06-29 13:00:00','Alice','Smith'),)", ""),
+(0, 10, "((27,),)", ""),
+(0, 11, "(('Screwdriver',4),('Hammer',1),('Wrench',1),)", ""),
+(0, 12, "((2.0000,),)", ""),
 
-(0, 13, "((2),(3),(4))", "SELECT order_id FROM orders;"),
-(0, 14, "((5))", "SELECT order_id FROM orders WHERE order_id = 5;"),
-(1, 14, "((5, 1, 3))", "SELECT order_id, inventory_id, amount FROM order_items WHERE order_id = 5, inventory_id = 1;"),
-(2, 14, "((27))", "SELECT amount FROM inventory WHERE inventory_id = 1;");
+(0, 13, "((2,),(3,),(4,))", "SELECT order_id FROM orders;"),
+(0, 14, "((5,),)", "SELECT order_id FROM orders WHERE order_id = 5;"),
+(1, 14, "((5, 1, 3),)", "SELECT order_id, inventory_id, amount FROM order_items WHERE order_id = 5, inventory_id = 1;"),
+(2, 14, "((27,),)", "SELECT amount FROM inventory WHERE inventory_id = 1;");
 
 
 INSERT INTO submission (aid, username, code, attempt_no, score, submitted_at) VALUES
