@@ -134,8 +134,8 @@ INSERT INTO task (aid, title) VALUES
 -- ) AS order_counts;
 -- 0, 13, DELETE FROM orders
 -- WHERE ordered_at < '2025-06-28';
--- 0, 14, INSERT INTO orders (ordered_by, ordered_at) VALUES (1, '2025-06-27 10:00:00'),
--- 1, 14, INSERT INTO order_items (order_id, inventory_id, amount) VALUES (5, 1, 3),
+-- 0, 14, INSERT INTO orders (ordered_by, ordered_at) VALUES (1, '2025-06-27 10:00:00');
+-- 1, 14, INSERT INTO order_items (order_id, inventory_id, amount) VALUES (5, 1, 3);
 -- 2, 14, UPDATE inventory
 -- SET amount = amount - (
 --     SELECT amount
@@ -162,7 +162,7 @@ INSERT INTO parts (pid, tid, model_ans, query) VALUES
 
 (0, 13, "((2,),(3,),(4,))", "SELECT order_id FROM orders;"),
 (0, 14, "((5,),)", "SELECT order_id FROM orders WHERE order_id = 5;"),
-(1, 14, "((5, 1, 3),)", "SELECT order_id, inventory_id, amount FROM order_items WHERE order_id = 5, inventory_id = 1;"),
+(1, 14, "((5, 1, 3),)", "SELECT order_id, inventory_id, amount FROM order_items WHERE order_id = 5 AND inventory_id = 1;"),
 (2, 14, "((27,),)", "SELECT amount FROM inventory WHERE inventory_id = 1;");
 
 
