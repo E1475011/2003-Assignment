@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session, redirect, url_for, send_file, abort
+from flask import Flask, render_template, request, session, redirect, url_for, send_file, abort, make_response
 import mysql.connector
 from uuid import uuid4
 import hashlib
@@ -8,7 +8,9 @@ import submission_grading
 import datetime
 import pandas
 import os
-
+import csv
+import io
+import ast
 
 app = Flask(__name__)
 app.debug = True
@@ -66,8 +68,7 @@ def submit_select_question():
 @app.route('/submitquestion', methods = ['GET', 'POST'])
 def submit():
     if request.method == 'POST':
-        # debug_code = []
-        # debug_model = []
+        # debug = []
         counter = 1
         tid = []
         code = []
@@ -101,6 +102,7 @@ def submit():
             database="benntay$test"
         )
         cursor1 = cnx1.cursor()
+        cursor1.callproc("ResetDatabase")
         assessment_grade = []
         # submission / model results
         for task_idx in range(len(code)):
@@ -116,10 +118,11 @@ def submit():
                         code_execute = ()
                     # model
                     cursor.execute("SELECT model_ans FROM parts where tid = %s and pid = %s", (tid[task_idx], part_idx))
-                    model_execute = cursor.fetchall()
-                    # debug_code.append(code_execute)
-                    # debug_model.append(model_execute)
-                    grade = submission_grading.rs_similarity(code_execute, model_execute)
+                    result_rows = cursor.fetchall()
+                    model_execute = list(ast.literal_eval(result_rows[0][0]))
+                    # debug.append(model_execute)
+                    # debug.append(code_execute)
+                    grade = submission_grading.rs_similarity(model_execute, code_execute)
                     task_grade.append(grade)
                 else:
                     # submission
@@ -127,26 +130,29 @@ def submit():
                         cursor1.execute(task_answer[part_idx])
                         cnx1.commit()
                         cursor.execute("SELECT query FROM parts where tid = %s and pid = %s", (tid[task_idx], part_idx))
-                        query = cursor.fetchall()
+                        query = cursor.fetchall()[0][0]
                         cursor1.execute(query)
                         code_execute = cursor1.fetchall()
                     except:
                         code_execute = ()
                     # model
                     cursor.execute("SELECT model_ans FROM parts where tid = %s and pid = %s", (tid[task_idx], part_idx))
-                    model_execute = cursor.fetchall()
-                    # debug_code.append(code_execute)
-                    # debug_model.append(model_execute)
-                    grade = submission_grading.rs_similarity(code_execute, model_execute)
+                    result_rows = cursor.fetchall()
+                    model_execute = list(ast.literal_eval(result_rows[0][0]))
+                    # debug.append(model_execute)
+                    # debug.append(code_execute)
+                    grade = submission_grading.rs_similarity(model_execute, code_execute)
                     task_grade.append(grade)
             assessment_grade.append(sum(task_grade)/len(task_grade))
         overall_grade = sum(assessment_grade)/len(assessment_grade)
         # insert submission into submission table
         cursor.execute("INSERT INTO submission (aid, username, code, attempt_no, score, submitted_at) VALUES (%s, %s, %s, %s, %s, now())", (aid, username, joined_code, attempt_no, overall_grade))
         cnx.commit()
+        cursor1.close()
+        cnx1.close()
         cursor.close()
         cnx.close()
-        # return f'{debug_code}, {debug_model}'
+        # return f'{debug}'
         return redirect('/home')
     
     # GET method - sample route: /submitquestion?question_no=(1, 'Math Quiz 1', datetime.datetime(2025, 7, 1, 9, 0))
@@ -273,30 +279,51 @@ def change_password():
             return redirect('/login')
     return render_template("changepassword.html", error = error)
 
+# @app.route('/export', methods = ['GET'])
+# def export():
+#     try:
+#         cnx = mysql.connector.connect(
+#             host="benntay.mysql.pythonanywhere-services.com",
+#             user="benntay",
+#             password="pythonanywhere",
+#             database="benntay$default"
+#         )
+#         cursor = cnx.cursor()
+#         df = pandas.read_sql("SELECT submission_id, aid, username, code, attempt_no, score, submitted_at FROM submission", cnx)
+#         file_path = "/home/BenOng/mysite/score.csv"
+#         df.to_csv(file_path, index=False)
+#         cursor.close()
+#         cnx.close()
+#     except Exception as e:
+#         print(f"An unexpected error occurred: {e}")
+        
+#     if os.path.exists(file_path):
+#         return send_file(file_path, as_attachment=True)
+#     else:
+#         return abort(404, description="CSV file not found.")
 
 @app.route('/export', methods = ['GET'])
 def export():
-    try:
-        cnx = mysql.connector.connect(
-            host="benntay.mysql.pythonanywhere-services.com",
-            user="benntay",
-            password="pythonanywhere",
-            database="benntay$default"
-        )
-        cursor = cnx.cursor()
-        df = pandas.read_sql("SELECT submission_id, aid, username, code, attempt_no, score, submitted_at FROM submission", cnx)
-        file_path = "/home/BenOng/mysite/score.csv"
-        df.to_csv(file_path, index=False)
-        cursor.close()
-        cnx.close()
-    except Exception as e:
-        print(f"An unexpected error occurred: {e}")
-        
-    if os.path.exists(file_path):
-        return send_file(file_path, as_attachment=True)
-    else:
-        return abort(404, description="CSV file not found.")
-
+    cnx = mysql.connector.connect(
+        host="benntay.mysql.pythonanywhere-services.com",
+        user="benntay",
+        password="pythonanywhere",
+        database="benntay$default"
+    )
+    cursor = cnx.cursor()
+    cursor.execute("SELECT submission_id, aid, username, code, attempt_no, score, submitted_at FROM submission")
+    result_rows = cursor.fetchall()
+    export_file = io.StringIO()
+    writer = csv.writer(export_file)
+    writer.writerow(['submission_id', 'aid', 'username', 'code', 'attempt_no', 'score', 'submitted_at'])
+    writer.writerows(result_rows)
+    cursor.close()
+    cnx.close()
+    response = make_response(export_file.getvalue())
+    response.headers["Content-Disposition"] = "attachment; filename=export.csv"
+    response.headers["Content-Type"] = "text/csv"
+    export_file.close()
+    return response
 
 
 if __name__ == '__main__':
