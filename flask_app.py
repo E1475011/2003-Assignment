@@ -10,6 +10,7 @@ import pandas
 import os
 import csv
 import io
+import ast
 
 app = Flask(__name__)
 app.debug = True
@@ -117,9 +118,11 @@ def submit():
                         code_execute = ()
                     # model
                     cursor.execute("SELECT model_ans FROM parts where tid = %s and pid = %s", (tid[task_idx], part_idx))
-                    model_execute = cursor.fetchall()
-                    debug.append((code_execute, model_execute))
-                    grade = submission_grading.rs_similarity(code_execute, model_execute)
+                    result_rows = cursor.fetchall()
+                    model_execute = list(ast.literal_eval(result_rows[0][0]))
+                    debug.append(model_execute)
+                    debug.append(code_execute)
+                    grade = submission_grading.rs_similarity(model_execute, code_execute)
                     task_grade.append(grade)
                 else:
                     # submission
@@ -134,9 +137,11 @@ def submit():
                         code_execute = ()
                     # model
                     cursor.execute("SELECT model_ans FROM parts where tid = %s and pid = %s", (tid[task_idx], part_idx))
-                    model_execute = cursor.fetchall()
-                    debug.append((code_execute, model_execute))
-                    grade = submission_grading.rs_similarity(code_execute, model_execute)
+                    result_rows = cursor.fetchall()
+                    model_execute = list(ast.literal_eval(result_rows[0][0]))
+                    debug.append(model_execute)
+                    debug.append(code_execute)
+                    grade = submission_grading.rs_similarity(model_execute, code_execute)
                     task_grade.append(grade)
             assessment_grade.append(sum(task_grade)/len(task_grade))
         overall_grade = sum(assessment_grade)/len(assessment_grade)
