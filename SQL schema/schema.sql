@@ -140,10 +140,10 @@ INSERT INTO task (aid, title) VALUES
 -- SET amount = amount - (
 --     SELECT amount
 --     FROM order_items oi
---     WHERE oi.inventory_id = inventory.inventory_id AND order_id = 5
+--     WHERE oi.inventory_id = inventory.inventory_id AND oi.order_id = 5
 -- )
--- WHERE order_id = 5 AND inventory_id IN (
---     SELECT inventory_id FROM order_items
+-- WHERE inventory_id = (
+--     SELECT inventory_id FROM order_items WHERE order_id = 5
 -- );
 
 INSERT INTO parts (pid, tid, model_ans, query) VALUES
