@@ -147,7 +147,7 @@ def submit():
         cnx1.close()
         cursor.close()
         cnx.close()
-        return f'{debug_code}, {debug_model}'
+        return f'{debug}'
         # return redirect('/home')
     
     # GET method - sample route: /submitquestion?question_no=(1, 'Math Quiz 1', datetime.datetime(2025, 7, 1, 9, 0))
